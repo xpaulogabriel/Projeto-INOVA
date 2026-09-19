@@ -1,0 +1,23 @@
+# ==========================================
+# 1. Pastas Pesadas de Compilação (.NET MAUI)
+# ==========================================
+[Bb]in/
+[Oo]bj/
+
+# ==========================================
+# 2. Arquivos de Configuração do Visual Studio
+# Evita que sua configuração sobrescreva a do Paulo Gabriel
+# ==========================================
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ==========================================
+# 3. Variáveis de Ambiente e Chaves (Supabase)
+# ==========================================
+.env
+appsettings.json
+appsettings.Development.json
+Secrets.cs
