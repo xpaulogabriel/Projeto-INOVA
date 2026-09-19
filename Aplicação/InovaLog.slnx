@@ -1,3 +1,5 @@
 <Solution>
-  <Project Path="InovaLog.csproj" />
+  <Project Path="InovaLog/InovaLog.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
 </Solution>
