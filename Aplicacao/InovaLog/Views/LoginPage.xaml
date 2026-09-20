@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InovaLog.Views.LoginPage"
+             BackgroundColor="#F4F6F8"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30,80,30,30" Spacing="25" VerticalOptions="Center">
+
+            <!-- Indicador Offline Oculto por padrão -->
+            <Frame BackgroundColor="#FF3B30" Padding="10" CornerRadius="8" IsVisible="False" HasShadow="False">
+                <Label Text="Você está offline. Login local habilitado." TextColor="White" HorizontalOptions="Center" FontAttributes="Bold" />
+            </Frame>
+
+            <!-- Logo Fake -->
+            <Image Source="appicon.png" 
+                   HeightRequest="120" 
+                   HorizontalOptions="Center" 
+                   Margin="0,0,0,20"/>
+
+            <Label Text="Bem-vindo ao InovaLog" 
+                   FontSize="24" 
+                   FontAttributes="Bold" 
+                   TextColor="#003366" 
+                   HorizontalOptions="Center" />
+
+            <Label Text="Faça login para acessar suas viagens e relatórios." 
+                   FontSize="14" 
+                   TextColor="#666666" 
+                   HorizontalOptions="Center" 
+                   Margin="0,-15,0,20"/>
+
+            <!-- Campos de Entrada -->
+            <Frame BorderColor="#E0E0E0" CornerRadius="10" Padding="0" HasShadow="False">
+                <Entry Placeholder="E-mail" 
+                       Keyboard="Email"
+                       Margin="15,5"
+                       TextColor="#333333" />
+            </Frame>
+
+            <Frame BorderColor="#E0E0E0" CornerRadius="10" Padding="0" HasShadow="False">
+                <Entry Placeholder="Senha" 
+                       IsPassword="True" 
+                       Margin="15,5"
+                       TextColor="#333333" />
+            </Frame>
+
+            <!-- Botão de Ação -->
+            <Button Text="Entrar" 
+                    BackgroundColor="#0A66C2" 
+                    TextColor="White" 
+                    CornerRadius="10" 
+                    HeightRequest="50"
+                    FontAttributes="Bold"
+                    Margin="0,15,0,0"/>
+
+            <!-- Link de Suporte -->
+            <Label Text="Esqueceu a senha? Fale com o administrador." 
+                   TextColor="#0A66C2" 
+                   TextDecorations="Underline"
+                   HorizontalOptions="Center" 
+                   Margin="0,20,0,0">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer />
+                </Label.GestureRecognizers>
+            </Label>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

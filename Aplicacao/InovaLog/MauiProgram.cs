@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using InovaLog.Views;
 
 namespace InovaLog
 {
