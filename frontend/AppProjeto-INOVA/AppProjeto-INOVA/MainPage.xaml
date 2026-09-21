@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppProjeto_INOVA.MainPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="White">
+
+    <ScrollView>
+        <Grid RowDefinitions="400,Auto">
+
+            <!-- ===================== BLOCO AZUL (TOPO) ===================== -->
+            <BoxView Grid.Row="0">
+                <BoxView.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#1EA1E8" Offset="0.0" />
+                        <GradientStop Color="#2C63B1" Offset="1.0" />
+                    </LinearGradientBrush>
+                </BoxView.Background>
+            </BoxView>
+
+            <!-- Logo -->
+            <Image Grid.Row="0"
+           Source="logo_azul.png"
+           WidthRequest="350"
+           HeightRequest="350"
+           VerticalOptions="Center"
+           HorizontalOptions="Start"
+                   Margin="-35,0,0,0"/>
+
+            <!-- Onda branca na base do bloco azul -->
+            <Path Grid.Row="0"
+          Fill="White"
+          VerticalOptions="End"
+          HorizontalOptions="Fill"
+          HeightRequest="70"
+          Aspect="Fill"
+          Data="M0,40 C150,100 250,-20 400,40 L400,100 L0,100 Z" />
+
+            <!-- ===================== BLOCO BRANCO (FORMULÁRIO) ===================== -->
+            <VerticalStackLayout Grid.Row="1"
+                          BackgroundColor="White"
+                          Margin="0,-2,0,0"
+                          Padding="35,30,30,35"
+                          Spacing="14">
+
+                <Label Text="Login"
+               FontSize="40"
+               FontAttributes="Bold"
+               TextColor="#E66D17" />
+
+                <!-- Campo Usuário / E-mail -->
+                <Border StrokeShape="RoundRectangle 34"
+                Stroke="#757373"
+                BackgroundColor="White"
+                Padding="14,4">
+                    <Entry x:Name="UsuarioEntry"
+                   Placeholder="Usuário / E-mail"
+                   PlaceholderColor="#565050"
+                   TextColor="Black"
+                   BackgroundColor="Transparent" />
+                </Border>
+
+                <!-- Campo Senha -->
+                <Border StrokeShape="RoundRectangle 34"
+                Stroke="#757373"
+                BackgroundColor="White"
+                Padding="14,4"
+                Margin="0,20,0,0">
+                    <Entry x:Name="SenhaEntry"
+                   Placeholder="Senha"
+                   IsPassword="True"
+                   TextColor="Black"
+                   PlaceholderColor="#565050"
+                   BackgroundColor="Transparent" />
+                </Border>
+
+                <!-- Linha: Esqueci a senha / Lembrar de mim -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Grid.Column="0"
+                   Text="Esqueci a senha?"
+                   TextColor="#000000"
+                   FontSize="12"
+                   VerticalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnEsqueciSenhaTapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                    <HorizontalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center">
+                        <CheckBox x:Name="LembrarCheckBox" Color="#565050" />
+                        <Label Text="Lembrar de mim" FontSize="13" VerticalOptions="Center" TextColor="Black" />
+                    </HorizontalStackLayout>
+                </Grid>
+
+                <!-- Linha separando o bloco de cima dos botões -->
+                <BoxView HeightRequest="1" BackgroundColor="#565050" Margin="0,4" />
+
+                <!-- Botões Entrar e Google -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="30" Margin="0,20">
+                    <Button Grid.Column="0"
+                    Text="Entrar"
+                    BackgroundColor="#F58220"
+                    TextColor="White"
+                    CornerRadius="22"
+                    HeightRequest="46"
+                    FontAttributes="Bold"
+                    Clicked="OnEntrarClicked" />
+
+                    <Button Grid.Column="1"
+                    Text="Google"
+                    ImageSource="icon_google.png"
+                    BackgroundColor="White"
+                    TextColor="#333333"
+                    BorderColor="#DDDDDD"
+                    BorderWidth="1"
+                    CornerRadius="22"
+                    HeightRequest="46"
+                    Clicked="OnGoogleClicked" />
+                </Grid>
+
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
+
+</ContentPage>
