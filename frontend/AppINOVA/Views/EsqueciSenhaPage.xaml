@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="AppINOVA.Views.EsqueciSenhaPage"
+    BackgroundColor="White"
+    NavigationPage.HasNavigationBar="False">
+
+    <!-- Tela dividida em duas partes -->
+    <Grid RowDefinitions="450,*">
+
+        <!-- ===================== BLOCO AZUL (TOPO) ===================== -->
+        <BoxView Grid.Row="0">
+            <BoxView.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#1EA1E8" Offset="0.0"/>
+                    <GradientStop Color="#2C63B1" Offset="1.0"/>
+                </LinearGradientBrush>
+            </BoxView.Background>
+        </BoxView>
+
+        <!-- Logo -->
+        <Image Grid.Row="0"
+               Source="logo_azul.png"
+               WidthRequest="400"
+               HeightRequest="400"
+               Opacity="0.40"
+               HorizontalOptions="Start"
+               VerticalOptions="Center"
+               Margin="-30,0,0,50"/>
+
+        <!-- Onda branca -->
+        <Path Grid.Row="0"
+              Fill="White"
+              VerticalOptions="End"
+              HorizontalOptions="Fill"
+              HeightRequest="90"
+              Aspect="Fill"
+              Data="M0,55 C120,15 210,80 320,55 C360,45 390,48 400,50 L400,100 L0,100 Z"/>
+
+        <!-- ===================== BLOCO BRANCO ===================== -->
+        <VerticalStackLayout Grid.Row="1"
+                             BackgroundColor="White"
+                             Margin="0,-2,0,0"
+                             Padding="35,0,35,35"
+                             Spacing="20">
+
+            <!-- Título -->
+            <Label Text="Esqueci a senha"
+                   FontSize="34"
+                   FontAttributes="Bold"
+                   TextColor="#E66D17"/>
+
+            <!-- Mensagem -->
+            <Label
+                Text="Caso tenha esquecido sua senha, entre em contato com o setor responsável da empresa para solicitar uma nova senha de acesso."
+                FontSize="16"
+                TextColor="#444444"
+                LineBreakMode="WordWrap"/>
+
+            <!-- Caixa de informações -->
+            <Border Stroke="#D9D9D9"
+                    StrokeShape="RoundRectangle 20"
+                    BackgroundColor="#F8F8F8"
+                    Padding="20">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="📧" FontSize="18"/>
+                        <Label Text="suporte@inova.com.br"
+                               FontSize="15"
+                               TextColor="#2C63B1"/>
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="📞" FontSize="18"/>
+                        <Label Text="(11) 4000-0000"
+                               FontSize="15"
+                               TextColor="#2C63B1"/>
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="🕒" FontSize="18"/>
+                        <Label Text="Segunda a sexta • 08:00 às 18:00"
+                               FontSize="15"
+                               TextColor="#2C63B1"/>
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <!-- Botão Voltar -->
+            <Button Text="Voltar para o Login"
+                    BackgroundColor="#F58220"
+                    TextColor="White"
+                    CornerRadius="24"
+                    HeightRequest="50"
+                    FontAttributes="Bold"
+                    Margin="0,20,0,0"
+                    Clicked="VoltarLogin_Clicked"/>
+
+        </VerticalStackLayout>
+
+    </Grid>
+
+</ContentPage>

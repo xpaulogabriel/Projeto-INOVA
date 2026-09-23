@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="AppINOVA.Views.InformacoesLoginPage"
+    BackgroundColor="White"
+    NavigationPage.HasNavigationBar="False">
+
+    <ScrollView>
+
+    <Grid RowDefinitions="450,Auto">
+
+        <!-- ===================== BLOCO AZUL (TOPO) ===================== -->
+        <BoxView Grid.Row="0">
+            <BoxView.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#1EA1E8" Offset="0.0"/>
+                    <GradientStop Color="#2C63B1" Offset="1.0"/>
+                </LinearGradientBrush>
+            </BoxView.Background>
+        </BoxView>
+
+        <!-- Logo -->
+        <Image Grid.Row="0"
+               Source="logo_azul.png"
+               WidthRequest="400"
+               HeightRequest="400"
+               Opacity="0.40"
+               VerticalOptions="Center"
+               HorizontalOptions="Start"
+               Margin="-30,0,0,50"/>
+
+        <!-- Onda branca -->
+        <Path Grid.Row="0"
+              Fill="White"
+              VerticalOptions="End"
+              HorizontalOptions="Fill"
+              HeightRequest="90"
+              Aspect="Fill"
+              Data="M0,55 C120,15 210,80 320,55 C360,45 390,48 400,50 L400,100 L0,100 Z"/>
+
+        <!-- ===================== BLOCO BRANCO ===================== -->
+        <VerticalStackLayout Grid.Row="1"
+                             BackgroundColor="White"
+                             Margin="0,-2,0,0"
+                             Padding="35,0,35,35"
+                             Spacing="18">
+
+            <!-- Título -->
+            <Label Text="Informações de Login"
+                   FontSize="34"
+                   FontAttributes="Bold"
+                   TextColor="#E66D17"/>
+
+            <!-- Texto principal -->
+            <Label
+                Text="O acesso ao aplicativo INOVA é fornecido exclusivamente pela empresa. Cada colaborador recebe um usuário e uma senha individuais para utilizar o sistema."
+                FontSize="16"
+                TextColor="#444444"
+                LineBreakMode="WordWrap"/>
+
+            <!-- Caixa de informações -->
+            <Border StrokeShape="RoundRectangle 20"
+                    Stroke="#D9D9D9"
+                    BackgroundColor="#F8F8F8"
+                    Padding="18">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <Label Text="Como acessar o sistema?"
+                           FontAttributes="Bold"
+                           FontSize="16"
+                           TextColor="#2C63B1"/>
+
+                    <Label Text="• Utilize o usuário ou e-mail informado pela empresa."
+                           FontSize="15"
+                           TextColor="#444444"/>
+
+                    <Label Text="• Digite a senha fornecida pelo administrador do sistema."
+                           FontSize="15"
+                           TextColor="#444444"/>
+
+                    <Label Text="• Não compartilhe seu login ou senha com outras pessoas."
+                           FontSize="15"
+                           TextColor="#444444"/>
+
+                    <Label Text="• Caso esqueça sua senha, utilize a opção 'Esqueci a senha'."
+                           FontSize="15"
+                           TextColor="#444444"/>
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <!-- Aviso -->
+            <Border StrokeShape="RoundRectangle 20"
+                    Stroke="#F58220"
+                    BackgroundColor="#FFF5EC"
+                    Padding="18">
+
+                <VerticalStackLayout Spacing="8">
+
+                    <Label Text="Importante"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="#F58220"/>
+
+                    <Label
+                        Text="Somente o setor responsável ou o administrador do sistema pode criar usuários e redefinir senhas."
+                        FontSize="14"
+                        TextColor="#555555"
+                        LineBreakMode="WordWrap"/>
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <!-- Botão -->
+            <Button Text="Voltar para o Login"
+                    BackgroundColor="#F58220"
+                    TextColor="White"
+                    CornerRadius="22"
+                    HeightRequest="46"
+                    FontAttributes="Bold"
+                    Margin="0,15,0,0"
+                    Clicked="VoltarLogin_Clicked"/>
+
+        </VerticalStackLayout>
+
+    </Grid>
+    </ScrollView>
+
+</ContentPage>

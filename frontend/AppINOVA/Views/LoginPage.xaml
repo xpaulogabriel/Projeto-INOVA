@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppINOVA.Views.LoginPage"
+             BackgroundColor="#F8F8F8"
+             NavigationPage.HasNavigationBar="False">
+
+    <Grid RowDefinitions="450,Auto">
+
+        <!-- BLOCO AZUL (TOPO) -->
+        <BoxView Grid.Row="0">
+            <BoxView.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#1EA1E8" Offset="0.0" />
+                    <GradientStop Color="#2C63B1" Offset="1.0" />
+                </LinearGradientBrush>
+            </BoxView.Background>
+        </BoxView>
+
+        <!-- Logo -->
+        <Image Grid.Row="0"
+               Source="logo_azul.png"
+               WidthRequest="400"
+               HeightRequest="400"
+               Opacity="0.40"
+               VerticalOptions="Center"
+               HorizontalOptions="Start"
+               Margin="-30,0,0,50"
+         />
+
+        <!-- Onda branca -->
+        <Path Grid.Row="0"
+              Fill="#F8F8F8"
+              VerticalOptions="End"
+              HorizontalOptions="Fill"
+              HeightRequest="90"
+              Aspect="Fill"
+              Data="M0,55 C120,15 210,80 320,55 C360,45 390,48 400,50 L400,100 L0,100 Z" 
+              
+        />
+
+        <!-- FORMULÁRIO -->
+        <VerticalStackLayout Grid.Row="1"
+                             BackgroundColor="#F8F8F8"
+                             Margin="0,-2,0,0"
+                             Padding="35,0,35,35"
+                             Spacing="14">
+
+            <!-- Título -->
+            <Label Text="Login"
+                   FontSize="40"
+                   FontAttributes="Bold"
+                   TextColor="#E66D17"
+                   Margin="0,0,0,15" 
+            />
+
+            <!-- Usuário -->
+            <Border StrokeShape="RoundRectangle 34"
+                    Stroke="#D4D4D4"
+                    StrokeThickness="1.2"
+                    BackgroundColor="White"
+                    Padding="14,4">
+
+                <Entry Placeholder="Usuário / E-mail"
+                       PlaceholderColor="#565050"
+                       TextColor="Black"
+                       BackgroundColor="Transparent" 
+                />
+
+            </Border>
+
+            <!-- Senha -->
+            <Border StrokeShape="RoundRectangle 34"
+                    Stroke="#D4D4D4"
+                    StrokeThickness="1.2"
+                    BackgroundColor="White"
+                    Padding="14,4">
+                <!--"Margin="0,20,0,0"-->
+
+                <Entry Placeholder="Senha"
+                       PlaceholderColor="#565050"
+                       TextColor="Black"
+                       IsPassword="True"
+                       BackgroundColor="Transparent" 
+                />
+
+            </Border>
+
+            <!-- Esqueci senha + lembrar -->
+            <Grid ColumnDefinitions="*,Auto">
+
+                <Button Grid.Column="0"
+                    Text="Esqueci a senha?"
+                    FontSize="12"
+                    TextColor="Black"
+                    BackgroundColor="Transparent"
+                    BorderWidth="0"
+                    Padding="0"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center"
+                    Clicked="EsqueciSenha_Clicked"
+                />
+
+                <HorizontalStackLayout Grid.Column="1"
+                                       Spacing="6"
+                                       VerticalOptions="Center">
+
+                    <CheckBox WidthRequest="20"
+                              HeightRequest="20"
+                              Color="#C9C9C9"
+                    />
+
+                    <Label Text="Lembre de mim"
+                           FontSize="12"
+                           TextColor="Black"
+                           VerticalOptions="Center"
+                    />
+
+                </HorizontalStackLayout>
+
+            </Grid>
+
+            <!-- Linha -->
+            <BoxView HeightRequest="1"
+                     BackgroundColor="#E3E3E3"
+                     Margin="0,8"/>
+
+            <!-- Botões -->
+            <Grid ColumnDefinitions="*,*"
+                  ColumnSpacing="20"
+                  Margin="0,10">
+
+                <Button Grid.Column="0"
+                        Text="Entrar"
+                        BackgroundColor="#F58220"
+                        TextColor="White"
+                        CornerRadius="22"
+                        HeightRequest="46"
+                        FontAttributes="Bold"
+                />
+
+                <Button Grid.Column="1"
+                        Text="Google"
+                        ImageSource="icon_google.png"
+                        BackgroundColor="White"
+                        TextColor="#333333"
+                        BorderColor="#DDDDDD"
+                        BorderWidth="1"
+                        CornerRadius="22"
+                        HeightRequest="46"
+                />
+
+            </Grid>
+
+            <!-- Rodapé -->
+            <Button Text="Informações sobre login"
+                BackgroundColor="Transparent"
+                TextColor="#666666"
+                FontSize="12"
+                Padding="0"
+                HorizontalOptions="Center"
+                Clicked="InformacoesLogin_Clicked"
+            />
+
+        </VerticalStackLayout>
+
+    </Grid>
+
+</ContentPage>
