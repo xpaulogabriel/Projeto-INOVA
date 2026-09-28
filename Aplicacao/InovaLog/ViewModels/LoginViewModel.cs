@@ -14,7 +14,8 @@ public partial class LoginViewModel : ObservableObject
     [RelayCommand]
     private async Task EntrarAsync()
     {
-        Console.WriteLine($"Tentando logar com: {Email}");
+        var paginaAtual = Application.Current.Windows[0].Page;
+        await paginaAtual.Navigation.PushAsync(new Views.HomePage());
     }
 
     [RelayCommand]

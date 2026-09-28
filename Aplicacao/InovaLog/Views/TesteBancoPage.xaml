@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InovaLog.Views.TesteBancoPage"
+             Title="Laboratório de Dados">
+
+    <ScrollView Padding="20">
+        <VerticalStackLayout Spacing="20">
+
+            <Label Text="Testes de Infraestrutura" FontSize="24" FontAttributes="Bold" TextColor="#2C63B1" HorizontalOptions="Center"/>
+            <Label Text="Utilize esta tela para testar inserções e leituras no banco de dados local (SQLite) e remoto (Supabase)." FontSize="14" TextColor="Gray" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+
+            <Frame BorderColor="#2C63B1" BackgroundColor="#F0F8FF" CornerRadius="10">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Testar SQLite (Offline)" FontAttributes="Bold" />
+                    <Button Text="Inserir Usuário Fake" BackgroundColor="#2C63B1" TextColor="White" />
+                    <Button Text="Ler Usuários do Banco" BackgroundColor="#F58220" TextColor="White" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame BorderColor="#34C759" BackgroundColor="#F0FFF4" CornerRadius="10">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Testar Supabase (Nuvem)" FontAttributes="Bold" />
+                    <Button Text="Testar Conexão com API" BackgroundColor="#34C759" TextColor="White" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Área onde os dados lidos aparecerão no futuro -->
+            <Label Text="Console de Resultados:" FontAttributes="Bold" Margin="0,10,0,0"/>
+            <Editor x:Name="ConsoleEditor" IsReadOnly="True" HeightRequest="150" BackgroundColor="#333333" TextColor="#00FF00" FontSize="12" Text="Aguardando comandos..."/>
+
+            <!-- Botão para voltar -->
+            <Button Text="Voltar para a Home" BackgroundColor="Gray" TextColor="White" Clicked="Voltar_Clicked"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

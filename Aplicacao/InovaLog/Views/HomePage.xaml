@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InovaLog.Views.HomePage"
+             BackgroundColor="White"
+             NavigationPage.HasNavigationBar="False">
+
+    <Grid RowDefinitions="160, *, Auto">
+
+        <!-- ===================== CABEÇALHO AZUL ===================== -->
+        <Grid Grid.Row="0">
+            <BoxView>
+                <BoxView.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#1EA1E8" Offset="0.0" />
+                        <GradientStop Color="#2C63B1" Offset="1.0" />
+                    </LinearGradientBrush>
+                </BoxView.Background>
+            </BoxView>
+
+            <Image Source="logo_azul.png" Opacity="0.2" HorizontalOptions="End" VerticalOptions="Start" WidthRequest="150" Margin="0,-20,-20,0"/>
+
+            <HorizontalStackLayout Margin="20,40,20,0" Spacing="15">
+                <!-- Foto / Iniciais -->
+                <Frame WidthRequest="60" HeightRequest="60" CornerRadius="30" BackgroundColor="White" Padding="0" HasShadow="False">
+                    <Label Text="ME" FontSize="20" FontAttributes="Bold" TextColor="#F58220" HorizontalOptions="Center" VerticalOptions="Center"/>
+                </Frame>
+
+                <!-- Informações do Usuário -->
+                <VerticalStackLayout VerticalOptions="Center" Spacing="2">
+                    <Label Text="BEM VINDO(a)" FontSize="10" TextColor="#E0E0E0" />
+                    <Label Text="Maria Eduarda" FontSize="18" FontAttributes="Bold" TextColor="White" />
+                    <Frame BackgroundColor="#34C759" Padding="8,2" CornerRadius="10" HorizontalOptions="Start" HasShadow="False">
+                        <Label Text="● Online" FontSize="10" TextColor="White" FontAttributes="Bold"/>
+                    </Frame>
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+
+            <!-- Onda Branca -->
+            <Path Fill="White" VerticalOptions="End" HorizontalOptions="Fill" HeightRequest="30" Aspect="Fill"
+                  Data="M0,30 C120,0 240,40 400,10 L400,40 L0,40 Z" />
+        </Grid>
+
+        <!-- ===================== CONTEÚDO PRINCIPAL ===================== -->
+        <ScrollView Grid.Row="1" Padding="20,10,20,20">
+            <VerticalStackLayout Spacing="25">
+
+                <!-- Resumo da Frota -->
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Resumo do dia" FontSize="16" FontAttributes="Bold" TextColor="#555555" />
+                    <Border Stroke="#EAEAEA" BackgroundColor="#F5F6F8" StrokeShape="RoundRectangle 15" Padding="15">
+                        <Grid ColumnDefinitions="*,*,*">
+                            <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center" Spacing="5">
+                                <Label Text="Viagens" FontSize="12" TextColor="#555555" HorizontalOptions="Center"/>
+                                <Label Text="12" FontSize="24" FontAttributes="Bold" TextColor="#333333" HorizontalOptions="Center"/>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center" Spacing="5">
+                                <Label Text="Em rota" FontSize="12" TextColor="#555555" HorizontalOptions="Center"/>
+                                <Label Text="10" FontSize="24" FontAttributes="Bold" TextColor="#F58220" HorizontalOptions="Center"/>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center" Spacing="5">
+                                <Label Text="Garagem" FontSize="12" TextColor="#555555" HorizontalOptions="Center"/>
+                                <Label Text="2" FontSize="24" FontAttributes="Bold" TextColor="#2C63B1" HorizontalOptions="Center"/>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Ações Rápidas -->
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Ações rápidas" FontSize="16" FontAttributes="Bold" TextColor="#555555" />
+                    <HorizontalStackLayout Spacing="15">
+                        <Button Text="+ Nova Viagem" BackgroundColor="White" TextColor="#333333" BorderColor="#DDDDDD" BorderWidth="1" CornerRadius="10" Padding="15,10" FontSize="13"/>
+                        <Button Text="💰 Lançar Despesa" BackgroundColor="White" TextColor="#333333" BorderColor="#DDDDDD" BorderWidth="1" CornerRadius="10" Padding="15,10" FontSize="13"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- Últimas Atividades (Mock visual) -->
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Últimas Atividades" FontSize="16" FontAttributes="Bold" TextColor="#555555" />
+                    <Border Stroke="#EAEAEA" BackgroundColor="#F5F6F8" StrokeShape="RoundRectangle 15" Padding="0">
+                        <Grid RowDefinitions="Auto, Auto, Auto, Auto" ColumnDefinitions="2*, 2*, 1*" Padding="15" RowSpacing="15">
+                            <!-- Cabeçalho -->
+                            <Label Grid.Row="0" Grid.Column="0" Text="Identificação" FontAttributes="Bold" TextColor="#333333"/>
+                            <Label Grid.Row="0" Grid.Column="1" Text="Status" FontAttributes="Bold" TextColor="#333333"/>
+                            <Label Grid.Row="0" Grid.Column="2" Text="Hora" FontAttributes="Bold" TextColor="#333333"/>
+
+                            <!-- Linha 1 -->
+                            <Label Grid.Row="1" Grid.Column="0" Text="Viagem #1300" TextColor="#555555"/>
+                            <Label Grid.Row="1" Grid.Column="1" Text="Em rota" TextColor="#555555"/>
+                            <Label Grid.Row="1" Grid.Column="2" Text="10:50" TextColor="#555555"/>
+
+                            <!-- Linha 2 -->
+                            <Label Grid.Row="2" Grid.Column="0" Text="Caminhão #33" TextColor="#555555"/>
+                            <Label Grid.Row="2" Grid.Column="1" Text="Manutenção" TextColor="#F58220"/>
+                            <Label Grid.Row="2" Grid.Column="2" Text="09:15" TextColor="#555555"/>
+
+                            <!-- Linha 3 -->
+                            <Label Grid.Row="3" Grid.Column="0" Text="Viagem #1299" TextColor="#555555"/>
+                            <Label Grid.Row="3" Grid.Column="1" Text="Concluída" TextColor="#34C759"/>
+                            <Label Grid.Row="3" Grid.Column="2" Text="08:30" TextColor="#555555"/>
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- ===================== BARRA INFERIOR MOCKADA ===================== -->
+        <!-- No futuro, isso será substituído pelo AppShell nativo do MAUI -->
+        <Border Grid.Row="2" Stroke="#EAEAEA" StrokeThickness="1" BackgroundColor="White" Padding="10,5">
+            <Grid ColumnDefinitions="*,*,*,*">
+                <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center" Spacing="2">
+                    <Label Text="🏠" FontSize="20" HorizontalOptions="Center"/>
+                    <Label Text="Início" FontSize="10" TextColor="#F58220" FontAttributes="Bold" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center" Spacing="2">
+                    <Label Text="📦" FontSize="20" HorizontalOptions="Center"/>
+                    <Label Text="Entregas" FontSize="10" TextColor="#888888" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center" Spacing="2">
+                    <Label Text="🚚" FontSize="20" HorizontalOptions="Center"/>
+                    <Label Text="Frota" FontSize="10" TextColor="#888888" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Column="3" HorizontalOptions="Center" Spacing="2">
+                    <Label Text="⚙️" FontSize="20" HorizontalOptions="Center"/>
+                    <Label Text="Ajustes" FontSize="10" TextColor="#888888" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>

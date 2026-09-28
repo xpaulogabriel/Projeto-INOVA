@@ -79,11 +79,16 @@
 	<ItemGroup>
 	  <Folder Include="Models\" />
 	  <Folder Include="Services\" />
-	  <Folder Include="Views\" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Views\HomePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\LoginPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\TesteBancoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
