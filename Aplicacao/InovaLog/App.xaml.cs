@@ -1,17 +1,20 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using InovaLog.Views;
 
-namespace InovaLog
+namespace InovaLog;
+
+public partial class App : Application
 {
-    public partial class App : Application
-    {
-        public App()
-        {
-            InitializeComponent();
-        }
+    private readonly LoginPage _loginPage;
 
-        protected override Window CreateWindow(IActivationState? activationState)
-        {
-            return new Window(new AppShell());
-        }
+    // O "maestro" do MAUI vai injetar a LoginPage pronta aqui
+    public App(LoginPage loginPage)
+    {
+        InitializeComponent();
+        _loginPage = loginPage;
+    }
+
+    protected override Window CreateWindow(IActivationState? activationState)
+    {
+        return new Window(new NavigationPage(_loginPage));
     }
 }
