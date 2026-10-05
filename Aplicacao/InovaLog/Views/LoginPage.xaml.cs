@@ -1,12 +1,15 @@
 using InovaLog.ViewModels;
 
-namespace InovaLog.Views;
 
-public partial class LoginPage : ContentPage
+
+namespace InovaLog.Views
 {
-    public LoginPage(LoginViewModel viewModel)
+    public partial class LoginPage : ContentPage
     {
-        InitializeComponent();
-        BindingContext = viewModel;
+        public LoginPage(LoginViewModel viewModel)
+        {
+            InitializeComponent();
+            BindingContext = viewModel;
+        }
     }
 }

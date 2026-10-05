@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using InovaLog.Views;
+using CommunityToolkit.Maui;
 using InovaLog.ViewModels;
+
 
 namespace InovaLog;
 
@@ -11,6 +13,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
