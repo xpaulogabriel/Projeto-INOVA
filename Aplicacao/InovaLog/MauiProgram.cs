@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using InovaLog.Services;
 using InovaLog.Views;
 using CommunityToolkit.Maui;
 using InovaLog.ViewModels;
@@ -21,6 +22,8 @@ public static class MauiProgram
             });
 
         // 1. Registro de Serviços (Supabase e SQLite virão aqui depois)
+
+        builder.Services.AddSingleton<AuthService>();
 
         // 2. Registro de ViewModels (O Cérebro)
         builder.Services.AddTransient<LoginViewModel>();
