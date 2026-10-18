@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="InovaLog.Views.NovaDespesaPag"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Title="NovaDespesaPag"
+    Background="#f8f8f8"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#2C63B1" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
+
+        <!--  CABEÇALHO  -->
+        <Grid
+            Grid.Row="0"
+            Padding="16,10,20,5"
+            HeightRequest="95">
+
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Offset="0.0" Color="#78B5F5" />
+                    <GradientStop Offset="1.0" Color="#1678E5" />
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+
+                <Button
+                    Grid.Column="0"
+                    Padding="0"
+                    BackgroundColor="#F8FAFC"
+                    CornerRadius="17"
+                    FontSize="30"
+                    HeightRequest="34"
+                    Text="‹"
+                    TextColor="#2C63B1"
+                    VerticalOptions="Center"
+                    WidthRequest="34" />
+
+                <Label
+                    Grid.Column="1"
+                    FontFamily="PoppinsSemiBold"
+                    FontSize="23"
+                    Text="Nova Despesa"
+                    TextColor="White"
+                    VerticalOptions="Center" />
+
+            </Grid>
+        </Grid>
+
+        <!--  FORMULÁRIO  -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20,16,20,24" Spacing="13">
+
+                <!--  TIPO  -->
+                <Label
+                    FontFamily="PoppinsSemiBold"
+                    FontSize="12"
+                    Text="Tipo de Despesa"
+                    TextColor="#0F172A" />
+
+                <Border
+                    Padding="12,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <Picker
+                        x:Name="PckTipoDespesa"
+                        Title="Selecione o tipo"
+                        FontFamily="PoppinsRegular"
+                        FontSize="13"
+                        SelectedIndex="0"
+                        TextColor="#334155">
+
+                        <Picker.Items>
+                            <x:String>Combustível</x:String>
+                            <x:String>Pedágio</x:String>
+                            <x:String>Manutenção</x:String>
+                            <x:String>Alimentação</x:String>
+                            <x:String>Hospedagem</x:String>
+                            <x:String>Outros</x:String>
+                        </Picker.Items>
+                    </Picker>
+                </Border>
+
+                <!--  DESCRIÇÃO  -->
+                <Label
+                    FontFamily="PoppinsSemiBold"
+                    FontSize="12"
+                    Text="Descrição"
+                    TextColor="#0F172A" />
+
+                <Border
+                    Padding="14,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <Entry
+                        x:Name="TxtDescricao"
+                        BackgroundColor="Transparent"
+                        ClearButtonVisibility="WhileEditing"
+                        FontFamily="PoppinsRegular"
+                        FontSize="13"
+                        Placeholder="Digite a descrição"
+                        PlaceholderColor="#94A3B8"
+                        TextColor="#334155" />
+                </Border>
+
+                <!--  VALOR  -->
+                <Label
+                    FontFamily="PoppinsSemiBold"
+                    FontSize="12"
+                    Text="Valor"
+                    TextColor="#0F172A" />
+
+                <Border
+                    Padding="14,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <Entry
+                        x:Name="TxtValor"
+                        BackgroundColor="Transparent"
+                        FontFamily="PoppinsRegular"
+                        FontSize="13"
+                        Keyboard="Numeric"
+                        Placeholder="R$ 0,00"
+                        PlaceholderColor="#94A3B8"
+                        TextColor="#334155" />
+                </Border>
+
+                <!--  DATA  -->
+                <Label
+                    FontFamily="PoppinsSemiBold"
+                    FontSize="12"
+                    Text="Data"
+                    TextColor="#0F172A" />
+
+                <Border
+                    Padding="12,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <DatePicker
+                        x:Name="DpData"
+                        BackgroundColor="Transparent"
+                        FontFamily="PoppinsRegular"
+                        FontSize="13"
+                        Format="dd/MM/yyyy"
+                        TextColor="#334155" />
+                </Border>
+
+                <!--  ROTA  -->
+                <Label
+                    FontFamily="PoppinsSemiBold"
+                    FontSize="12"
+                    Text="Rota Associada"
+                    TextColor="#0F172A" />
+
+                <Border
+                    Padding="12,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <Picker
+                        x:Name="PckRota"
+                        Title="Selecione a rota"
+                        FontFamily="PoppinsRegular"
+                        FontSize="13"
+                        TextColor="#334155">
+
+                        <Picker.Items>
+                            <x:String>Varginha → Três Pontas</x:String>
+                            <x:String>Varginha → São Paulo</x:String>
+                            <x:String>Varginha → Belo Horizonte</x:String>
+                            <x:String>Outra rota</x:String>
+                        </Picker.Items>
+                    </Picker>
+                </Border>
+
+                <!--  FORMA DE PAGAMENTO  -->
+                <Label
+                    FontFamily="PoppinsSemiBold"
+                    FontSize="12"
+                    Text="Forma de Pagamento"
+                    TextColor="#0F172A" />
+
+                <Border
+                    Padding="12,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <Picker
+                        x:Name="PckPagamento"
+                        Title="Selecione a forma de pagamento"
+                        FontFamily="PoppinsRegular"
+                        FontSize="13"
+                        SelectedIndex="0"
+                        TextColor="#334155">
+
+                        <Picker.Items>
+                            <x:String>Cartão Frota</x:String>
+                            <x:String>Cartão Corporativo</x:String>
+                            <x:String>Dinheiro</x:String>
+                            <x:String>PIX</x:String>
+                            <x:String>Outro</x:String>
+                        </Picker.Items>
+                    </Picker>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  RODAPÉ FIXO  -->
+        <Grid
+            Grid.Row="2"
+            Padding="16,10"
+            BackgroundColor="White"
+            ColumnDefinitions="*,Auto,Auto"
+            ColumnSpacing="6">
+
+            <Label
+                Grid.Column="0"
+                FontFamily="PoppinsRegular"
+                FontSize="10"
+                LineBreakMode="WordWrap"
+                Text="Todos os campos são obrigatórios"
+                TextColor="#64748B"
+                VerticalOptions="Center" />
+
+            <Button
+                Grid.Column="1"
+                Padding="10,0"
+                BackgroundColor="White"
+                BorderColor="#D1D5DB"
+                BorderWidth="1"
+                CornerRadius="9"
+                FontSize="11"
+                HeightRequest="42"
+                Text="Cancelar"
+                TextColor="#334155" />
+
+            <Button
+                Grid.Column="2"
+                Padding="14,0"
+                BackgroundColor="#2C63B1"
+               
+                CornerRadius="9"
+                FontFamily="PoppinsSemiBold"
+                FontSize="11"
+                HeightRequest="42"
+                Text="Salvar"
+                TextColor="White" />
+
+        </Grid>
+
+    </Grid>
+</ContentPage>

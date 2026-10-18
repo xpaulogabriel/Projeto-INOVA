@@ -1,144 +1,152 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:Class="InovaLog.Views.InformacoesLoginPage"
-             NavigationPage.HasNavigationBar="False">
+<ContentPage
+    x:Class="InovaLog.Views.InformacoesLoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    BackgroundColor="White"
+    NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Behaviors>
-        <toolkit:StatusBarBehavior 
-            StatusBarColor="#2C63B1"
-            StatusBarStyle="LightContent" />
+        <toolkit:StatusBarBehavior StatusBarColor="#2C63B1" StatusBarStyle="LightContent" />
     </ContentPage.Behaviors>
 
     <ScrollView>
 
         <Grid RowDefinitions="450,Auto">
 
-            <!-- BLOCO AZUL (TOPO) -->
+            <!--  BLOCO AZUL (TOPO)  -->
             <BoxView Grid.Row="0">
                 <BoxView.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="#1EA1E8" Offset="1.0" />
-                        <GradientStop Color="#2C63B1" Offset="0.0" />
+                        <GradientStop Offset="1.0" Color="#1EA1E8" />
+                        <GradientStop Offset="0.0" Color="#2C63B1" />
                     </LinearGradientBrush>
                 </BoxView.Background>
             </BoxView>
 
-            <!-- Logo -->
-            <Image Grid.Row="0"
-                   Source="logo_azul.png"
-                   WidthRequest="400"
-                   HeightRequest="400"
-                   Opacity="0.40"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Start"
-                   Margin="-30,0,0,50"/>
+            <!--  Logo  -->
+            <Image
+                Grid.Row="0"
+                Margin="-30,0,0,50"
+                HeightRequest="400"
+                HorizontalOptions="Start"
+                Opacity="0.40"
+                Source="logo_azul.png"
+                VerticalOptions="Center"
+                WidthRequest="400" />
 
-            <!-- Onda branca -->
-            <Path Grid.Row="0"
-                  Fill="#F8F8F8"
-                  VerticalOptions="End"
-                  HorizontalOptions="Fill"
-                  HeightRequest="90"
-                  Aspect="Fill"
-                  Data="M0,55 C120,15 210,80 320,55 C360,45 390,48 400,50 L400,100 L0,100 Z"/>
+            <!--  Onda branca  -->
+            <Path
+                Grid.Row="0"
+                Aspect="Fill"
+                Data="M0,55 C120,15 210,80 320,55 C360,45 390,48 400,50 L400,100 L0,100 Z"
+                Fill="#F8F8F8"
+                HeightRequest="90"
+                HorizontalOptions="Fill"
+                VerticalOptions="End" />
 
-            <!-- BLOCO BRANCO -->
-            <VerticalStackLayout Grid.Row="1"
-                                 BackgroundColor="#F8F8F8"
-                                 Margin="0,-2,0,0"
-                                 Padding="35,0,35,35"
-                                 Spacing="18">
+            <!--  BLOCO BRANCO  -->
+            <VerticalStackLayout
+                Grid.Row="1"
+                Margin="0,-2,0,0"
+                Padding="35,0,35,35"
+                BackgroundColor="#F8F8F8"
+                Spacing="18">
 
-                <!-- Título -->
-                <Label Text="Informações de Login"
-                       FontSize="34"
-                       FontAttributes="Bold"
-                       TextColor="#E66D17"/>
-
-                <!-- Texto principal -->
+                <!--  Título  -->
                 <Label
-                       Text="O acesso ao aplicativo INOVA é fornecido exclusivamente pela empresa. Cada colaborador recebe um usuário e uma senha individuais para utilizar o sistema."
-                       FontSize="16"
-                       TextColor="#444444"
-                       LineBreakMode="WordWrap"/>
+                    FontAttributes="Bold"
+                    FontSize="34"
+                    Text="Informações de Login"
+                    TextColor="#E66D17" />
 
-                <!-- Caixa de informações -->
-                <Border StrokeShape="RoundRectangle 20"
-                    Stroke="#D9D9D9"
+                <!--  Texto principal  -->
+                <Label
+                    FontSize="16"
+                    LineBreakMode="WordWrap"
+                    Text="O acesso ao aplicativo INOVA é fornecido exclusivamente pela empresa. Cada colaborador recebe um usuário e uma senha individuais para utilizar o sistema."
+                    TextColor="#444444" />
+
+                <!--  Caixa de informações  -->
+                <Border
+                    Padding="18"
                     BackgroundColor="#F8F8F8"
-                    Padding="18">
+                    Stroke="#D9D9D9"
+                    StrokeShape="RoundRectangle 20">
 
                     <VerticalStackLayout Spacing="12">
 
-                        <Label 
-                               Text="Como acessar o sistema?"
-                               FontAttributes="Bold"
-                               FontSize="16"
-                               TextColor="#2C63B1"/>
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="Como acessar o sistema?"
+                            TextColor="#2C63B1" />
 
-                        <Label 
-                               Text="• Utilize o usuário ou e-mail informado pela empresa."
-                               FontSize="15"
-                               TextColor="#444444"/>
+                        <Label
+                            FontSize="15"
+                            Text="• Utilize o usuário ou e-mail informado pela empresa."
+                            TextColor="#444444" />
 
-                        <Label 
-                               Text="• Digite a senha fornecida pelo administrador do sistema."
-                               FontSize="15"
-                               TextColor="#444444"/>
+                        <Label
+                            FontSize="15"
+                            Text="• Digite a senha fornecida pelo administrador do sistema."
+                            TextColor="#444444" />
 
-                        <Label 
-                               Text="• Não compartilhe seu login ou senha com outras pessoas."
-                               FontSize="15"
-                               TextColor="#444444"/>
+                        <Label
+                            FontSize="15"
+                            Text="• Não compartilhe seu login ou senha com outras pessoas."
+                            TextColor="#444444" />
 
-                        <Label 
-                               Text="• Caso esqueça sua senha, utilize a opção 'Esqueci a senha'."
-                               FontSize="15"
-                               TextColor="#444444"/>
+                        <Label
+                            FontSize="15"
+                            Text="• Caso esqueça sua senha, utilize a opção 'Esqueci a senha'."
+                            TextColor="#444444" />
 
                     </VerticalStackLayout>
 
                 </Border>
 
-                <!-- Aviso -->
-                <Border StrokeShape="RoundRectangle 20"
-                        Stroke="#F58220"
-                        BackgroundColor="#FFF5EC"
-                        Padding="18">
+                <!--  Aviso  -->
+                <Border
+                    Padding="18"
+                    BackgroundColor="#FFF5EC"
+                    Stroke="#F58220"
+                    StrokeShape="RoundRectangle 20">
 
                     <VerticalStackLayout Spacing="8">
 
-                        <Label Text="Importante"
-                               FontSize="16"
-                               FontAttributes="Bold"
-                               TextColor="#F58220"/>
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="Importante"
+                            TextColor="#F58220" />
 
                         <Label
-                               Text="Somente o setor responsável ou o administrador do sistema pode criar usuários e redefinir senhas."
-                               FontSize="14"
-                               TextColor="#555555"
-                               LineBreakMode="WordWrap"/>
+                            FontSize="14"
+                            LineBreakMode="WordWrap"
+                            Text="Somente o setor responsável ou o administrador do sistema pode criar usuários e redefinir senhas."
+                            TextColor="#555555" />
 
                     </VerticalStackLayout>
 
                 </Border>
 
-                <!-- Botão -->
-                <Button Text="Voltar para o Login"
-                        BackgroundColor="#F58220"
-                        TextColor="White"
-                        CornerRadius="22"
-                        HeightRequest="46"
-                        FontAttributes="Bold"
-                        Margin="0,15,0,0"
-                        Clicked="VoltarLogin_Clicked"/>
+                <!--  Botão  -->
+                <Button
+                    Margin="0,15,0,0"
+                    BackgroundColor="#F58220"
+                    Command="{Binding VoltarLoginCommand}"
+                    CornerRadius="22"
+                    FontAttributes="Bold"
+                    HeightRequest="46"
+                    Text="Voltar para o Login"
+                    TextColor="White" />
 
             </VerticalStackLayout>
 
         </Grid>
-        
+
     </ScrollView>
 
 </ContentPage>
