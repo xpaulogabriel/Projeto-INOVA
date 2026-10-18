@@ -1,8 +1,9 @@
-﻿using CommunityToolkit.Maui;
-using InovaLog.ViewModels;
+using CommunityToolkit.Maui;
+﻿using Microsoft.Extensions.Logging;
+using InovaLog.Services;
 using InovaLog.Views;
+using InovaLog.ViewModels;
 using LiveChartsCore.SkiaSharpView.Maui;
-using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace InovaLog;
@@ -62,6 +63,8 @@ public static class MauiProgram
         });
 
         // 1. Registro de Serviços (Supabase e SQLite virão aqui depois)
+
+        builder.Services.AddSingleton<AuthService>();
 
         // 2. Registro de ViewModels (O Cérebro)
         builder.Services.AddTransient<LoginViewModel>();
