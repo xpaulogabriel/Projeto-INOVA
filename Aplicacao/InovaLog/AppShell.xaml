@@ -3,9 +3,29 @@
     x:Class="InovaLog.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Shell.FlyoutBehavior="Disabled">
+    xmlns:views="clr-namespace:InovaLog.Views"
+    Shell.FlyoutBehavior="Disabled"
+    Shell.NavBarIsVisible="False"
+    Shell.TabBarBackgroundColor="White"
+    Shell.TabBarTitleColor="#F58220"
+    Shell.TabBarUnselectedColor="#888888">
 
-    <!-- Deixaremos vazio por enquanto. As rotas internas vêm depois do login -->
-    
-    
+    <!-- Barra Inferior Oficial do Sistema (Pós-Login) -->
+    <TabBar>
+        <ShellContent
+            Title="Início"
+            ContentTemplate="{DataTemplate views:HomePage}"
+            Route="HomePage" />
+
+        <ShellContent
+            Title="Financeiro"
+            ContentTemplate="{DataTemplate views:FinanceiroPage}"
+            Route="FinanceiroPage" />
+
+        <ShellContent
+            Title="Usuários"
+            ContentTemplate="{DataTemplate views:CadastroUsuarioPage}"
+            Route="CadastroUsuarioPage" />
+    </TabBar>
+
 </Shell>

@@ -1,10 +1,15 @@
-﻿namespace InovaLog
+﻿using InovaLog.Views;
+
+namespace InovaLog;
+
+public partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    public AppShell()
     {
-        public AppShell()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+
+        // Registo das rotas internas secundárias (Formulários que abrem por cima das abas)
+        Routing.RegisterRoute(nameof(NovaDespesaPag), typeof(NovaDespesaPag));
+        Routing.RegisterRoute(nameof(NovaRotaPage), typeof(NovaRotaPage));
     }
 }
