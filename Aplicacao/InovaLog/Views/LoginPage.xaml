@@ -71,11 +71,12 @@
                     StrokeThickness="1.2">
 
                     <Entry
-                        BackgroundColor="Transparent"
-                        FontFamily="PoppinsRegular"
                         Placeholder="Usuário / E-mail"
+                        Text="{Binding Email}"
+                        FontFamily="PoppinsRegular"
                         PlaceholderColor="#A6A1A1"
-                        TextColor="Black" />
+                        TextColor="Black" 
+                        BackgroundColor="Transparent" />
 
                 </Border>
 
@@ -89,12 +90,13 @@
 
 
                     <Entry
-                        BackgroundColor="Transparent"
+                        Placeholder="Senha"
+                        Text="{Binding Senha}"
+                        PlaceholderColor="#A6A1A1"
+                        TextColor="Black"
                         FontFamily="PoppinsRegular"
                         IsPassword="True"
-                        Placeholder="Senha"
-                        PlaceholderColor="#A6A1A1"
-                        TextColor="Black" />
+                        BackgroundColor="Transparent" />
 
                 </Border>
 
@@ -130,15 +132,15 @@
                     ColumnSpacing="20">
 
                     <Button
-                        Grid.Column="0"
+                        Text="Entrar"
                         BackgroundColor="#E66D17"
-                        Command="{Binding EntrarCommand}"
+                        TextColor="White"
                         CornerRadius="22"
+                        HeightRequest="46"
+                        Grid.Column="0"
                         FontFamily="PoppinsSemiBold"
                         FontSize="16"
-                        HeightRequest="46"
-                        Text="Entrar"
-                        TextColor="White" />
+                        Command="{Binding EntrarCommand}" />
 
                     <Button
                         Grid.Column="1"

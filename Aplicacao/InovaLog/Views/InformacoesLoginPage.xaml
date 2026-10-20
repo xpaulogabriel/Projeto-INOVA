@@ -136,12 +136,12 @@
                 <Button
                     Margin="0,15,0,0"
                     BackgroundColor="#F58220"
-                    Command="{Binding VoltarLoginCommand}"
                     CornerRadius="22"
                     FontAttributes="Bold"
                     HeightRequest="46"
                     Text="Voltar para o Login"
-                    TextColor="White" />
+                    TextColor="White" 
+                    Clicked="VoltarLogin_Clicked"/>
 
             </VerticalStackLayout>
 

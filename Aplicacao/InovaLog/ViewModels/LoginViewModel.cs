@@ -103,6 +103,8 @@ public partial class LoginViewModel : ObservableObject
     {
         var paginaAtual = Application.Current?.Windows[0].Page;
         if (paginaAtual != null)
-            await paginaAtual.DisplayAlert(titulo, mensagem, "OK");
+        {
+            await paginaAtual.DisplayAlertAsync(titulo, mensagem, "OK");
+        }
     }
 }
