@@ -32,14 +32,7 @@ public partial class LoginViewModel : ObservableObject
 
         if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Senha))
         {
-            await ExibirAlerta("Atenção", "Preencha o utilizador/e-mail e a palavra-passe.");
-            return;
-        }
-
-        // Atalho de validação de arquitetura (Fase A) caso o Supabase ainda não esteja configurado
-        if (Email.Trim().ToLower() == "admin@inova.com" && Senha == "123456")
-        {
-            App.EntrarNoSistema();
+            await ExibirAlerta("Atenção", "Preencha o e-mail e a palavra-passe.");
             return;
         }
 
@@ -49,6 +42,7 @@ public partial class LoginViewModel : ObservableObject
 
         if (resultado.Sucesso)
         {
+            // Login validado na nuvem: Salva o JWT e entra no AppShell (sem retorno para o login)
             App.EntrarNoSistema();
         }
         else
