@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     Title="NovaDespesaPag"
-    Background="#f8f8f8"
+    BackgroundColor="#F8F8F8"
     NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Behaviors>
@@ -14,16 +14,18 @@
 
     <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
 
-        <!--  CABEÇALHO  -->
+        <!--  CABEÇALHO AZUL  -->
         <Grid
             Grid.Row="0"
-            Padding="16,10,20,5"
-            HeightRequest="95">
+            Padding="20,10,15,5"
+            ColumnDefinitions="Auto,*,Auto"
+            ColumnSpacing="5"
+            HeightRequest="85">
 
             <Grid.Background>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                    <GradientStop Offset="0.0" Color="#78B5F5" />
-                    <GradientStop Offset="1.0" Color="#1678E5" />
+                <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                    <GradientStop Offset="1.0" Color="#1EA1E8" />
+                    <GradientStop Offset="0.0" Color="#2C63B1" />
                 </LinearGradientBrush>
             </Grid.Background>
 
@@ -260,7 +262,6 @@
                 Grid.Column="2"
                 Padding="14,0"
                 BackgroundColor="#2C63B1"
-               
                 CornerRadius="9"
                 FontFamily="PoppinsSemiBold"
                 FontSize="11"

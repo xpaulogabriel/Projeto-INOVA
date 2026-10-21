@@ -1,115 +1,128 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:Class="InovaLog.Views.EsqueciSenhaPage"
-             NavigationPage.HasNavigationBar="False">
+<ContentPage
+    x:Class="InovaLog.Views.EsqueciSenhaPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Behaviors>
-        <toolkit:StatusBarBehavior 
-            StatusBarColor="#2C63B1"
-            StatusBarStyle="LightContent" />
+        <toolkit:StatusBarBehavior StatusBarColor="#2C63B1" StatusBarStyle="LightContent" />
     </ContentPage.Behaviors>
 
     <ScrollView>
-        <Grid RowDefinitions="450,*">
+        <Grid RowDefinitions="410,*">
 
-            <!-- BLOCO AZUL (TOPO)-->
+            <!--  BLOCO AZUL (TOPO)  -->
             <BoxView Grid.Row="0">
                 <BoxView.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="#1EA1E8" Offset="1.0"/>
-                        <GradientStop Color="#2C63B1" Offset="0.0"/>
+                        <GradientStop Offset="1.0" Color="#1EA1E8" />
+                        <GradientStop Offset="0.0" Color="#2C63B1" />
                     </LinearGradientBrush>
                 </BoxView.Background>
             </BoxView>
 
-            <!-- Logo -->
-            <Image Grid.Row="0"
-                   Source="logo_azul.png"
-                   WidthRequest="400"
-                   HeightRequest="400"
-                   Opacity="0.40"
-                   HorizontalOptions="Start"
-                   VerticalOptions="Center"
-                   Margin="-30,0,0,50"/>
+            <!--  Logo  -->
+            <Image
+                Grid.Row="0"
+                Margin="-30,0,0,50"
+                HeightRequest="400"
+                HorizontalOptions="Start"
+                Opacity="0.40"
+                Source="logo_azul.png"
+                VerticalOptions="Center"
+                WidthRequest="350" />
 
-            <!-- Onda branca -->
-            <Path Grid.Row="0"
-                  Fill="White"
-                  VerticalOptions="End"
-                  HorizontalOptions="Fill"
-                  HeightRequest="90"
-                  Aspect="Fill"
-                  Data="M0,55 C120,15 210,80 320,55 C360,45 390,48 400,50 L400,100 L0,100 Z"/>
+            <!--  Onda branca  -->
+            <Path
+                Grid.Row="0"
+                Aspect="Fill"
+                Data="M0,55 C120,15 210,80 320,55 C360,45 390,48 400,50 L400,100 L0,100 Z"
+                Fill="#F8F8F8"
+                HeightRequest="90"
+                HorizontalOptions="Fill"
+                VerticalOptions="End" />
 
-            <!-- BLOCO BRANCO-->
-            <VerticalStackLayout Grid.Row="1"
-                                 BackgroundColor="White"
-                                 Margin="0,-2,0,0"
-                                 Padding="35,0,35,35"
-                                 Spacing="20">
+            <!--  BLOCO BRANCO  -->
+            <VerticalStackLayout
+                Grid.Row="1"
+                Margin="0,-20,0,0"
+                Padding="35,0,35,35"
+                BackgroundColor="#F8F8F8"
+                Spacing="20">
 
-                <!-- Título -->
-                <Label Text="Esqueci a senha"
-                       FontSize="34"
-                       FontAttributes="Bold"
-                       TextColor="#E66D17"/>
-
-                <!-- Mensagem -->
+                <!--  Título  -->
                 <Label
-                    Text="Caso tenha esquecido sua senha, entre em contato com o setor responsável da empresa para solicitar uma nova senha de acesso."
-                    FontSize="16"
-                    TextColor="#444444"
-                    LineBreakMode="WordWrap"/>
+                    FontFamily="PoppinsMedium"
+                    FontSize="34"
+                    Text="Esqueci a senha"
+                    TextColor="#E66D17" />
 
-                <!-- Caixa de informações -->
-                <Border Stroke="#D9D9D9"
-                        StrokeShape="RoundRectangle 20"
-                        BackgroundColor="#F8F8F8"
-                        Padding="20">
+                <!--  Mensagem  -->
+                <Label
+                    FontFamily="PoppinsRegular"
+                    FontSize="16"
+                    LineBreakMode="WordWrap"
+                    Text="Caso tenha esquecido sua senha, entre em contato com o setor responsável da empresa para solicitar uma nova senha de acesso."
+                    TextColor="#444444" />
+
+                <!--  Caixa de informações  -->
+                <Border
+                    Padding="20"
+                    BackgroundColor="#F8F8F8"
+                    Stroke="#D9D9D9"
+                    StrokeShape="RoundRectangle 20">
 
                     <VerticalStackLayout Spacing="12">
 
                         <HorizontalStackLayout Spacing="10">
-                            <Label Text="📧" FontSize="18"/>
-                            <Label Text="suporte@inova.com.br"
-                                   FontSize="15"
-                                   TextColor="#2C63B1"/>
+                            <Label FontSize="18" Text="📧" />
+                            <Label
+                                FontFamily="PoppinsRegular"
+                                FontSize="15"
+                                Text="suporte@inova.com.br"
+                                TextColor="#2C63B1" />
                         </HorizontalStackLayout>
 
                         <HorizontalStackLayout Spacing="10">
-                            <Label Text="📞" FontSize="18"/>
-                            <Label Text="(11) 4000-0000"
-                                   FontSize="15"
-                                   TextColor="#2C63B1"/>
+                            <Label FontSize="18" Text="📞" />
+                            <Label
+                                FontFamily="PoppinsRegular"
+                                FontSize="15"
+                                Text="(11) 4000-0000"
+                                TextColor="#2C63B1" />
                         </HorizontalStackLayout>
 
                         <HorizontalStackLayout Spacing="10">
-                            <Label Text="🕒" FontSize="18"/>
-                            <Label Text="Segunda a sexta • 08:00 às 18:00"
-                                   FontSize="15"
-                                   TextColor="#2C63B1"/>
+                            <Label FontSize="18" Text="🕒" />
+                            <Label
+                                FontFamily="PoppinsRegular"
+                                FontSize="15"
+                                Text="Segunda a sexta • 08:00 às 18:00"
+                                TextColor="#2C63B1" />
                         </HorizontalStackLayout>
 
                     </VerticalStackLayout>
 
                 </Border>
 
-                <!-- Botão Voltar -->
-                <Button Text="Voltar para o Login"
-                        BackgroundColor="#F58220"
-                        TextColor="White"
-                        CornerRadius="24"
-                        HeightRequest="50"
-                        FontAttributes="Bold"
-                        Margin="0,20,0,0"
-                        Clicked="VoltarLogin_Clicked"/>
+                <!--  Botão Voltar  -->
+                <Button
+                    Margin="0,20,0,0"
+                    BackgroundColor="#F58220"
+                    Clicked="VoltarLogin_Clicked"
+                    CornerRadius="24"
+                    FontAttributes="Bold"
+                    FontFamily="PoppinsSemiBold"
+                    HeightRequest="50"
+                    Text="Voltar para o Login"
+                    TextColor="White" />
 
             </VerticalStackLayout>
 
         </Grid>
-        
+
     </ScrollView>
-    
+
 </ContentPage>

@@ -4,7 +4,6 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    BackgroundColor="White"
     NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Behaviors>
@@ -13,7 +12,7 @@
 
     <ScrollView>
 
-        <Grid RowDefinitions="450,Auto">
+        <Grid RowDefinitions="410,Auto">
 
             <!--  BLOCO AZUL (TOPO)  -->
             <BoxView Grid.Row="0">
@@ -34,7 +33,7 @@
                 Opacity="0.40"
                 Source="logo_azul.png"
                 VerticalOptions="Center"
-                WidthRequest="400" />
+                WidthRequest="350" />
 
             <!--  Onda branca  -->
             <Path
@@ -49,28 +48,29 @@
             <!--  BLOCO BRANCO  -->
             <VerticalStackLayout
                 Grid.Row="1"
-                Margin="0,-2,0,0"
+                Margin="0,-20,0,0"
                 Padding="35,0,35,35"
                 BackgroundColor="#F8F8F8"
-                Spacing="18">
+                Spacing="20">
 
                 <!--  Título  -->
                 <Label
-                    FontAttributes="Bold"
-                    FontSize="34"
+                    FontFamily="PoppinsMedium"
+                    FontSize="32"
                     Text="Informações de Login"
                     TextColor="#E66D17" />
 
                 <!--  Texto principal  -->
                 <Label
-                    FontSize="16"
+                    FontFamily="PoppinsRegular"
+                    FontSize="14"
                     LineBreakMode="WordWrap"
                     Text="O acesso ao aplicativo INOVA é fornecido exclusivamente pela empresa. Cada colaborador recebe um usuário e uma senha individuais para utilizar o sistema."
                     TextColor="#444444" />
 
                 <!--  Caixa de informações  -->
                 <Border
-                    Padding="18"
+                    Padding="20"
                     BackgroundColor="#F8F8F8"
                     Stroke="#D9D9D9"
                     StrokeShape="RoundRectangle 20">
@@ -78,28 +78,32 @@
                     <VerticalStackLayout Spacing="12">
 
                         <Label
-                            FontAttributes="Bold"
+                            FontFamily="PoppinsMedium"
                             FontSize="16"
                             Text="Como acessar o sistema?"
                             TextColor="#2C63B1" />
 
                         <Label
-                            FontSize="15"
+                            FontFamily="PoppinsRegular"
+                            FontSize="14"
                             Text="• Utilize o usuário ou e-mail informado pela empresa."
                             TextColor="#444444" />
 
                         <Label
-                            FontSize="15"
+                            FontFamily="PoppinsRegular"
+                            FontSize="14"
                             Text="• Digite a senha fornecida pelo administrador do sistema."
                             TextColor="#444444" />
 
                         <Label
-                            FontSize="15"
+                            FontFamily="PoppinsRegular"
+                            FontSize="14"
                             Text="• Não compartilhe seu login ou senha com outras pessoas."
                             TextColor="#444444" />
 
                         <Label
-                            FontSize="15"
+                            FontFamily="PoppinsRegular"
+                            FontSize="14"
                             Text="• Caso esqueça sua senha, utilize a opção 'Esqueci a senha'."
                             TextColor="#444444" />
 
@@ -117,12 +121,13 @@
                     <VerticalStackLayout Spacing="8">
 
                         <Label
-                            FontAttributes="Bold"
+                            FontFamily="PoppinsMedium"
                             FontSize="16"
                             Text="Importante"
                             TextColor="#F58220" />
 
                         <Label
+                            FontFamily="PoppinsRegular"
                             FontSize="14"
                             LineBreakMode="WordWrap"
                             Text="Somente o setor responsável ou o administrador do sistema pode criar usuários e redefinir senhas."
@@ -136,12 +141,13 @@
                 <Button
                     Margin="0,15,0,0"
                     BackgroundColor="#F58220"
+                    Clicked="VoltarLogin_Clicked"
                     CornerRadius="22"
                     FontAttributes="Bold"
+                    FontFamily="PoppinsSemiBold"
                     HeightRequest="46"
                     Text="Voltar para o Login"
-                    TextColor="White" 
-                    Clicked="VoltarLogin_Clicked"/>
+                    TextColor="White" />
 
             </VerticalStackLayout>
 

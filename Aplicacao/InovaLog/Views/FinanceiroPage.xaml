@@ -20,7 +20,9 @@
         <Grid
             Grid.Row="0"
             Padding="30,10,15,5"
-            HeightRequest="95">
+            ColumnDefinitions="*,Auto"
+            HeightRequest="85"
+            RowDefinitions="Auto">
 
             <Grid.Background>
                 <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
@@ -30,19 +32,33 @@
             </Grid.Background>
 
             <Label
+                Grid.Row="0"
+                Grid.Column="0"
                 FontFamily="PoppinsSemiBold"
-                FontSize="32"
+                FontSize="31"
                 HorizontalOptions="Start"
                 Text="Financeiro"
                 TextColor="White"
                 VerticalOptions="Center" />
+
+            <Image
+                Grid.Row="0"
+                Grid.Column="1"
+                HeightRequest="70"
+                HorizontalOptions="End"
+                Source="logo_azul.png"
+                VerticalOptions="Center"
+                WidthRequest="70" />
 
         </Grid>
 
         <!--  CONTEÚDO  -->
         <ScrollView Grid.Row="1">
 
-            <VerticalStackLayout Padding="20,20,20,25" Spacing="18">
+            <VerticalStackLayout
+                Padding="20,20,20,25"
+                HorizontalOptions="Center"
+                Spacing="18">
 
                 <!--  SALDO ACUMULADO  -->
                 <Border
@@ -56,6 +72,7 @@
 
                         <Grid Margin="0,10" ColumnDefinitions="*,Auto">
 
+                            <!--  SALDO ACUMULADO  -->
                             <Label
                                 Grid.Column="0"
                                 FontFamily="PoppinsMedium"
@@ -71,6 +88,7 @@
                                 StrokeShape="RoundRectangle 12"
                                 StrokeThickness="0">
 
+                                <!--  MÊS  -->
                                 <Label
                                     FontFamily="PoppinsSemiBold"
                                     FontSize="11"
@@ -81,11 +99,12 @@
 
                         </Grid>
 
+                        <!--  SALDO  -->
                         <Label
                             FontFamily="PoppinsBold"
                             FontSize="30"
                             Text="{Binding SaldoTexto}"
-                            TextColor="#0F172A" />
+                            TextColor="#0f172A" />
 
                     </VerticalStackLayout>
 
@@ -101,6 +120,7 @@
 
                     <VerticalStackLayout Spacing="14">
 
+                        <!--  VISÃO FINANCEIRA  -->
                         <Label
                             Margin="4,0,0,-10"
                             FontFamily="PoppinsSemiBold"
@@ -114,7 +134,8 @@
                             JustifyContent="Start"
                             Wrap="Wrap">
 
-                            <HorizontalStackLayout Margin="0,4,7,4" Spacing="8">
+                            <!--  Receitas  -->
+                            <HorizontalStackLayout Margin="0,4,7,4" Spacing="4">
                                 <Ellipse
                                     Fill="#10B981"
                                     HeightRequest="11"
@@ -122,13 +143,14 @@
                                     WidthRequest="11" />
                                 <Label
                                     FontFamily="PoppinsMedium"
-                                    FontSize="12"
+                                    FontSize="13"
                                     Text="Receitas"
                                     TextColor="#0F172A"
                                     VerticalOptions="Center" />
                             </HorizontalStackLayout>
 
-                            <HorizontalStackLayout Margin="0,4,7,4" Spacing="8">
+                            <!--  Despesas Gerais  -->
+                            <HorizontalStackLayout Margin="0,4,7,4" Spacing="4">
                                 <Ellipse
                                     Fill="#EF4444"
                                     HeightRequest="11"
@@ -136,13 +158,14 @@
                                     WidthRequest="11" />
                                 <Label
                                     FontFamily="PoppinsMedium"
-                                    FontSize="12"
+                                    FontSize="13"
                                     Text="Despesas Gerais"
                                     TextColor="#0F172A"
                                     VerticalOptions="Center" />
                             </HorizontalStackLayout>
 
-                            <HorizontalStackLayout Margin="0,4,0,4" Spacing="8">
+                            <!--  Combustível  -->
+                            <HorizontalStackLayout Margin="0,4,0,4" Spacing="4">
                                 <Ellipse
                                     Fill="#F59E0B"
                                     HeightRequest="11"
@@ -150,7 +173,7 @@
                                     WidthRequest="11" />
                                 <Label
                                     FontFamily="PoppinsMedium"
-                                    FontSize="12"
+                                    FontSize="13"
                                     Text="Combustível"
                                     TextColor="#0F172A"
                                     VerticalOptions="Center" />
@@ -169,7 +192,7 @@
                             <lvc:CartesianChart
                                 x:Name="GraficoFinanceiro"
                                 BackgroundColor="#F8FAFC"
-                                HeightRequest="240"
+                                HeightRequest="250"
                                 HorizontalOptions="Fill"
                                 MinimumHeightRequest="240"
                                 Series="{Binding Series}"
@@ -179,6 +202,7 @@
                         </Border>
 
                     </VerticalStackLayout>
+
                 </Border>
 
                 <!--  RESUMO FINANCEIRO  -->
@@ -191,11 +215,13 @@
 
                     <VerticalStackLayout Spacing="15">
 
+                        <!--  RESUMO FINANCEIRO  -->
                         <Label
                             FontFamily="PoppinsSemiBold"
                             FontSize="18"
                             Text="Resumo Financeiro"
                             TextColor="#0F172A" />
+
 
                         <!--  RECEITAS  -->
                         <Grid ColumnDefinitions="Auto,*,Auto">
@@ -206,6 +232,7 @@
                                 HeightRequest="12"
                                 VerticalOptions="Center"
                                 WidthRequest="12" />
+
                             <Label
                                 Grid.Column="1"
                                 FontFamily="PoppinsMedium"
@@ -213,6 +240,7 @@
                                 Text="Receitas"
                                 TextColor="#0F172A"
                                 VerticalOptions="Center" />
+
                             <Label
                                 Grid.Column="2"
                                 FontAttributes="Bold"
@@ -220,15 +248,19 @@
                                 Text="{Binding ReceitasTexto}"
                                 TextColor="#10B981"
                                 VerticalOptions="Center" />
+
                         </Grid>
 
+                        <!--  Linha  -->
                         <BoxView
                             BackgroundColor="#E2E8F0"
                             HeightRequest="1"
                             HorizontalOptions="Fill" />
 
+
                         <!--  DESPESAS GERAIS  -->
                         <Grid ColumnDefinitions="Auto,*,Auto">
+
                             <Ellipse
                                 Grid.Column="0"
                                 Margin="0,0,10,0"
@@ -236,6 +268,7 @@
                                 HeightRequest="12"
                                 VerticalOptions="Center"
                                 WidthRequest="12" />
+
                             <Label
                                 Grid.Column="1"
                                 FontFamily="PoppinsMedium"
@@ -243,6 +276,7 @@
                                 Text="Despesas Gerais"
                                 TextColor="#0F172A"
                                 VerticalOptions="Center" />
+
                             <Label
                                 Grid.Column="2"
                                 FontAttributes="Bold"
@@ -250,15 +284,19 @@
                                 Text="{Binding DespesasTexto}"
                                 TextColor="#EF4444"
                                 VerticalOptions="Center" />
+
                         </Grid>
 
+                        <!--  Linha  -->
                         <BoxView
                             BackgroundColor="#E2E8F0"
                             HeightRequest="1"
                             HorizontalOptions="Fill" />
 
+
                         <!--  COMBUSTÍVEL  -->
                         <Grid ColumnDefinitions="Auto,*,Auto">
+
                             <Ellipse
                                 Grid.Column="0"
                                 Margin="0,0,10,0"
@@ -266,6 +304,7 @@
                                 HeightRequest="12"
                                 VerticalOptions="Center"
                                 WidthRequest="12" />
+
                             <Label
                                 Grid.Column="1"
                                 FontFamily="PoppinsMedium"
@@ -273,6 +312,7 @@
                                 Text="Combustível"
                                 TextColor="#0F172A"
                                 VerticalOptions="Center" />
+
                             <Label
                                 Grid.Column="2"
                                 FontAttributes="Bold"
@@ -280,6 +320,7 @@
                                 Text="{Binding CombustivelTexto}"
                                 TextColor="#F59E0B"
                                 VerticalOptions="Center" />
+
                         </Grid>
 
                     </VerticalStackLayout>
@@ -297,6 +338,7 @@
                         TextColor="#0F172A"
                         VerticalOptions="Center" />
 
+                    <!--  VER TODAS  -->
                     <Label
                         Grid.Column="1"
                         FontFamily="PoppinsSemiBold"
@@ -315,7 +357,7 @@
                             <Border
                                 Padding="15"
                                 BackgroundColor="White"
-                                Stroke="#E1E6EC"
+                                Stroke="#CCCDC6"
                                 StrokeShape="RoundRectangle 15"
                                 StrokeThickness="1">
 
@@ -394,7 +436,7 @@
 
                 </VerticalStackLayout>
 
-                <!--  SOMENTE VISUAL (a ação será ligada quando a tela de despesa existir)  -->
+                <!--  NOVA DESPESA (SOMENTE VISUAL: a ação será ligada quando a tela de despesa existir)  -->
                 <Button
                     Grid.Column="1"
                     Padding="16,0"
@@ -403,7 +445,7 @@
                     FontAttributes="Bold"
                     FontSize="13"
                     HeightRequest="42"
-                    Text="+ Nova Despesa"
+                    Text="+ NOVA DESPESA"
                     TextColor="White"
                     VerticalOptions="Center" />
 
