@@ -30,7 +30,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" Color="#2C63B1" />
+		
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#2C63B1" BaseSize="128,128" />
 
@@ -63,6 +65,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\NovaDespesaPage.xaml.cs">
+	    <DependentUpon>NovaDespesaPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 		<MauiXaml Update="Views\CadastroUsuarioPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
@@ -75,7 +83,7 @@
 		<MauiXaml Update="Views\LoginPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Views\NovaDespesaPag.xaml">
+		<MauiXaml Update="Views\NovaDespesaPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\NovaRotaPage.xaml">

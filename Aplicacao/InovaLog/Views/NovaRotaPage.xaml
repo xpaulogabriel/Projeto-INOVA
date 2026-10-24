@@ -1,198 +1,200 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:Class="InovaLog.Views.NovaRotaPage"
-             SafeAreaEdges="None"
-             NavigationPage.HasNavigationBar="False"
-             Title="NovaRotaPage"
-             BackgroundColor="#f8f8f8">
+<ContentPage
+    x:Class="InovaLog.Views.NovaRotaPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Title="NovaRotaPage"
+    BackgroundColor="#f8f8f8"
+    NavigationPage.HasNavigationBar="False"
+    SafeAreaEdges="None">
 
     <ContentPage.Behaviors>
-        <toolkit:StatusBarBehavior 
-            StatusBarColor="#2C63B1"
-            StatusBarStyle="LightContent" />
+        <toolkit:StatusBarBehavior StatusBarColor="#2C63B1" StatusBarStyle="LightContent" />
     </ContentPage.Behaviors>
 
-    <Grid RowDefinitions="Auto,*,Auto"
-      RowSpacing="0">
+    <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
 
-        <!-- CABEÇALHO AZUL -->
+        <!--  CABEÇALHO AZUL  -->
 
-        <Grid Grid.Row="0"
-          HeightRequest="120"
-          Padding="30,10,15,5">
+        <Grid
+            Grid.Row="0"
+            Padding="30,10,15,5"
+            HeightRequest="85">
 
             <Grid.Background>
                 <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
-                    <GradientStop Color="#1EA1E8" Offset="1.0" />
-                    <GradientStop Color="#2C63B1" Offset="0.0" />
+                    <GradientStop Offset="1.0" Color="#1EA1E8" />
+                    <GradientStop Offset="0.0" Color="#2C63B1" />
                 </LinearGradientBrush>
             </Grid.Background>
 
+            <Label
+                FontFamily="PoppinsSemiBold"
+                FontSize="20"
+                HorizontalOptions="Start"
+                Text="Nova Rota "
+                TextColor="White"
+                VerticalOptions="Center" />
 
-
-            <Label Text="Nova Rota "
-               TextColor="White"
-               FontSize="20"
-               VerticalOptions="Center"
-               HorizontalOptions="Start"/>
-
-            <Image Source="logo_azul.png"
-               WidthRequest="80"
-               HeightRequest="80"
-               Opacity="0.25"
-               HorizontalOptions="End"
-               VerticalOptions="Center"/>
+            <Image
+                HeightRequest="70"
+                HorizontalOptions="End"
+                Opacity="0.25"
+                Source="logo_azul.png"
+                VerticalOptions="Center"
+                WidthRequest="70" />
 
         </Grid>
 
-        <!-- Onda branca -->
-        <Path Grid.Row="0"
-          Margin="0,0,0,-5"
-          Fill="#f8f8f8"
-          VerticalOptions="End"
-          HorizontalOptions="Fill"
-          HeightRequest="30"
-          Aspect="Fill"
-          Data="M0,85 C90,15 170,5 250,70 C300,105 350,65 400,70 L400,140 L0,140 Z"/>
 
-        <!-- FORMULÁRIO -->
+        <!--  FORMULÁRIO  -->
         <ScrollView Grid.Row="1">
 
-            <VerticalStackLayout
-            
-            Padding="30,20,30,10"
-            Spacing="15"
-            >
+            <VerticalStackLayout Padding="30,20,30,10" Spacing="15">
 
-                <!-- Origem -->
+                <!--  Origem  -->
 
-                <Label Text="Origem"
-                   FontSize="15"
-                   TextColor="Black"
-                   FontAttributes="Bold"/>
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="15"
+                    Text="Origem"
+                    TextColor="Black" />
 
-                <Border Stroke="#D0D0D0"
-                    StrokeThickness="1"
+                <Border
+                    Padding="12,0"
                     BackgroundColor="White"
+                    Stroke="#D0D0D0"
                     StrokeShape="RoundRectangle 20"
-                    Padding="12,0">
+                    StrokeThickness="1">
 
-                    <Entry Placeholder="Varginha - MG"
-                       PlaceholderColor="#A0A0A0"
-                       TextColor="Black"
-                       FontSize="12"
-                       HeightRequest="38" />
+                    <Entry
+                        FontSize="12"
+                        HeightRequest="38"
+                        Placeholder="Varginha - MG"
+                        PlaceholderColor="#A0A0A0"
+                        TextColor="Black" />
 
                 </Border>
 
 
-                <!-- Destino -->
+                <!--  Destino  -->
 
-                <Label Text="Destino"
-                   FontSize="15"
-                   TextColor="Black"
-                   FontAttributes="Bold"/>
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="15"
+                    Text="Destino"
+                    TextColor="Black" />
 
-                <Border Stroke="#D0D0D0"
-                    StrokeThickness="1"
+                <Border
+                    Padding="8,0"
                     BackgroundColor="White"
+                    Stroke="#D0D0D0"
                     StrokeShape="RoundRectangle 20"
-                    Padding="8,0">
+                    StrokeThickness="1">
 
-                    <Entry Placeholder="Rio de Janeiro - RJ"
-                       PlaceholderColor="#A0A0A0"
-                       TextColor="Black"
-                       FontSize="12"
-                       HeightRequest="38" />
+                    <Entry
+                        FontSize="12"
+                        HeightRequest="38"
+                        Placeholder="Rio de Janeiro - RJ"
+                        PlaceholderColor="#A0A0A0"
+                        TextColor="Black" />
                 </Border>
 
 
-                <!-- Distância Estimada -->
+                <!--  Distância Estimada  -->
 
-                <Label Text="Distância Estimada"
-                   FontSize="15"
-                   TextColor="Black"
-                   FontAttributes="Bold"/>
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="15"
+                    Text="Distância Estimada"
+                    TextColor="Black" />
 
-                <Border Stroke="#D0D0D0"
-                    StrokeThickness="1"
+                <Border
+                    Padding="12,0"
                     BackgroundColor="White"
+                    Stroke="#D0D0D0"
                     StrokeShape="RoundRectangle 20"
-                    Padding="12,0">
+                    StrokeThickness="1">
 
-                    <Entry Placeholder="150"
-                       PlaceholderColor="#A0A0A0"
-                       TextColor="Black"
-                       Keyboard="Email"
-                       FontSize="12"
-                       HeightRequest="38" />
+                    <Entry
+                        FontSize="12"
+                        HeightRequest="38"
+                        Keyboard="Email"
+                        Placeholder="150"
+                        PlaceholderColor="#A0A0A0"
+                        TextColor="Black" />
 
                 </Border>
 
-                <Label Text="Por gentileza, digite a distância em quilômetros (km)."
-                   FontSize="10"
-                   FontAttributes="Italic"
-                   TextColor="#555555"
-                   Margin="5,-8,0,0" />
+                <Label
+                    Margin="5,-8,0,0"
+                    FontAttributes="Italic"
+                    FontSize="10"
+                    Text="Por gentileza, digite a distância em quilômetros (km)."
+                    TextColor="#555555" />
 
 
             </VerticalStackLayout>
 
         </ScrollView>
 
-        <!-- RODAPÉ -->
-        <Grid Grid.Row="2"
-          HeightRequest="60"
-          BackgroundColor="White"
-          Padding="10,5"
-          ColumnDefinitions="*,Auto,Auto"
-          ColumnSpacing="8"
-          Margin="5,0">
+        <!--  RODAPÉ  -->
+        <Grid
+            Grid.Row="2"
+            Margin="5,0"
+            Padding="10,5"
+            BackgroundColor="White"
+            ColumnDefinitions="*,Auto,Auto"
+            ColumnSpacing="8"
+            HeightRequest="60">
 
-            <HorizontalStackLayout Grid.Column="0"
-                               Spacing="5"
-                               VerticalOptions="Center">
+            <HorizontalStackLayout
+                Grid.Column="0"
+                Spacing="5"
+                VerticalOptions="Center">
 
                 <Switch
-                IsToggled="True"
-                Scale="0.80"
-                VerticalOptions="Center"
-                />
+                    IsToggled="True"
+                    Scale="0.80"
+                    VerticalOptions="Center" />
 
-                <Label Text="Status de Acesso: Ativo"
-                   FontSize="12"
-                   TextColor="Black"
-                   VerticalOptions="Center"
-                   FontAttributes="Bold"/>
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="12"
+                    Text="Status de Acesso: Ativo"
+                    TextColor="Black"
+                    VerticalOptions="Center" />
 
             </HorizontalStackLayout>
 
 
-            <Button Grid.Column="1"
-                Text="Cancelar"
-                FontSize="12"
-                HeightRequest="25"
+            <Button
+                Grid.Column="1"
                 Padding="10,0"
                 BackgroundColor="White"
-                TextColor="#333333"
                 BorderColor="#BDBDBD"
                 BorderWidth="1"
-                CornerRadius="4" />
-
-
-            <Button Grid.Column="2"
-                Text="Cadastrar"
+                CornerRadius="4"
                 FontSize="12"
                 HeightRequest="25"
+                Text="Cancelar"
+                TextColor="#333333" />
+
+
+            <Button
+                Grid.Column="2"
                 Padding="10,0"
                 BackgroundColor="#2C63B1"
-                TextColor="White"
-                CornerRadius="4" />
+                CornerRadius="4"
+                FontSize="12"
+                HeightRequest="25"
+                Text="Cadastrar"
+                TextColor="White" />
 
         </Grid>
 
     </Grid>
+
 
 </ContentPage>
