@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="InovaLog.Views.NovoVeiculoPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Title="Novo Veículo"
+    BackgroundColor="#F8F8F8"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#2C63B1" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
+
+        <!--  CABEÇALHO  -->
+        <Grid
+            Grid.Row="0"
+            Padding="20,10,15,5"
+            ColumnDefinitions="Auto,*,Auto"
+            ColumnSpacing="5"
+            HeightRequest="85">
+
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                    <GradientStop Offset="0.0" Color="#2C63B1" />
+                    <GradientStop Offset="1.0" Color="#1EA1E8" />
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <ImageButton
+                Grid.Column="0"
+                Padding="8"
+                Aspect="AspectFit"
+                BackgroundColor="Transparent"
+                Clicked="OnCancelarClicked"
+                Source="btn_voltar.svg"
+                VerticalOptions="Center"
+                WidthRequest="55" />
+
+            <Label
+                Grid.Column="1"
+                FontFamily="PoppinsSemiBold"
+                FontSize="22"
+                HorizontalOptions="Start"
+                Text="Novo Veículo"
+                TextColor="White"
+                VerticalOptions="Center" />
+
+        </Grid>
+
+        <!--  FORMULÁRIO  -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20,20,20,25" Spacing="0">
+
+                <Label
+                    FontFamily="PoppinsSemiBold"
+                    FontSize="19"
+                    Text="Novo Veículo da Frota"
+                    TextColor="#0F172A" />
+
+                <Label
+                    Margin="0,5,0,25"
+                    FontFamily="PoppinsRegular"
+                    FontSize="13"
+                    Text="Preencha os dados para cadastrar o veículo."
+                    TextColor="#64748B" />
+
+                <!--  PLACA  -->
+                <HorizontalStackLayout Spacing="8">
+                    <Ellipse
+                        Fill="#E66D17"
+                        HeightRequest="11"
+                        VerticalOptions="Center"
+                        WidthRequest="11" />
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="15"
+                        Text="Placa (Mercosul / Antiga)"
+                        TextColor="#0F172A"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <Border
+                    Margin="0,5,0,25"
+                    Padding="12,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <Entry
+                        x:Name="TxtPlaca"
+                        BackgroundColor="Transparent"
+                        ClearButtonVisibility="WhileEditing"
+                        FontFamily="PoppinsRegular"
+                        FontSize="14"
+                        Placeholder="Ex.: ABC1D23"
+                        PlaceholderColor="#94A3B8"
+                        TextColor="#334155" />
+                </Border>
+
+                <!--  MARCA  -->
+                <HorizontalStackLayout Spacing="8">
+                    <Ellipse
+                        Fill="#E66D17"
+                        HeightRequest="11"
+                        VerticalOptions="Center"
+                        WidthRequest="11" />
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="15"
+                        Text="Marca"
+                        TextColor="#0F172A"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <Border
+                    Margin="0,5,0,25"
+                    Padding="12,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <Entry
+                        x:Name="TxtMarca"
+                        BackgroundColor="Transparent"
+                        ClearButtonVisibility="WhileEditing"
+                        FontFamily="PoppinsRegular"
+                        FontSize="14"
+                        Placeholder="Ex.: Volvo"
+                        PlaceholderColor="#94A3B8"
+                        TextColor="#334155" />
+                </Border>
+
+                <!--  MODELO  -->
+                <HorizontalStackLayout Spacing="8">
+                    <Ellipse
+                        Fill="#E66D17"
+                        HeightRequest="11"
+                        VerticalOptions="Center"
+                        WidthRequest="11" />
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="15"
+                        Text="Modelo"
+                        TextColor="#0F172A"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <Border
+                    Margin="0,5,0,25"
+                    Padding="12,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <Entry
+                        x:Name="TxtModelo"
+                        BackgroundColor="Transparent"
+                        ClearButtonVisibility="WhileEditing"
+                        FontFamily="PoppinsRegular"
+                        FontSize="14"
+                        Placeholder="Ex.: FH 540 6x4"
+                        PlaceholderColor="#94A3B8"
+                        TextColor="#334155" />
+                </Border>
+
+                <!--  CAPACIDADE  -->
+                <HorizontalStackLayout Spacing="8">
+                    <Ellipse
+                        Fill="#E66D17"
+                        HeightRequest="11"
+                        VerticalOptions="Center"
+                        WidthRequest="11" />
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="15"
+                        Text="Capacidade (Ton)"
+                        TextColor="#0F172A"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <Border
+                    Margin="0,5,0,25"
+                    Padding="12,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <Entry
+                        x:Name="TxtCapacidade"
+                        BackgroundColor="Transparent"
+                        FontFamily="PoppinsRegular"
+                        FontSize="14"
+                        Keyboard="Numeric"
+                        Placeholder="Ex.: 32"
+                        PlaceholderColor="#94A3B8"
+                        TextColor="#334155" />
+                </Border>
+
+                <!--  HODÔMETRO  -->
+                <HorizontalStackLayout Spacing="8">
+                    <Ellipse
+                        Fill="#E66D17"
+                        HeightRequest="11"
+                        VerticalOptions="Center"
+                        WidthRequest="11" />
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="15"
+                        Text="Hodômetro Atual (KM)"
+                        TextColor="#0F172A"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <Border
+                    Margin="0,5,0,10"
+                    Padding="12,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <Entry
+                        x:Name="TxtHodometro"
+                        BackgroundColor="Transparent"
+                        FontFamily="PoppinsRegular"
+                        FontSize="14"
+                        Keyboard="Numeric"
+                        Placeholder="Ex.: 158400"
+                        PlaceholderColor="#94A3B8"
+                        TextColor="#334155" />
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  RODAPÉ FIXO  -->
+        <Grid
+            Grid.Row="2"
+            Padding="16,10"
+            BackgroundColor="White"
+            ColumnDefinitions="*,Auto,Auto"
+            ColumnSpacing="6">
+
+            <Label
+                Grid.Column="0"
+                FontFamily="PoppinsRegular"
+                FontSize="11"
+                LineBreakMode="WordWrap"
+                Text="Prévia visual — dados não serão salvos"
+                TextColor="#64748B"
+                VerticalOptions="Center" />
+
+            <Button
+                Grid.Column="1"
+                Padding="12,0"
+                BackgroundColor="White"
+                BorderColor="#D1D5DB"
+                BorderWidth="1"
+                Clicked="OnCancelarClicked"
+                CornerRadius="9"
+                FontSize="12"
+                HeightRequest="42"
+                Text="Cancelar"
+                TextColor="#334155" />
+
+            <Button
+                Grid.Column="2"
+                Padding="12,0"
+                BackgroundColor="#2C63B1"
+                Clicked="OnSalvarClicked"
+                CornerRadius="9"
+                FontFamily="PoppinsSemiBold"
+                FontSize="12"
+                HeightRequest="42"
+                Text="Salvar"
+                TextColor="White" />
+        </Grid>
+
+    </Grid>
+</ContentPage>

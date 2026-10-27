@@ -63,6 +63,7 @@ public static class MauiProgram
         builder.Services.AddTransient<EsqueciSenhaViewModel>();
         builder.Services.AddTransient<InformacoesLoginViewModel>();
         builder.Services.AddTransient<FinanceiroViewModel>();
+        builder.Services.AddTransient<GestorFrotasViewModel>();
 
         // 3. Registo de Views (Pré-Login)
         builder.Services.AddTransient<LoginPage>();
@@ -75,6 +76,7 @@ public static class MauiProgram
         builder.Services.AddTransient<CadastroUsuarioPage>();
         builder.Services.AddTransient<NovaDespesaPag>();
         builder.Services.AddTransient<NovaRotaPage>();
+        builder.Services.AddTransient<GestorFrotasPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();

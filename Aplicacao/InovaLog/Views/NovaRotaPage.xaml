@@ -4,197 +4,203 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    Title="NovaRotaPage"
-    BackgroundColor="#f8f8f8"
-    NavigationPage.HasNavigationBar="False"
-    SafeAreaEdges="None">
+    Title="Nova Rota"
+    BackgroundColor="#F8F8F8"
+    NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Behaviors>
-        <toolkit:StatusBarBehavior StatusBarColor="#2C63B1" StatusBarStyle="LightContent" />
+        <toolkit:StatusBarBehavior
+            StatusBarColor="#2C63B1"
+            StatusBarStyle="LightContent" />
     </ContentPage.Behaviors>
 
     <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
 
-        <!--  CABEÇALHO AZUL  -->
-
+        <!-- CABEÇALHO -->
         <Grid
             Grid.Row="0"
-            Padding="30,10,15,5"
+            Padding="20,10,15,5"
+            ColumnDefinitions="Auto,*"
+            ColumnSpacing="5"
             HeightRequest="85">
 
             <Grid.Background>
                 <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
-                    <GradientStop Offset="1.0" Color="#1EA1E8" />
                     <GradientStop Offset="0.0" Color="#2C63B1" />
+                    <GradientStop Offset="1.0" Color="#1EA1E8" />
                 </LinearGradientBrush>
             </Grid.Background>
 
+            <ImageButton
+                Grid.Column="0"
+                Padding="8"
+                Aspect="AspectFit"
+                BackgroundColor="Transparent"
+                Clicked="OnCancelarClicked"
+                Source="btn_voltar.svg"
+                VerticalOptions="Center"
+                WidthRequest="55" />
+
             <Label
+                Grid.Column="1"
                 FontFamily="PoppinsSemiBold"
-                FontSize="20"
+                FontSize="22"
                 HorizontalOptions="Start"
-                Text="Nova Rota "
+                Text="Nova Rota"
                 TextColor="White"
                 VerticalOptions="Center" />
 
-            <Image
-                HeightRequest="70"
-                HorizontalOptions="End"
-                Opacity="0.25"
-                Source="logo_azul.png"
-                VerticalOptions="Center"
-                WidthRequest="70" />
-
         </Grid>
 
-
-        <!--  FORMULÁRIO  -->
+        <!-- FORMULÁRIO -->
         <ScrollView Grid.Row="1">
-
-            <VerticalStackLayout Padding="30,20,30,10" Spacing="15">
-
-                <!--  Origem  -->
+            <VerticalStackLayout Padding="20,20,20,25" Spacing="0">
 
                 <Label
-                    FontAttributes="Bold"
-                    FontSize="15"
-                    Text="Origem"
-                    TextColor="Black" />
+                    FontFamily="PoppinsSemiBold"
+                    FontSize="19"
+                    Text="Dados da Rota"
+                    TextColor="#0F172A" />
+
+                <Label
+                    Margin="0,5,0,25"
+                    FontFamily="PoppinsRegular"
+                    FontSize="13"
+                    Text="Preencha a origem e a distância estimada do trecho."
+                    TextColor="#64748B" />
+
+                <!-- ORIGEM -->
+                <HorizontalStackLayout Spacing="8">
+                    <Ellipse
+                        Fill="#E66D17"
+                        HeightRequest="11"
+                        VerticalOptions="Center"
+                        WidthRequest="11" />
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="15"
+                        Text="Origem"
+                        TextColor="#0F172A"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
 
                 <Border
+                    Margin="0,5,0,25"
                     Padding="12,0"
                     BackgroundColor="White"
-                    Stroke="#D0D0D0"
-                    StrokeShape="RoundRectangle 20"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
                     StrokeThickness="1">
 
                     <Entry
-                        FontSize="12"
-                        HeightRequest="38"
-                        Placeholder="Varginha - MG"
-                        PlaceholderColor="#A0A0A0"
-                        TextColor="Black" />
-
+                        x:Name="TxtOrigem"
+                        BackgroundColor="Transparent"
+                        ClearButtonVisibility="WhileEditing"
+                        FontFamily="PoppinsRegular"
+                        FontSize="14"
+                        Placeholder="Informe a origem"
+                        PlaceholderColor="#94A3B8"
+                        TextColor="#334155" />
                 </Border>
 
+                <!-- DISTÂNCIA ESTIMADA -->
+                <HorizontalStackLayout Spacing="8">
+                    <Ellipse
+                        Fill="#E66D17"
+                        HeightRequest="11"
+                        VerticalOptions="Center"
+                        WidthRequest="11" />
 
-                <!--  Destino  -->
-
-                <Label
-                    FontAttributes="Bold"
-                    FontSize="15"
-                    Text="Destino"
-                    TextColor="Black" />
-
-                <Border
-                    Padding="8,0"
-                    BackgroundColor="White"
-                    Stroke="#D0D0D0"
-                    StrokeShape="RoundRectangle 20"
-                    StrokeThickness="1">
-
-                    <Entry
-                        FontSize="12"
-                        HeightRequest="38"
-                        Placeholder="Rio de Janeiro - RJ"
-                        PlaceholderColor="#A0A0A0"
-                        TextColor="Black" />
-                </Border>
-
-
-                <!--  Distância Estimada  -->
-
-                <Label
-                    FontAttributes="Bold"
-                    FontSize="15"
-                    Text="Distância Estimada"
-                    TextColor="Black" />
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="15"
+                        Text="Distância Estimada"
+                        TextColor="#0F172A"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
 
                 <Border
+                    Margin="0,5,0,10"
                     Padding="12,0"
                     BackgroundColor="White"
-                    Stroke="#D0D0D0"
-                    StrokeShape="RoundRectangle 20"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
                     StrokeThickness="1">
 
-                    <Entry
-                        FontSize="12"
-                        HeightRequest="38"
-                        Keyboard="Email"
-                        Placeholder="150"
-                        PlaceholderColor="#A0A0A0"
-                        TextColor="Black" />
+                    <Grid
+                        ColumnDefinitions="*,Auto"
+                        ColumnSpacing="8">
 
+                        <Entry
+                            x:Name="TxtDistancia"
+                            Grid.Column="0"
+                            BackgroundColor="Transparent"
+                            FontFamily="PoppinsRegular"
+                            FontSize="14"
+                            Keyboard="Numeric"
+                            Placeholder="Ex.: 250"
+                            PlaceholderColor="#94A3B8"
+                            TextColor="#334155" />
+
+                        <Label
+                            Grid.Column="1"
+                            Margin="0,0,5,0"
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="14"
+                            Text="km"
+                            TextColor="#64748B"
+                            VerticalOptions="Center" />
+
+                    </Grid>
                 </Border>
-
-                <Label
-                    Margin="5,-8,0,0"
-                    FontAttributes="Italic"
-                    FontSize="10"
-                    Text="Por gentileza, digite a distância em quilômetros (km)."
-                    TextColor="#555555" />
-
 
             </VerticalStackLayout>
-
         </ScrollView>
 
-        <!--  RODAPÉ  -->
+        <!-- RODAPÉ FIXO -->
         <Grid
             Grid.Row="2"
-            Margin="5,0"
-            Padding="10,5"
+            Padding="16,10"
             BackgroundColor="White"
             ColumnDefinitions="*,Auto,Auto"
-            ColumnSpacing="8"
-            HeightRequest="60">
+            ColumnSpacing="6">
 
-            <HorizontalStackLayout
+            <Label
                 Grid.Column="0"
-                Spacing="5"
-                VerticalOptions="Center">
-
-                <Switch
-                    IsToggled="True"
-                    Scale="0.80"
-                    VerticalOptions="Center" />
-
-                <Label
-                    FontAttributes="Bold"
-                    FontSize="12"
-                    Text="Status de Acesso: Ativo"
-                    TextColor="Black"
-                    VerticalOptions="Center" />
-
-            </HorizontalStackLayout>
-
+                FontFamily="PoppinsRegular"
+                FontSize="11"
+                LineBreakMode="WordWrap"
+                Text="Prévia visual — dados não serão salvos"
+                TextColor="#64748B"
+                VerticalOptions="Center" />
 
             <Button
                 Grid.Column="1"
-                Padding="10,0"
+                Padding="12,0"
                 BackgroundColor="White"
-                BorderColor="#BDBDBD"
+                BorderColor="#D1D5DB"
                 BorderWidth="1"
-                CornerRadius="4"
+                Clicked="OnCancelarClicked"
+                CornerRadius="9"
                 FontSize="12"
-                HeightRequest="25"
+                HeightRequest="42"
                 Text="Cancelar"
-                TextColor="#333333" />
-
+                TextColor="#334155" />
 
             <Button
                 Grid.Column="2"
-                Padding="10,0"
+                Padding="12,0"
                 BackgroundColor="#2C63B1"
-                CornerRadius="4"
+                Clicked="OnSalvarClicked"
+                CornerRadius="9"
+                FontFamily="PoppinsSemiBold"
                 FontSize="12"
-                HeightRequest="25"
-                Text="Cadastrar"
+                HeightRequest="42"
+                Text="Salvar"
                 TextColor="White" />
 
         </Grid>
 
     </Grid>
-
-
 </ContentPage>

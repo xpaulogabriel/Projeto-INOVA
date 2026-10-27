@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="InovaLog.Views.ManutencaoPlanoKmPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Title="Manutenção &amp; Plano por KM"
+    BackgroundColor="#F8F8F8"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior
+            StatusBarColor="#2C63B1"
+            StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
+
+        <!-- CABEÇALHO -->
+        <Grid
+            Grid.Row="0"
+            Padding="20,10,15,5"
+            ColumnDefinitions="Auto,*"
+            ColumnSpacing="5"
+            HeightRequest="85">
+
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                    <GradientStop Offset="0.0" Color="#2C63B1" />
+                    <GradientStop Offset="1.0" Color="#1EA1E8" />
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <ImageButton
+                Grid.Column="0"
+                Padding="8"
+                Aspect="AspectFit"
+                BackgroundColor="Transparent"
+                Clicked="OnCancelarClicked"
+                Source="btn_voltar.svg"
+                VerticalOptions="Center"
+                WidthRequest="55" />
+
+            <Label
+                Grid.Column="1"
+                FontFamily="PoppinsSemiBold"
+                FontSize="18"
+                HorizontalOptions="Start"
+                Text="Manutenção &amp; Plano por KM"
+                TextColor="White"
+                VerticalOptions="Center" />
+
+        </Grid>
+
+        <!-- FORMULÁRIO -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20,20,20,25" Spacing="0">
+
+                <Label
+                    FontFamily="PoppinsSemiBold"
+                    FontSize="19"
+                    Text="Manutenção do Veículo"
+                    TextColor="#0F172A" />
+
+                <Label
+                    Margin="0,5,0,25"
+                    FontFamily="PoppinsRegular"
+                    FontSize="13"
+                    Text="Preencha os dados do serviço e o plano de manutenção."
+                    TextColor="#64748B" />
+
+                <!-- VEÍCULO -->
+                <HorizontalStackLayout Spacing="8">
+                    <Ellipse
+                        Fill="#E66D17"
+                        HeightRequest="11"
+                        VerticalOptions="Center"
+                        WidthRequest="11" />
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="15"
+                        Text="Veículo"
+                        TextColor="#0F172A"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <Border
+                    Margin="0,5,0,25"
+                    Padding="12,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <Entry
+                        x:Name="TxtVeiculo"
+                        BackgroundColor="Transparent"
+                        ClearButtonVisibility="WhileEditing"
+                        FontFamily="PoppinsRegular"
+                        FontSize="14"
+                        Placeholder="Informe o veículo ou a placa"
+                        PlaceholderColor="#94A3B8"
+                        TextColor="#334155" />
+                </Border>
+
+                <!-- TIPO DE REGISTO -->
+                <HorizontalStackLayout Spacing="8">
+                    <Ellipse
+                        Fill="#E66D17"
+                        HeightRequest="11"
+                        VerticalOptions="Center"
+                        WidthRequest="11" />
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="15"
+                        Text="Tipo de Registo"
+                        TextColor="#0F172A"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <Border
+                    Margin="0,5,0,25"
+                    Padding="12,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <Entry
+                        x:Name="TxtTipoRegisto"
+                        BackgroundColor="Transparent"
+                        ClearButtonVisibility="WhileEditing"
+                        FontFamily="PoppinsRegular"
+                        FontSize="14"
+                        Placeholder="Ex.: Preventiva ou Corretiva"
+                        PlaceholderColor="#94A3B8"
+                        TextColor="#334155" />
+                </Border>
+
+                <!-- DESCRIÇÃO DO SERVIÇO -->
+                <HorizontalStackLayout Spacing="8">
+                    <Ellipse
+                        Fill="#E66D17"
+                        HeightRequest="11"
+                        VerticalOptions="Center"
+                        WidthRequest="11" />
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="15"
+                        Text="Descrição do Serviço"
+                        TextColor="#0F172A"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <Border
+                    Margin="0,5,0,25"
+                    Padding="12,8"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 18"
+                    StrokeThickness="1">
+
+                    <Editor
+                        x:Name="TxtDescricao"
+                        AutoSize="TextChanges"
+                        BackgroundColor="Transparent"
+                        FontFamily="PoppinsRegular"
+                        FontSize="14"
+                        MinimumHeightRequest="80"
+                        Placeholder="Ex.: Troca de Óleo, Filtros, Revisão 60 mil KM"
+                        PlaceholderColor="#94A3B8"
+                        TextColor="#334155" />
+                </Border>
+
+                <!-- QUILOMETRAGEM ALVO/ATUAL -->
+                <HorizontalStackLayout Spacing="8">
+                    <Ellipse
+                        Fill="#E66D17"
+                        HeightRequest="11"
+                        VerticalOptions="Center"
+                        WidthRequest="11" />
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="15"
+                        Text="Quilometragem Alvo/Atual"
+                        TextColor="#0F172A"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <Border
+                    Margin="0,5,0,25"
+                    Padding="12,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                        <Entry
+                            x:Name="TxtQuilometragem"
+                            Grid.Column="0"
+                            BackgroundColor="Transparent"
+                            FontFamily="PoppinsRegular"
+                            FontSize="14"
+                            Keyboard="Numeric"
+                            Placeholder="Ex.: 60000"
+                            PlaceholderColor="#94A3B8"
+                            TextColor="#334155" />
+
+                        <Label
+                            Grid.Column="1"
+                            Margin="0,0,5,0"
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="14"
+                            Text="km"
+                            TextColor="#64748B"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
+                <!-- CUSTO DO SERVIÇO -->
+                <HorizontalStackLayout Spacing="8">
+                    <Ellipse
+                        Fill="#E66D17"
+                        HeightRequest="11"
+                        VerticalOptions="Center"
+                        WidthRequest="11" />
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="15"
+                        Text="Custo do Serviço (R$)"
+                        TextColor="#0F172A"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <Border
+                    Margin="0,5,0,25"
+                    Padding="12,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                        <Label
+                            Grid.Column="0"
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="14"
+                            Text="R$"
+                            TextColor="#64748B"
+                            VerticalOptions="Center" />
+
+                        <Entry
+                            x:Name="TxtCusto"
+                            Grid.Column="1"
+                            BackgroundColor="Transparent"
+                            FontFamily="PoppinsRegular"
+                            FontSize="14"
+                            Keyboard="Numeric"
+                            Placeholder="Ex.: 850,00"
+                            PlaceholderColor="#94A3B8"
+                            TextColor="#334155" />
+                    </Grid>
+                </Border>
+
+                <!-- OFICINA / FORNECEDOR -->
+                <HorizontalStackLayout Spacing="8">
+                    <Ellipse
+                        Fill="#E66D17"
+                        HeightRequest="11"
+                        VerticalOptions="Center"
+                        WidthRequest="11" />
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="15"
+                        Text="Oficina / Fornecedor"
+                        TextColor="#0F172A"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <Border
+                    Margin="0,5,0,10"
+                    Padding="12,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <Entry
+                        x:Name="TxtOficina"
+                        BackgroundColor="Transparent"
+                        ClearButtonVisibility="WhileEditing"
+                        FontFamily="PoppinsRegular"
+                        FontSize="14"
+                        Placeholder="Informe a oficina ou fornecedor"
+                        PlaceholderColor="#94A3B8"
+                        TextColor="#334155" />
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- RODAPÉ FIXO -->
+        <Grid
+            Grid.Row="2"
+            Padding="16,10"
+            BackgroundColor="White"
+            ColumnDefinitions="*,Auto,Auto"
+            ColumnSpacing="6">
+
+            <Label
+                Grid.Column="0"
+                FontFamily="PoppinsRegular"
+                FontSize="11"
+                LineBreakMode="WordWrap"
+                Text="Prévia visual — dados não serão salvos"
+                TextColor="#64748B"
+                VerticalOptions="Center" />
+
+            <Button
+                Grid.Column="1"
+                Padding="12,0"
+                BackgroundColor="White"
+                BorderColor="#D1D5DB"
+                BorderWidth="1"
+                Clicked="OnCancelarClicked"
+                CornerRadius="9"
+                FontSize="12"
+                HeightRequest="42"
+                Text="Cancelar"
+                TextColor="#334155" />
+
+            <Button
+                Grid.Column="2"
+                Padding="12,0"
+                BackgroundColor="#2C63B1"
+                Clicked="OnSalvarClicked"
+                CornerRadius="9"
+                FontFamily="PoppinsSemiBold"
+                FontSize="12"
+                HeightRequest="42"
+                Text="Salvar"
+                TextColor="White" />
+
+        </Grid>
+
+    </Grid>
+</ContentPage>
