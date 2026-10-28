@@ -1,0 +1,645 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="InovaLog.Views.MotoristasPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="PaginaMotoristas"
+    Title="Motoristas"
+    BackgroundColor="#F8F8F8"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#2C63B1" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="0">
+
+        <!--  CABEÇALHO  -->
+        <Grid
+            Grid.Row="0"
+            Padding="20,10,15,5"
+            HeightRequest="85">
+
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                    <GradientStop Offset="0.0" Color="#2C63B1" />
+                    <GradientStop Offset="1.0" Color="#1EA1E8" />
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <Label
+                FontFamily="PoppinsSemiBold"
+                FontSize="23"
+                Text="Motoristas"
+                TextColor="White"
+                VerticalOptions="Center" />
+        </Grid>
+
+        <!--  ABAS SUPERIORES  -->
+        <Grid
+            Grid.Row="1"
+            Padding="16,10"
+            BackgroundColor="#F8F8F8"
+            ColumnDefinitions="36,*,36"
+            ColumnSpacing="6">
+
+            <ImageButton
+                x:Name="BtnAbaAnterior"
+                Grid.Column="0"
+                Padding="2"
+                BackgroundColor="Transparent"
+                Clicked="OnAbaAnteriorClicked"
+                HeightRequest="42"
+                Source="seta_esquerda.png"
+                VerticalOptions="Center" />
+
+            <Border
+                Grid.Column="1"
+                Padding="16,8"
+                BackgroundColor="#2C63B1"
+                HorizontalOptions="Center"
+                StrokeThickness="0"
+                VerticalOptions="Center">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="9999" />
+                </Border.StrokeShape>
+
+                <Label
+                    x:Name="TextoAbaSelecionada"
+                    FontFamily="PoppinsSemiBold"
+                    FontSize="14"
+                    HorizontalTextAlignment="Center"
+                    Text="Viagens"
+                    TextColor="White"
+                    VerticalTextAlignment="Center" />
+            </Border>
+
+            <ImageButton
+                x:Name="BtnProximaAba"
+                Grid.Column="2"
+                Padding="2"
+                BackgroundColor="Transparent"
+                Clicked="OnProximaAbaClicked"
+                HeightRequest="42"
+                Source="seta_direita.png"
+                VerticalOptions="Center" />
+        </Grid>
+
+        <!--  CONTEÚDO + FADE NO TOPO  -->
+        <Grid Grid.Row="2">
+
+            <ScrollView>
+                <VerticalStackLayout Padding="16,16,16,24" Spacing="16">
+
+                    <!--  TÍTULO E NOVA VIAGEM  -->
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+
+                        <Label
+                            x:Name="TituloSecao"
+                            Grid.Column="0"
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="20"
+                            Text="Todas as Viagens"
+                            TextColor="#0F172A"
+                            VerticalOptions="Center" />
+
+                        <Button
+                            Grid.Column="1"
+                            Padding="14,0"
+                            BackgroundColor="#1D61D2"
+                            Clicked="OnNovaViagemClicked"
+                            CornerRadius="12"
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="12"
+                            HeightRequest="40"
+                            Text="+ NOVA VIAGEM"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+                    </Grid>
+
+                    <!--  CARD DE RETORNO VAZIO  -->
+                    <Border
+                        x:Name="CardRetorno"
+                        Padding="16"
+                        BackgroundColor="White"
+                        IsVisible="False"
+                        Stroke="#E2E8F0"
+                        StrokeThickness="1">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="Black"
+                                Opacity="0.06"
+                                Radius="3"
+                                Offset="0,1" />
+                        </Border.Shadow>
+
+                        <VerticalStackLayout Spacing="12">
+
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <VerticalStackLayout Grid.Column="0" Spacing="3">
+                                    <Label
+                                        FontFamily="PoppinsSemiBold"
+                                        FontSize="18"
+                                        Text="Retorno Vazio"
+                                        TextColor="#0F172A" />
+                                    <Label
+                                        FontFamily="PoppinsRegular"
+                                        FontSize="14"
+                                        Text="Oportunidade de retorno"
+                                        TextColor="#475569" />
+                                </VerticalStackLayout>
+
+                                <Border
+                                    Grid.Column="1"
+                                    Padding="10,5"
+                                    BackgroundColor="#FFEDD5"
+                                    StrokeThickness="0"
+                                    VerticalOptions="Start">
+
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+
+                                    <Label
+                                        FontFamily="PoppinsSemiBold"
+                                        FontSize="12"
+                                        Text="Retorno"
+                                        TextColor="#C2410C" />
+                                </Border>
+                            </Grid>
+
+                            <Label
+                                FontFamily="PoppinsRegular"
+                                FontSize="13"
+                                Text="Verifique a disponibilidade de carga para o trajeto de volta."
+                                TextColor="#64748B" />
+
+                            <Button
+                                BackgroundColor="White"
+                                BorderColor="#1D61D2"
+                                BorderWidth="1"
+                                Clicked="OnLancarGastoClicked"
+                                CornerRadius="12"
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="14"
+                                HeightRequest="48"
+                                Text="+ Lançar Gasto/Notinha"
+                                TextColor="#1D61D2" />
+
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  CARD DA VIAGEM EM ANDAMENTO  -->
+                    <Border
+                        x:Name="CardViagem"
+                        Padding="16"
+                        BackgroundColor="White"
+                        IsVisible="False"
+                        Stroke="#E2E8F0"
+                        StrokeThickness="1">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="Black"
+                                Opacity="0.06"
+                                Radius="3"
+                                Offset="0,1" />
+                        </Border.Shadow>
+
+                        <VerticalStackLayout Spacing="14">
+
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <VerticalStackLayout Grid.Column="0" Spacing="3">
+                                    <Label
+                                        FontFamily="PoppinsSemiBold"
+                                        FontSize="18"
+                                        Text="VG-1300 — IDA"
+                                        TextColor="#0F172A" />
+                                    <Label
+                                        FontFamily="PoppinsRegular"
+                                        FontSize="14"
+                                        Text="Viagem de ida"
+                                        TextColor="#475569" />
+                                </VerticalStackLayout>
+
+                                <Border
+                                    x:Name="StatusViagem"
+                                    Grid.Column="1"
+                                    Padding="10,5"
+                                    BackgroundColor="#FEF3C7"
+                                    StrokeThickness="0"
+                                    VerticalOptions="Start">
+
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+
+                                    <Label
+                                        x:Name="TextoStatus"
+                                        FontFamily="PoppinsSemiBold"
+                                        FontSize="12"
+                                        Text="Em andamento"
+                                        TextColor="#B45309" />
+                                </Border>
+                            </Grid>
+
+                            <BoxView HeightRequest="1" Color="#E2E8F0" />
+
+                            <!--  ROTA  -->
+                            <VerticalStackLayout Spacing="4">
+                                <Label
+                                    CharacterSpacing="0.55"
+                                    FontFamily="PoppinsSemiBold"
+                                    FontSize="11"
+                                    Text="ROTA"
+                                    TextColor="#64748B" />
+                                <Label
+                                    FontFamily="PoppinsSemiBold"
+                                    FontSize="15"
+                                    Text="Sete Lagoas - MG → Santana - BA"
+                                    TextColor="#0F172A" />
+                                <Label
+                                    FontFamily="PoppinsRegular"
+                                    FontSize="13"
+                                    Text="980 KM est."
+                                    TextColor="#64748B" />
+                            </VerticalStackLayout>
+
+                            <!--  VEÍCULO  -->
+                            <VerticalStackLayout Spacing="4">
+                                <Label
+                                    CharacterSpacing="0.55"
+                                    FontFamily="PoppinsSemiBold"
+                                    FontSize="11"
+                                    Text="VEÍCULO"
+                                    TextColor="#64748B" />
+                                <Label
+                                    FontFamily="PoppinsSemiBold"
+                                    FontSize="15"
+                                    Text="INV-2026 - FH 540 6x4"
+                                    TextColor="#0F172A" />
+                                <Label
+                                    FontFamily="PoppinsRegular"
+                                    FontSize="13"
+                                    Text="Carlos Silva (Motorista)"
+                                    TextColor="#64748B" />
+                            </VerticalStackLayout>
+
+                            <!--  HODÔMETRO  -->
+                            <Border
+                                Padding="12"
+                                BackgroundColor="#F8FAFC"
+                                StrokeThickness="0">
+
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+
+                                <VerticalStackLayout Spacing="6">
+                                    <Label
+                                        CharacterSpacing="0.55"
+                                        FontFamily="PoppinsSemiBold"
+                                        FontSize="11"
+                                        Text="HODÔMETRO"
+                                        TextColor="#64748B" />
+                                    <Label
+                                        FontFamily="PoppinsRegular"
+                                        FontSize="13"
+                                        Text="Inicial: 157000 KM"
+                                        TextColor="#64748B" />
+                                    <Label
+                                        FontFamily="PoppinsRegular"
+                                        FontSize="13"
+                                        Text="Final: 158000 KM"
+                                        TextColor="#64748B" />
+                                    <Label
+                                        FontFamily="PoppinsSemiBold"
+                                        FontSize="14"
+                                        Text="Rodados: 1000 KM"
+                                        TextColor="#1D61D2" />
+                                </VerticalStackLayout>
+                            </Border>
+
+                            <!--  AÇÕES  -->
+                            <VerticalStackLayout Spacing="8">
+                                <Button
+                                    x:Name="BotaoGasto"
+                                    BackgroundColor="White"
+                                    BorderColor="#1D61D2"
+                                    BorderWidth="1"
+                                    Clicked="OnLancarGastoClicked"
+                                    CornerRadius="12"
+                                    FontFamily="PoppinsSemiBold"
+                                    FontSize="14"
+                                    HeightRequest="48"
+                                    Text="+ Lançar Gasto/Notinha"
+                                    TextColor="#1D61D2" />
+
+                                <Button
+                                    x:Name="BotaoFinalizar"
+                                    BackgroundColor="#1D61D2"
+                                    Clicked="OnFinalizarViagemClicked"
+                                    CornerRadius="12"
+                                    FontFamily="PoppinsSemiBold"
+                                    FontSize="15"
+                                    HeightRequest="48"
+                                    Text="Finalizar Viagem"
+                                    TextColor="White" />
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  CARD DE VIAGEM CONCLUÍDA  -->
+                    <Border
+                        x:Name="CardViagemConcluida"
+                        Padding="16"
+                        BackgroundColor="White"
+                        IsVisible="False"
+                        Stroke="#E2E8F0"
+                        StrokeThickness="1">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="Black"
+                                Opacity="0.06"
+                                Radius="3"
+                                Offset="0,1" />
+                        </Border.Shadow>
+
+                        <VerticalStackLayout Spacing="14">
+
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <VerticalStackLayout Grid.Column="0" Spacing="3">
+                                    <Label
+                                        FontFamily="PoppinsSemiBold"
+                                        FontSize="18"
+                                        Text="VG-1299 — IDA"
+                                        TextColor="#0F172A" />
+                                    <Label
+                                        FontFamily="PoppinsRegular"
+                                        FontSize="14"
+                                        Text="Viagem concluída"
+                                        TextColor="#475569" />
+                                </VerticalStackLayout>
+
+                                <Border
+                                    Grid.Column="1"
+                                    Padding="10,5"
+                                    BackgroundColor="#D1FAE5"
+                                    StrokeThickness="0"
+                                    VerticalOptions="Start">
+
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+
+                                    <Label
+                                        FontFamily="PoppinsSemiBold"
+                                        FontSize="12"
+                                        Text="Concluída"
+                                        TextColor="#047857" />
+                                </Border>
+                            </Grid>
+
+                            <BoxView HeightRequest="1" Color="#E2E8F0" />
+
+                            <VerticalStackLayout Spacing="4">
+                                <Label
+                                    CharacterSpacing="0.55"
+                                    FontFamily="PoppinsSemiBold"
+                                    FontSize="11"
+                                    Text="ROTA"
+                                    TextColor="#64748B" />
+                                <Label
+                                    FontFamily="PoppinsSemiBold"
+                                    FontSize="15"
+                                    Text="Sete Lagoas - MG → Santana - BA"
+                                    TextColor="#0F172A" />
+                                <Label
+                                    FontFamily="PoppinsRegular"
+                                    FontSize="13"
+                                    Text="980 KM est."
+                                    TextColor="#64748B" />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Spacing="4">
+                                <Label
+                                    CharacterSpacing="0.55"
+                                    FontFamily="PoppinsSemiBold"
+                                    FontSize="11"
+                                    Text="VEÍCULO"
+                                    TextColor="#64748B" />
+                                <Label
+                                    FontFamily="PoppinsSemiBold"
+                                    FontSize="15"
+                                    Text="INV-2026 - FH 540 6x4"
+                                    TextColor="#0F172A" />
+                                <Label
+                                    FontFamily="PoppinsRegular"
+                                    FontSize="13"
+                                    Text="Carlos Silva (Motorista)"
+                                    TextColor="#64748B" />
+                            </VerticalStackLayout>
+
+                            <Border
+                                Padding="12"
+                                BackgroundColor="#F8FAFC"
+                                StrokeThickness="0">
+
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+
+                                <VerticalStackLayout Spacing="6">
+                                    <Label
+                                        CharacterSpacing="0.55"
+                                        FontFamily="PoppinsSemiBold"
+                                        FontSize="11"
+                                        Text="HODÔMETRO"
+                                        TextColor="#64748B" />
+                                    <Label
+                                        FontFamily="PoppinsRegular"
+                                        FontSize="13"
+                                        Text="Inicial: 157000 KM"
+                                        TextColor="#64748B" />
+                                    <Label
+                                        FontFamily="PoppinsRegular"
+                                        FontSize="13"
+                                        Text="Final: 158000 KM"
+                                        TextColor="#64748B" />
+                                    <Label
+                                        FontFamily="PoppinsSemiBold"
+                                        FontSize="14"
+                                        Text="Rodados: 1000 KM"
+                                        TextColor="#1D61D2" />
+                                </VerticalStackLayout>
+                            </Border>
+
+                            <Button
+                                BackgroundColor="White"
+                                BorderColor="#1D61D2"
+                                BorderWidth="1"
+                                Clicked="OnLancarGastoClicked"
+                                CornerRadius="12"
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="14"
+                                HeightRequest="48"
+                                Text="+ Lançar Gasto/Notinha"
+                                TextColor="#1D61D2" />
+
+                        </VerticalStackLayout>
+                    </Border>
+
+                </VerticalStackLayout>
+            </ScrollView>
+
+            <!--  FADE no topo (mesma cor do fundo da tela)  -->
+            <BoxView
+                HeightRequest="16"
+                InputTransparent="True"
+                VerticalOptions="Start">
+                <BoxView.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0.0" Color="#F8F8F8" />
+                        <GradientStop Offset="1.0" Color="#00F8F8F8" />
+                    </LinearGradientBrush>
+                </BoxView.Background>
+            </BoxView>
+
+        </Grid>
+
+        <!--  BARRA INFERIOR  -->
+        <Grid
+            Grid.Row="3"
+            Padding="10,8"
+            BackgroundColor="White"
+            ColumnDefinitions="*,*,*"
+            ColumnSpacing="6">
+
+            <!--  MINHAS VIAGENS (ativo)  -->
+            <Border
+                x:Name="ItemMinhasViagens"
+                Grid.Column="0"
+                Padding="0,8"
+                BackgroundColor="#EAF2FF"
+                StrokeThickness="0">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12" />
+                </Border.StrokeShape>
+
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnMinhasViagensClicked" />
+                </Border.GestureRecognizers>
+
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="3">
+                    <Image
+                        HeightRequest="22"
+                        HorizontalOptions="Center"
+                        Source="icone_viagens.png"
+                        WidthRequest="22">
+                        <Image.Behaviors>
+                            <toolkit:IconTintColorBehavior TintColor="#1D61D2" />
+                        </Image.Behaviors>
+                    </Image>
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="11"
+                        HorizontalTextAlignment="Center"
+                        Text="Minhas Viagens"
+                        TextColor="#1D61D2" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!--  GASTO DE ESTRADA  -->
+            <Border
+                x:Name="ItemGastoEstrada"
+                Grid.Column="1"
+                Padding="0,8"
+                BackgroundColor="Transparent"
+                StrokeThickness="0">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12" />
+                </Border.StrokeShape>
+
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnGastoEstradaClicked" />
+                </Border.GestureRecognizers>
+
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="3">
+                    <Image
+                        HeightRequest="22"
+                        HorizontalOptions="Center"
+                        Source="icone_gasto.png"
+                        WidthRequest="22">
+                        <Image.Behaviors>
+                            <toolkit:IconTintColorBehavior TintColor="#64748B" />
+                        </Image.Behaviors>
+                    </Image>
+
+                    <Label
+                        FontFamily="PoppinsRegular"
+                        FontSize="11"
+                        HorizontalTextAlignment="Center"
+                        Text="Gasto de Estrada"
+                        TextColor="#64748B" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!--  NOVA VIAGEM  -->
+            <Border
+                x:Name="ItemNovaViagem"
+                Grid.Column="2"
+                Padding="0,8"
+                BackgroundColor="Transparent"
+                StrokeThickness="0">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12" />
+                </Border.StrokeShape>
+
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnNovaViagemClicked" />
+                </Border.GestureRecognizers>
+
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="3">
+                    <Image
+                        HeightRequest="22"
+                        HorizontalOptions="Center"
+                        Source="icone_nova_viagem.png"
+                        WidthRequest="22">
+                        <Image.Behaviors>
+                            <toolkit:IconTintColorBehavior TintColor="#64748B" />
+                        </Image.Behaviors>
+                    </Image>
+
+                    <Label
+                        FontFamily="PoppinsRegular"
+                        FontSize="11"
+                        HorizontalTextAlignment="Center"
+                        Text="Nova Viagem"
+                        TextColor="#64748B" />
+                </VerticalStackLayout>
+            </Border>
+
+        </Grid>
+
+    </Grid>
+</ContentPage>

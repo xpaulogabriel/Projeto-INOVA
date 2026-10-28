@@ -77,6 +77,9 @@
 		<MauiXaml Update="Views\FinanceiroPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Views\GastoEstradaPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Views\GestorFrotas.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
@@ -87,6 +90,9 @@
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\ManutencaoPlanoKmPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\MotoristasPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\NovaDespesaPage.xaml">

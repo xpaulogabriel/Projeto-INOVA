@@ -1,0 +1,667 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="InovaLog.Views.GastoEstradaPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Title="GastoEstradaPage"
+    BackgroundColor="#F8F8F8"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#2C63B1" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <Grid RowDefinitions="Auto,*,1,Auto,1,Auto" RowSpacing="0">
+
+        <!--  CABEÇALHO  -->
+        <Grid
+            Grid.Row="0"
+            Padding="20,10,15,5"
+            ColumnDefinitions="Auto,*"
+            ColumnSpacing="5"
+            HeightRequest="85">
+
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                    <GradientStop Offset="0.0" Color="#2C63B1" />
+                    <GradientStop Offset="1.0" Color="#1EA1E8" />
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <ImageButton
+                Grid.Column="0"
+                Padding="8"
+                Aspect="AspectFit"
+                BackgroundColor="Transparent"
+                Source="btn_voltar.svg"
+                VerticalOptions="Center"
+                WidthRequest="55" />
+
+            <Label
+                Grid.Column="1"
+                FontFamily="PoppinsSemiBold"
+                FontSize="20"
+                HorizontalOptions="Start"
+                Text="Nova Despesa / Receita"
+                TextColor="White"
+                VerticalOptions="Center" />
+        </Grid>
+
+        <!--  FORMULÁRIO  -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="16,16,16,20" Spacing="14">
+
+                <!--  DESCRIÇÃO  -->
+                <VerticalStackLayout Spacing="6">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Ellipse
+                            Grid.Column="0"
+                            Fill="#E66D17"
+                            HeightRequest="9"
+                            VerticalOptions="Center"
+                            WidthRequest="9" />
+                        <Label
+                            Grid.Column="1"
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="12"
+                            Text="Descrição"
+                            TextColor="#0F172A"
+                            VerticalOptions="Center" />
+                    </Grid>
+
+                    <Border
+                        Padding="14,0"
+                        BackgroundColor="White"
+                        HeightRequest="44"
+                        Stroke="#E2E8F0"
+                        StrokeShape="RoundRectangle 22"
+                        StrokeThickness="1">
+                        <Entry
+                            x:Name="TxtDescricao"
+                            BackgroundColor="Transparent"
+                            ClearButtonVisibility="WhileEditing"
+                            FontFamily="PoppinsRegular"
+                            FontSize="13"
+                            Placeholder="Ex: Abastecimento Diesel S10"
+                            PlaceholderColor="#94A3B8"
+                            TextColor="#334155"
+                            VerticalOptions="Center" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <!--  VALOR TOTAL  -->
+                <VerticalStackLayout Spacing="6">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Ellipse
+                            Grid.Column="0"
+                            Fill="#E66D17"
+                            HeightRequest="9"
+                            VerticalOptions="Center"
+                            WidthRequest="9" />
+                        <Label
+                            Grid.Column="1"
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="12"
+                            Text="Valor Total (R$)"
+                            TextColor="#0F172A"
+                            VerticalOptions="Center" />
+                    </Grid>
+
+                    <Border
+                        Padding="14,0"
+                        BackgroundColor="White"
+                        HeightRequest="44"
+                        Stroke="#E2E8F0"
+                        StrokeShape="RoundRectangle 22"
+                        StrokeThickness="1">
+                        <Entry
+                            x:Name="TxtValor"
+                            BackgroundColor="Transparent"
+                            FontFamily="PoppinsRegular"
+                            FontSize="13"
+                            Keyboard="Numeric"
+                            Placeholder="0,00"
+                            PlaceholderColor="#94A3B8"
+                            TextColor="#334155"
+                            VerticalOptions="Center" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <!--  CONTROLE DE COMBUSTÍVEL  -->
+                <Border
+                    Padding="12"
+                    BackgroundColor="#EFF6FF"
+                    Stroke="#BFDBFE"
+                    StrokeShape="RoundRectangle 16"
+                    StrokeThickness="1">
+
+                    <VerticalStackLayout Spacing="10">
+                        <Label
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="11"
+                            Text="Controle de Combustível (Cálculo Automático do Litro)"
+                            TextColor="#1D61D2" />
+
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+
+                            <VerticalStackLayout Grid.Column="0" Spacing="6">
+                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="6">
+                                    <Ellipse
+                                        Grid.Column="0"
+                                        Fill="#E66D17"
+                                        HeightRequest="9"
+                                        VerticalOptions="Center"
+                                        WidthRequest="9" />
+                                    <Label
+                                        Grid.Column="1"
+                                        FontFamily="PoppinsSemiBold"
+                                        FontSize="11"
+                                        Text="Quantidade de Litros"
+                                        TextColor="#0F172A"
+                                        VerticalOptions="Center" />
+                                </Grid>
+
+                                <Border
+                                    Padding="14,0"
+                                    BackgroundColor="White"
+                                    HeightRequest="44"
+                                    Stroke="#E2E8F0"
+                                    StrokeShape="RoundRectangle 22"
+                                    StrokeThickness="1">
+                                    <Entry
+                                        x:Name="TxtLitros"
+                                        BackgroundColor="Transparent"
+                                        FontFamily="PoppinsRegular"
+                                        FontSize="13"
+                                        Keyboard="Numeric"
+                                        Placeholder="0"
+                                        PlaceholderColor="#94A3B8"
+                                        TextColor="#334155"
+                                        VerticalOptions="Center" />
+                                </Border>
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="1" Spacing="6">
+                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="6">
+                                    <Ellipse
+                                        Grid.Column="0"
+                                        Fill="#E66D17"
+                                        HeightRequest="9"
+                                        VerticalOptions="Center"
+                                        WidthRequest="9" />
+                                    <Label
+                                        Grid.Column="1"
+                                        FontFamily="PoppinsSemiBold"
+                                        FontSize="11"
+                                        Text="Preço Pago / Litro"
+                                        TextColor="#0F172A"
+                                        VerticalOptions="Center" />
+                                </Grid>
+
+                                <Border
+                                    Padding="14,0"
+                                    BackgroundColor="#DBEAFE"
+                                    HeightRequest="44"
+                                    Stroke="#BFDBFE"
+                                    StrokeShape="RoundRectangle 22"
+                                    StrokeThickness="1">
+                                    <Label
+                                        x:Name="LblPrecoLitro"
+                                        FontFamily="PoppinsSemiBold"
+                                        FontSize="13"
+                                        Text="R$ 0,00 / L"
+                                        TextColor="#1D61D2"
+                                        VerticalOptions="Center" />
+                                </Border>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  STATUS E DATA  -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+
+                    <VerticalStackLayout Grid.Column="0" Spacing="6">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                            <Ellipse
+                                Grid.Column="0"
+                                Fill="#E66D17"
+                                HeightRequest="9"
+                                VerticalOptions="Center"
+                                WidthRequest="9" />
+                            <Label
+                                Grid.Column="1"
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="12"
+                                Text="Status"
+                                TextColor="#0F172A"
+                                VerticalOptions="Center" />
+                        </Grid>
+
+                        <Border
+                            Padding="14,0,6,0"
+                            BackgroundColor="White"
+                            HeightRequest="44"
+                            Stroke="#E2E8F0"
+                            StrokeShape="RoundRectangle 22"
+                            StrokeThickness="1">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Picker
+                                    x:Name="PckStatus"
+                                    Title="Status"
+                                    Grid.Column="0"
+                                    FontFamily="PoppinsRegular"
+                                    FontSize="13"
+                                    SelectedIndex="0"
+                                    TextColor="#334155"
+                                    TitleColor="#94A3B8"
+                                    VerticalOptions="Center">
+                                    <Picker.Items>
+                                        <x:String>Pago / Recebido</x:String>
+                                        <x:String>Pendente</x:String>
+                                    </Picker.Items>
+                                </Picker>
+
+                                <ImageButton
+                                    Grid.Column="1"
+                                    Padding="8"
+                                    Aspect="AspectFit"
+                                    BackgroundColor="Transparent"
+                                    HeightRequest="28"
+                                    InputTransparent="True"
+                                    Source="seta_para_baixo.png"
+                                    VerticalOptions="Center"
+                                    WidthRequest="28" />
+                            </Grid>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="1" Spacing="6">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                            <Ellipse
+                                Grid.Column="0"
+                                Fill="#E66D17"
+                                HeightRequest="9"
+                                VerticalOptions="Center"
+                                WidthRequest="9" />
+                            <Label
+                                Grid.Column="1"
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="12"
+                                Text="Data"
+                                TextColor="#0F172A"
+                                VerticalOptions="Center" />
+                        </Grid>
+
+                        <Border
+                            Padding="14,0"
+                            BackgroundColor="White"
+                            HeightRequest="44"
+                            Stroke="#E2E8F0"
+                            StrokeShape="RoundRectangle 22"
+                            StrokeThickness="1">
+                            <DatePicker
+                                x:Name="DpData"
+                                BackgroundColor="Transparent"
+                                FontFamily="PoppinsRegular"
+                                FontSize="13"
+                                Format="dd/MM/yyyy"
+                                TextColor="#334155"
+                                VerticalOptions="Center" />
+                        </Border>
+                    </VerticalStackLayout>
+                </Grid>
+
+                <!--  DATA DE PAGAMENTO  -->
+                <VerticalStackLayout Spacing="6">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Ellipse
+                            Grid.Column="0"
+                            Fill="#E66D17"
+                            HeightRequest="9"
+                            VerticalOptions="Center"
+                            WidthRequest="9" />
+                        <Label
+                            Grid.Column="1"
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="12"
+                            Text="Data de Pagamento/Recebimento (Exigido se Pago)"
+                            TextColor="#0F172A"
+                            VerticalOptions="Center" />
+                    </Grid>
+
+                    <Border
+                        Padding="14,0"
+                        BackgroundColor="White"
+                        HeightRequest="44"
+                        Stroke="#E2E8F0"
+                        StrokeShape="RoundRectangle 22"
+                        StrokeThickness="1">
+                        <DatePicker
+                            x:Name="DpDataPagamento"
+                            BackgroundColor="Transparent"
+                            FontFamily="PoppinsRegular"
+                            FontSize="13"
+                            Format="dd/MM/yyyy"
+                            TextColor="#334155"
+                            VerticalOptions="Center" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <!--  ROTA / VIAGEM ASSOCIADA  -->
+                <VerticalStackLayout Spacing="6">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Ellipse
+                            Grid.Column="0"
+                            Fill="#E66D17"
+                            HeightRequest="9"
+                            VerticalOptions="Center"
+                            WidthRequest="9" />
+                        <Label
+                            Grid.Column="1"
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="12"
+                            Text="Rota / Viagem Associada (Obrigatório p/ Combustível)"
+                            TextColor="#0F172A"
+                            VerticalOptions="Center" />
+                    </Grid>
+
+                    <Border
+                        Padding="14,0,6,0"
+                        BackgroundColor="White"
+                        HeightRequest="44"
+                        Stroke="#E2E8F0"
+                        StrokeShape="RoundRectangle 22"
+                        StrokeThickness="1">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Picker
+                                x:Name="PckRotaAssociada"
+                                Title="Selecione a rota"
+                                Grid.Column="0"
+                                FontFamily="PoppinsRegular"
+                                FontSize="13"
+                                SelectedIndex="0"
+                                TextColor="#334155"
+                                TitleColor="#94A3B8"
+                                VerticalOptions="Center">
+                                <Picker.Items>
+                                    <x:String>-- Sem vínculo de viagem (Custo Fixo) --</x:String>
+                                    <x:String>Varginha → Três Pontas</x:String>
+                                    <x:String>Varginha → São Paulo</x:String>
+                                    <x:String>Varginha → Belo Horizonte</x:String>
+                                    <x:String>Outra rota</x:String>
+                                </Picker.Items>
+                            </Picker>
+
+                            <ImageButton
+                                Grid.Column="1"
+                                Padding="8"
+                                Aspect="AspectFit"
+                                BackgroundColor="Transparent"
+                                HeightRequest="28"
+                                InputTransparent="True"
+                                Source="seta_para_baixo.png"
+                                VerticalOptions="Center"
+                                WidthRequest="28" />
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!--  FORMA DE PAGAMENTO  -->
+                <VerticalStackLayout Spacing="6">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Ellipse
+                            Grid.Column="0"
+                            Fill="#E66D17"
+                            HeightRequest="9"
+                            VerticalOptions="Center"
+                            WidthRequest="9" />
+                        <Label
+                            Grid.Column="1"
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="12"
+                            Text="Forma de Pagamento"
+                            TextColor="#0F172A"
+                            VerticalOptions="Center" />
+                    </Grid>
+
+                    <Border
+                        Padding="14,0,6,0"
+                        BackgroundColor="White"
+                        HeightRequest="44"
+                        Stroke="#E2E8F0"
+                        StrokeShape="RoundRectangle 22"
+                        StrokeThickness="1">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Picker
+                                x:Name="PckFormaPagamento"
+                                Title="Selecione a forma de pagamento"
+                                Grid.Column="0"
+                                FontFamily="PoppinsRegular"
+                                FontSize="13"
+                                TextColor="#334155"
+                                TitleColor="#94A3B8"
+                                VerticalOptions="Center">
+                                <Picker.Items>
+                                    <x:String>Cartão Frota</x:String>
+                                    <x:String>Cartão Corporativo</x:String>
+                                    <x:String>Dinheiro</x:String>
+                                    <x:String>PIX</x:String>
+                                    <x:String>Outro</x:String>
+                                </Picker.Items>
+                            </Picker>
+
+                            <ImageButton
+                                Grid.Column="1"
+                                Padding="8"
+                                Aspect="AspectFit"
+                                BackgroundColor="Transparent"
+                                HeightRequest="28"
+                                InputTransparent="True"
+                                Source="seta_para_baixo.png"
+                                VerticalOptions="Center"
+                                WidthRequest="28" />
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!--  FOTO DO COMPROVANTE  -->
+                <VerticalStackLayout Spacing="6">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Ellipse
+                            Grid.Column="0"
+                            Fill="#E66D17"
+                            HeightRequest="9"
+                            VerticalOptions="Center"
+                            WidthRequest="9" />
+                        <Label
+                            Grid.Column="1"
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="12"
+                            Text="Foto do Comprovante / &quot;Notinha&quot; (Câmera ou Galeria)"
+                            TextColor="#0F172A"
+                            VerticalOptions="Center" />
+                    </Grid>
+
+                    <Border
+                        Padding="12,0"
+                        BackgroundColor="White"
+                        HeightRequest="60"
+                        Stroke="#E2E8F0"
+                        StrokeShape="RoundRectangle 22"
+                        StrokeThickness="1">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                            <Button
+                                x:Name="BtnEscolherArquivo"
+                                Grid.Column="0"
+                                Padding="14,0"
+                                BackgroundColor="#F1F5F9"
+                                BorderColor="#CBD5E1"
+                                BorderWidth="1"
+                                CornerRadius="10"
+                                FontFamily="PoppinsRegular"
+                                FontSize="12"
+                                HeightRequest="38"
+                                Text="Escolher arquivo"
+                                TextColor="#334155"
+                                VerticalOptions="Center" />
+
+                            <Label
+                                x:Name="LblArquivo"
+                                Grid.Column="1"
+                                FontFamily="PoppinsRegular"
+                                FontSize="11"
+                                LineBreakMode="TailTruncation"
+                                Text="Nenhum arquivo escolhido"
+                                TextColor="#64748B"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+
+                    <Label
+                        FontAttributes="Italic"
+                        FontFamily="PoppinsRegular"
+                        FontSize="10"
+                        Text="Obrigatório para despesas de estrada. Guardado localmente se estiver sem internet."
+                        TextColor="#94A3B8" />
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <BoxView Grid.Row="2" Color="#E2E8F0" />
+
+        <!--  RODAPÉ FIXO  -->
+        <Grid
+            Grid.Row="3"
+            Padding="16,10"
+            BackgroundColor="White"
+            ColumnDefinitions="*,Auto,Auto"
+            ColumnSpacing="8">
+
+            <Label
+                Grid.Column="0"
+                FontFamily="PoppinsRegular"
+                FontSize="11"
+                LineBreakMode="WordWrap"
+                Text="Todos os campos são obrigatórios"
+                TextColor="#64748B"
+                VerticalOptions="Center" />
+
+            <Button
+                Grid.Column="1"
+                Padding="16,0"
+                BackgroundColor="White"
+                BorderColor="#E2E8F0"
+                BorderWidth="1"
+                CornerRadius="21"
+                FontFamily="PoppinsRegular"
+                FontSize="12"
+                HeightRequest="42"
+                Text="Cancelar"
+                TextColor="#334155" />
+
+            <Button
+                Grid.Column="2"
+                Padding="20,0"
+                BackgroundColor="#1D61D2"
+                CornerRadius="21"
+                FontFamily="PoppinsSemiBold"
+                FontSize="12"
+                HeightRequest="42"
+                Text="Salvar"
+                TextColor="White" />
+        </Grid>
+
+        <BoxView Grid.Row="4" Color="#E2E8F0" />
+
+        <!--  BARRA INFERIOR  -->
+        <Grid
+            Grid.Row="5"
+            Padding="10,8"
+            BackgroundColor="White"
+            ColumnDefinitions="*,*,*"
+            ColumnSpacing="6">
+
+            <!--  MINHAS VIAGENS  -->
+            <Border
+                Grid.Column="0"
+                Padding="0,8"
+                BackgroundColor="Transparent"
+                StrokeShape="RoundRectangle 12"
+                StrokeThickness="0">
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="3">
+                    <Image
+                        HeightRequest="22"
+                        HorizontalOptions="Center"
+                        Source="icone_viagens.png"
+                        WidthRequest="22">
+                        <Image.Behaviors>
+                            <toolkit:IconTintColorBehavior TintColor="#64748B" />
+                        </Image.Behaviors>
+                    </Image>
+                    <Label
+                        FontFamily="PoppinsRegular"
+                        FontSize="11"
+                        HorizontalTextAlignment="Center"
+                        Text="Minhas Viagens"
+                        TextColor="#64748B" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!--  GASTO DE ESTRADA (ativo)  -->
+            <Border
+                Grid.Column="1"
+                Padding="0,8"
+                BackgroundColor="#EAF2FF"
+                StrokeShape="RoundRectangle 12"
+                StrokeThickness="0">
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="3">
+                    <Image
+                        HeightRequest="22"
+                        HorizontalOptions="Center"
+                        Source="icone_gasto.svg"
+                        WidthRequest="22">
+                        <Image.Behaviors>
+                            <toolkit:IconTintColorBehavior TintColor="#1D61D2" />
+                        </Image.Behaviors>
+                    </Image>
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="11"
+                        HorizontalTextAlignment="Center"
+                        Text="Gasto de Estrada"
+                        TextColor="#1D61D2" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!--  NOVA VIAGEM  -->
+            <Border
+                Grid.Column="2"
+                Padding="0,8"
+                BackgroundColor="Transparent"
+                StrokeShape="RoundRectangle 12"
+                StrokeThickness="0">
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="3">
+                    <Image
+                        HeightRequest="22"
+                        HorizontalOptions="Center"
+                        Source="icone_nova_viagem.png"
+                        WidthRequest="22">
+                        <Image.Behaviors>
+                            <toolkit:IconTintColorBehavior TintColor="#64748B" />
+                        </Image.Behaviors>
+                    </Image>
+                    <Label
+                        FontFamily="PoppinsRegular"
+                        FontSize="11"
+                        HorizontalTextAlignment="Center"
+                        Text="Nova Viagem"
+                        TextColor="#64748B" />
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+
+    </Grid>
+</ContentPage>

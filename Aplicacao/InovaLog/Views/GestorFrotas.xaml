@@ -35,7 +35,6 @@
                 Text="Frota, Rotas &amp; Manutenção"
                 TextColor="White"
                 VerticalOptions="Center" />
-
         </Grid>
 
         <!--  ABAS  -->
@@ -50,7 +49,7 @@
                 x:Name="AbaVeiculos"
                 Grid.Column="0"
                 Padding="3,5"
-                BackgroundColor="#1675F8"
+                BackgroundColor="#1D61D2"
                 StrokeShape="RoundRectangle 18"
                 StrokeThickness="0"
                 VerticalOptions="Center">
@@ -109,322 +108,388 @@
             </Border>
         </Grid>
 
-        <!--  CONTEÚDO ROLÁVEL  -->
-        <ScrollView Grid.Row="2">
-            <Grid Padding="16,12,16,25">
+        <!--  CONTEÚDO + FADE NO TOPO  -->
+        <Grid Grid.Row="2">
 
-                <!--  VEÍCULOS  -->
-                <VerticalStackLayout x:Name="ConteudoVeiculos" Spacing="16">
+            <ScrollView>
+                <Grid Padding="16,16,16,24">
 
-                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                        <Label
-                            FontFamily="PoppinsSemiBold"
-                            FontSize="16"
-                            Text="Caminhões Cadastrados"
-                            TextColor="#475569"
-                            VerticalOptions="Center" />
+                    <!--  VEÍCULOS  -->
+                    <VerticalStackLayout x:Name="ConteudoVeiculos" Spacing="16">
 
-                        <Button
-                            Grid.Column="1"
-                            Padding="12,5"
-                            BackgroundColor="#1675F8"
-                            Clicked="OnNovoVeiculoClicked"
-                            CornerRadius="18"
-                            FontFamily="PoppinsSemiBold"
-                            FontSize="10"
-                            Text="+ NOVO VEÍCULO"
-                            TextColor="White" />
-                    </Grid>
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <Label
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="18"
+                                Text="Caminhões Cadastrados"
+                                TextColor="#0F172A"
+                                VerticalOptions="Center" />
 
-                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Veiculos}" Spacing="10">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate>
-                                <Border
-                                    Padding="14"
-                                    BackgroundColor="White"
-                                    Stroke="#E2E8F0"
-                                    StrokeShape="RoundRectangle 16"
-                                    StrokeThickness="1">
-                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                                        <VerticalStackLayout Spacing="7">
-                                            <Label>
-                                                <Label.FormattedText>
-                                                    <FormattedString>
-                                                        <Span
-                                                            FontFamily="PoppinsSemiBold"
-                                                            FontSize="14"
-                                                            Text="{Binding Codigo}"
-                                                            TextColor="#0F172A" />
-                                                        <Span
-                                                            FontSize="13"
-                                                            Text=" • "
-                                                            TextColor="#64748B" />
-                                                        <Span
-                                                            FontFamily="PoppinsSemiBold"
-                                                            FontSize="13"
-                                                            Text="{Binding Modelo}"
-                                                            TextColor="#0F172A" />
-                                                    </FormattedString>
-                                                </Label.FormattedText>
-                                            </Label>
+                            <Button
+                                Grid.Column="1"
+                                Padding="14,0"
+                                BackgroundColor="#1D61D2"
+                                Clicked="OnNovoVeiculoClicked"
+                                CornerRadius="12"
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="11"
+                                HeightRequest="40"
+                                Text="+ NOVO VEÍCULO"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                        </Grid>
 
-                                            <Label FontSize="11" TextColor="#64748B">
-                                                <Label.FormattedText>
-                                                    <FormattedString>
-                                                        <Span Text="Capacidade: " />
-                                                        <Span
-                                                            FontFamily="PoppinsSemiBold"
-                                                            Text="{Binding Capacidade}"
-                                                            TextColor="#334155" />
-                                                        <Span Text=" • Hodômetro: " />
-                                                        <Span
-                                                            FontFamily="PoppinsSemiBold"
-                                                            Text="{Binding Hodometro}"
-                                                            TextColor="#334155" />
-                                                    </FormattedString>
-                                                </Label.FormattedText>
-                                            </Label>
-                                        </VerticalStackLayout>
-
-                                        <Border
-                                            Grid.Column="1"
-                                            Padding="16,10"
-                                            BackgroundColor="#F8FAFC"
-                                            StrokeShape="RoundRectangle 12"
-                                            StrokeThickness="0"
-                                            VerticalOptions="Center">
-                                            <Label
-                                                FontFamily="PoppinsSemiBold"
-                                                FontSize="10"
-                                                Text="{Binding Status}"
-                                                TextColor="{Binding StatusCor}"
-                                                VerticalOptions="Center" />
-                                        </Border>
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </VerticalStackLayout>
-                </VerticalStackLayout>
-
-                <!--  ROTAS PADRÃO  -->
-                <VerticalStackLayout
-                    x:Name="ConteudoRotas"
-                    IsVisible="False"
-                    Spacing="16">
-
-                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                        <Label
-                            FontFamily="PoppinsSemiBold"
-                            FontSize="15"
-                            Text="Trechos e Rotas Padrão"
-                            TextColor="#475569"
-                            VerticalOptions="Center" />
-
-                        <Button
-                            Grid.Column="1"
-                            Padding="12,5"
-                            BackgroundColor="#1675F8"
-                            Clicked="OnNovaRotaClicked"
-                            CornerRadius="18"
-                            FontFamily="PoppinsSemiBold"
-                            FontSize="10"
-                            Text="+ NOVA ROTA"
-                            TextColor="White" />
-                    </Grid>
-
-                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Rotas}" Spacing="10">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate>
-                                <Border
-                                    Padding="14"
-                                    BackgroundColor="White"
-                                    Stroke="#E2E8F0"
-                                    StrokeShape="RoundRectangle 16"
-                                    StrokeThickness="1">
-                                    <VerticalStackLayout>
-                                        <Label
-                                            FontFamily="PoppinsSemiBold"
-                                            FontSize="13"
-                                            Text="{Binding Trecho}"
-                                            TextColor="#0F172A" />
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Veiculos}" Spacing="16">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        Padding="16"
+                                        BackgroundColor="White"
+                                        Stroke="#E2E8F0"
+                                        StrokeShape="RoundRectangle 16"
+                                        StrokeThickness="1">
+                                        <Border.Shadow>
+                                            <Shadow
+                                                Brush="Black"
+                                                Offset="0,1"
+                                                Opacity="0.06"
+                                                Radius="3" />
+                                        </Border.Shadow>
 
                                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                                            <VerticalStackLayout Spacing="5">
-                                                <Label FontSize="11" TextColor="#64748B">
+                                            <VerticalStackLayout Spacing="8">
+                                                <Label>
                                                     <Label.FormattedText>
                                                         <FormattedString>
-                                                            <Span Text="Distância Padrão: " />
                                                             <Span
                                                                 FontFamily="PoppinsSemiBold"
-                                                                Text="{Binding Distancia}"
-                                                                TextColor="#334155" />
+                                                                FontSize="16"
+                                                                Text="{Binding Codigo}"
+                                                                TextColor="#0F172A" />
+                                                            <Span
+                                                                FontFamily="PoppinsRegular"
+                                                                FontSize="14"
+                                                                Text=" • "
+                                                                TextColor="#64748B" />
+                                                            <Span
+                                                                FontFamily="PoppinsSemiBold"
+                                                                FontSize="14"
+                                                                Text="{Binding Modelo}"
+                                                                TextColor="#0F172A" />
                                                         </FormattedString>
                                                     </Label.FormattedText>
                                                 </Label>
 
                                                 <Label
-                                                    FontFamily="PoppinsSemiBold"
-                                                    FontSize="11"
-                                                    Text="{Binding StatusTexto}"
-                                                    TextColor="{Binding StatusCor}" />
+                                                    FontFamily="PoppinsRegular"
+                                                    FontSize="13"
+                                                    TextColor="#64748B">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="Capacidade: " />
+                                                            <Span
+                                                                FontFamily="PoppinsSemiBold"
+                                                                Text="{Binding Capacidade}"
+                                                                TextColor="#475569" />
+                                                            <Span Text=" • Hodômetro: " />
+                                                            <Span
+                                                                FontFamily="PoppinsSemiBold"
+                                                                Text="{Binding Hodometro}"
+                                                                TextColor="#475569" />
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
                                             </VerticalStackLayout>
 
-                                            <Button
+                                            <Border
                                                 Grid.Column="1"
-                                                Padding="12,0"
-                                                BackgroundColor="{Binding AcaoCor}"
-                                                Command="{Binding AlternarCommand}"
-                                                CornerRadius="12"
-                                                FontFamily="PoppinsSemiBold"
-                                                FontSize="10"
-                                                HeightRequest="36"
-                                                Text="{Binding AcaoTexto}"
-                                                TextColor="White"
-                                                VerticalOptions="Center" />
-                                        </Grid>
-                                    </VerticalStackLayout>
-                                </Border>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </VerticalStackLayout>
-                </VerticalStackLayout>
-
-                <!--  PLANOS E REVISÕES  -->
-                <VerticalStackLayout
-                    x:Name="ConteudoPlanos"
-                    IsVisible="False"
-                    Spacing="16">
-
-                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                        <Label
-                            FontFamily="PoppinsSemiBold"
-                            FontSize="14"
-                            Text="Gatilhos Preventivos por KM"
-                            TextColor="#475569"
-                            VerticalOptions="Center" />
-
-                        <Button
-                            Grid.Column="1"
-                            Padding="12,5"
-                            BackgroundColor="#1675F8"
-                            Clicked="OnRegistrarServicoClicked"
-                            CornerRadius="18"
-                            FontFamily="PoppinsSemiBold"
-                            FontSize="10"
-                            Text="+ RESGISTRAR SERVIÇO"
-                            TextColor="White" />
-                    </Grid>
-
-                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Planos}" Spacing="12">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate>
-                                <Border
-                                    Padding="12"
-                                    BackgroundColor="White"
-                                    Stroke="#E2E8F0"
-                                    StrokeShape="RoundRectangle 16"
-                                    StrokeThickness="1">
-
-                                    <Grid ColumnDefinitions="3,*" ColumnSpacing="10">
-                                        <BoxView
-                                            Grid.Column="0"
-                                            VerticalOptions="Fill"
-                                            Color="#F59E0B" />
-
-                                        <VerticalStackLayout Grid.Column="1" Spacing="7">
-                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="5">
+                                                Padding="10,5"
+                                                BackgroundColor="#F8FAFC"
+                                                StrokeShape="RoundRectangle 8"
+                                                StrokeThickness="0"
+                                                VerticalOptions="Start">
                                                 <Label
                                                     FontFamily="PoppinsSemiBold"
                                                     FontSize="12"
-                                                    Text="{Binding Titulo}"
-                                                    TextColor="#0F172A"
+                                                    Text="{Binding Status}"
+                                                    TextColor="{Binding StatusCor}"
                                                     VerticalOptions="Center" />
+                                            </Border>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
 
-                                                <Border
-                                                    Grid.Column="1"
-                                                    Padding="7,4"
-                                                    BackgroundColor="#FFEDD5"
-                                                    StrokeShape="RoundRectangle 12"
-                                                    StrokeThickness="0"
-                                                    VerticalOptions="Center">
+                    <!--  ROTAS PADRÃO  -->
+                    <VerticalStackLayout
+                        x:Name="ConteudoRotas"
+                        IsVisible="False"
+                        Spacing="16">
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <Label
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="18"
+                                Text="Trechos e Rotas Padrão"
+                                TextColor="#0F172A"
+                                VerticalOptions="Center" />
+
+                            <Button
+                                Grid.Column="1"
+                                Padding="14,0"
+                                BackgroundColor="#1D61D2"
+                                Clicked="OnNovaRotaClicked"
+                                CornerRadius="12"
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="11"
+                                HeightRequest="40"
+                                Text="+ NOVA ROTA"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                        </Grid>
+
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Rotas}" Spacing="16">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        Padding="16"
+                                        BackgroundColor="White"
+                                        Stroke="#E2E8F0"
+                                        StrokeShape="RoundRectangle 16"
+                                        StrokeThickness="1">
+                                        <Border.Shadow>
+                                            <Shadow
+                                                Brush="Black"
+                                                Offset="0,1"
+                                                Opacity="0.06"
+                                                Radius="3" />
+                                        </Border.Shadow>
+
+                                        <VerticalStackLayout Spacing="10">
+                                            <Label
+                                                FontFamily="PoppinsSemiBold"
+                                                FontSize="15"
+                                                Text="{Binding Trecho}"
+                                                TextColor="#0F172A" />
+
+                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                                <VerticalStackLayout Spacing="6">
                                                     <Label
-                                                        FontFamily="PoppinsSemiBold"
-                                                        FontSize="9"
-                                                        TextColor="#C2410C">
+                                                        FontFamily="PoppinsRegular"
+                                                        FontSize="13"
+                                                        TextColor="#64748B">
                                                         <Label.FormattedText>
                                                             <FormattedString>
-                                                                <Span Text="Alvo: " />
-                                                                <Span Text="{Binding KmAlvo}" />
-                                                                <Span Text=" KM" />
+                                                                <Span Text="Distância Padrão: " />
+                                                                <Span
+                                                                    FontFamily="PoppinsSemiBold"
+                                                                    Text="{Binding Distancia}"
+                                                                    TextColor="#475569" />
                                                             </FormattedString>
                                                         </Label.FormattedText>
                                                     </Label>
-                                                </Border>
+
+                                                    <Label
+                                                        FontFamily="PoppinsSemiBold"
+                                                        FontSize="12"
+                                                        Text="{Binding StatusTexto}"
+                                                        TextColor="{Binding StatusCor}" />
+                                                </VerticalStackLayout>
+
+                                                <Button
+                                                    Grid.Column="1"
+                                                    Padding="14,0"
+                                                    BackgroundColor="{Binding AcaoCor}"
+                                                    Command="{Binding AlternarCommand}"
+                                                    CornerRadius="12"
+                                                    FontFamily="PoppinsSemiBold"
+                                                    FontSize="11"
+                                                    HeightRequest="40"
+                                                    Text="{Binding AcaoTexto}"
+                                                    TextColor="White"
+                                                    VerticalOptions="Center" />
                                             </Grid>
-
-                                            <Label FontSize="11" TextColor="#64748B">
-                                                <Label.FormattedText>
-                                                    <FormattedString>
-                                                        <Span Text="Veículo: " />
-                                                        <Span FontFamily="PoppinsSemiBold" Text="{Binding Veiculo}" />
-                                                        <Span Text=" (Atual: " />
-                                                        <Span Text="{Binding KmAtual}" />
-                                                        <Span Text=" KM) • Faltam " />
-                                                        <Span FontFamily="PoppinsSemiBold" Text="{Binding KmFaltantes}" />
-                                                        <Span Text=" KM" />
-                                                    </FormattedString>
-                                                </Label.FormattedText>
-                                            </Label>
                                         </VerticalStackLayout>
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
                     </VerticalStackLayout>
 
-                    <Label
-                        FontFamily="PoppinsSemiBold"
-                        FontSize="13"
-                        Text="Histórico de Serviços Realizados"
-                        TextColor="#334155" />
+                    <!--  PLANOS E REVISÕES  -->
+                    <VerticalStackLayout
+                        x:Name="ConteudoPlanos"
+                        IsVisible="False"
+                        Spacing="16">
 
-                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Historico}" Spacing="12">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate>
-                                <Border
-                                    Padding="13"
-                                    BackgroundColor="White"
-                                    Stroke="#E2E8F0"
-                                    StrokeShape="RoundRectangle 15"
-                                    StrokeThickness="1">
-                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                                        <VerticalStackLayout Spacing="6">
-                                            <Label
-                                                FontFamily="PoppinsSemiBold"
-                                                FontSize="12"
-                                                Text="{Binding Titulo}"
-                                                TextColor="#0F172A" />
-                                            <Label
-                                                FontSize="10"
-                                                Text="{Binding Descricao}"
-                                                TextColor="#64748B" />
-                                        </VerticalStackLayout>
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <Label
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="18"
+                                Text="Gatilhos Preventivos por KM"
+                                TextColor="#0F172A"
+                                VerticalOptions="Center" />
 
-                                        <Label
-                                            Grid.Column="1"
-                                            FontFamily="PoppinsBold"
-                                            FontSize="11"
-                                            Text="{Binding Valor}"
-                                            TextColor="#EF4444"
-                                            VerticalOptions="Start" />
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
+                            <Button
+                                Grid.Column="1"
+                                Padding="14,0"
+                                BackgroundColor="#1D61D2"
+                                Clicked="OnRegistrarServicoClicked"
+                                CornerRadius="12"
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="11"
+                                HeightRequest="40"
+                                Text="+ REGISTRAR SERVIÇO"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                        </Grid>
+
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Planos}" Spacing="16">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        Padding="16"
+                                        BackgroundColor="White"
+                                        Stroke="#E2E8F0"
+                                        StrokeShape="RoundRectangle 16"
+                                        StrokeThickness="1">
+                                        <Border.Shadow>
+                                            <Shadow
+                                                Brush="Black"
+                                                Offset="0,1"
+                                                Opacity="0.06"
+                                                Radius="3" />
+                                        </Border.Shadow>
+
+                                        <Grid ColumnDefinitions="4,*" ColumnSpacing="12">
+                                            <BoxView
+                                                Grid.Column="0"
+                                                CornerRadius="2"
+                                                VerticalOptions="Fill"
+                                                Color="#B45309" />
+
+                                            <VerticalStackLayout Grid.Column="1" Spacing="8">
+                                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                                    <Label
+                                                        FontFamily="PoppinsSemiBold"
+                                                        FontSize="15"
+                                                        Text="{Binding Titulo}"
+                                                        TextColor="#0F172A"
+                                                        VerticalOptions="Center" />
+
+                                                    <Border
+                                                        Grid.Column="1"
+                                                        Padding="10,5"
+                                                        BackgroundColor="#FFEDD5"
+                                                        StrokeShape="RoundRectangle 8"
+                                                        StrokeThickness="0"
+                                                        VerticalOptions="Center">
+                                                        <Label
+                                                            FontFamily="PoppinsSemiBold"
+                                                            FontSize="12"
+                                                            TextColor="#C2410C">
+                                                            <Label.FormattedText>
+                                                                <FormattedString>
+                                                                    <Span Text="Alvo: " />
+                                                                    <Span Text="{Binding KmAlvo}" />
+                                                                    <Span Text=" KM" />
+                                                                </FormattedString>
+                                                            </Label.FormattedText>
+                                                        </Label>
+                                                    </Border>
+                                                </Grid>
+
+                                                <Label
+                                                    FontFamily="PoppinsRegular"
+                                                    FontSize="13"
+                                                    TextColor="#64748B">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="Veículo: " />
+                                                            <Span FontFamily="PoppinsSemiBold" Text="{Binding Veiculo}" />
+                                                            <Span Text=" (Atual: " />
+                                                            <Span Text="{Binding KmAtual}" />
+                                                            <Span Text=" KM) • Faltam " />
+                                                            <Span FontFamily="PoppinsSemiBold" Text="{Binding KmFaltantes}" />
+                                                            <Span Text=" KM" />
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                            </VerticalStackLayout>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+
+                        <Label
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="16"
+                            Text="Histórico de Serviços Realizados"
+                            TextColor="#0F172A" />
+
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Historico}" Spacing="16">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        Padding="16"
+                                        BackgroundColor="White"
+                                        Stroke="#E2E8F0"
+                                        StrokeShape="RoundRectangle 16"
+                                        StrokeThickness="1">
+                                        <Border.Shadow>
+                                            <Shadow
+                                                Brush="Black"
+                                                Offset="0,1"
+                                                Opacity="0.06"
+                                                Radius="3" />
+                                        </Border.Shadow>
+
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <VerticalStackLayout Spacing="6">
+                                                <Label
+                                                    FontFamily="PoppinsSemiBold"
+                                                    FontSize="15"
+                                                    Text="{Binding Titulo}"
+                                                    TextColor="#0F172A" />
+                                                <Label
+                                                    FontFamily="PoppinsRegular"
+                                                    FontSize="13"
+                                                    Text="{Binding Descricao}"
+                                                    TextColor="#64748B" />
+                                            </VerticalStackLayout>
+
+                                            <Label
+                                                Grid.Column="1"
+                                                FontFamily="PoppinsBold"
+                                                FontSize="14"
+                                                Text="{Binding Valor}"
+                                                TextColor="#EF4444"
+                                                VerticalOptions="Start" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
                     </VerticalStackLayout>
-                </VerticalStackLayout>
-            </Grid>
-        </ScrollView>
+                </Grid>
+            </ScrollView>
+
+            <!--  FADE no topo  -->
+            <BoxView
+                HeightRequest="16"
+                InputTransparent="True"
+                VerticalOptions="Start">
+                <BoxView.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0.0" Color="#F8F8F8" />
+                        <GradientStop Offset="1.0" Color="#00F8F8F8" />
+                    </LinearGradientBrush>
+                </BoxView.Background>
+            </BoxView>
+        </Grid>
+
     </Grid>
 </ContentPage>

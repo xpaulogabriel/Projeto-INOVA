@@ -1,5 +1,6 @@
 ﻿
 using InovaLog.Services;
+using InovaLog.ViewModels;
 using InovaLog.Views;
 
 namespace InovaLog;
@@ -21,33 +22,27 @@ public partial class App : Application
 
 
 
-    protected override Window CreateWindow(IActivationState? activationState)
-    {
-        // Inicia no Login.
-        var loginPage = _serviceProvider.GetRequiredService<LoginPage>();
-        var window = new Window(new NavigationPage(loginPage));
 
-        // Verifica se já existe um Token JWT válido salvo.
-        MainThread.BeginInvokeOnMainThread(async () =>
-        {
-            bool sessaoValida = await _authService.ValidarSessaoExistenteAsync();
+ 
 
-            if (sessaoValida)
-            {
-                EntrarNoSistema();
-            }
-        });
-
-        return window;
-    }
+protected override Window CreateWindow(IActivationState? activationState)
+{
+#if DEBUG
+    return new Window(new GestorFrotasPage(new GestorFrotasViewModel()));
+#else
+    // Mantenha aqui o código original do CreateWindow,
+    // responsável pelo LoginPage e pela validação da sessão.
+#endif
+}
 
 
 
-    /// <summary>
-    /// Entra no Shell após a autenticação.
-    /// Mantido para o fluxo original do aplicativo.
-    /// </summary>
-    public static void EntrarNoSistema()
+
+/// <summary>
+/// Entra no Shell após a autenticação.
+/// Mantido para o fluxo original do aplicativo.
+/// </summary>
+public static void EntrarNoSistema()
     {
         if (Current?.Windows.Count > 0)
         {
