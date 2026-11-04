@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="InovaLog.Views.NovaDividaPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Title="Nova Dívida"
+    BackgroundColor="#F8F8F8"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#2C63B1" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
+
+        <!--  CABEÇALHO  -->
+        <Grid
+            Grid.Row="0"
+            Padding="20,8,15,8"
+            ColumnDefinitions="*"
+            HeightRequest="85">
+
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                    <GradientStop Offset="0.0" Color="#2C63B1" />
+                    <GradientStop Offset="1.0" Color="#1EA1E8" />
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <Label
+                FontFamily="PoppinsSemiBold"
+                FontSize="22"
+                HorizontalOptions="Start"
+                Text="Nova Dívida"
+                TextColor="White"
+                VerticalOptions="Center" />
+        </Grid>
+
+        <!--  FORMULÁRIO  -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20,20,20,25" Spacing="0">
+
+                <!--  DESCRIÇÃO  -->
+                <HorizontalStackLayout Spacing="8">
+                    <Ellipse
+                        Fill="#E66D17"
+                        HeightRequest="11"
+                        VerticalOptions="Center"
+                        WidthRequest="11" />
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="15"
+                        Text="Descrição da Dívida / Financiamento"
+                        TextColor="#0F172A"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <Border
+                    Margin="0,5,0,22"
+                    Padding="12,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <Entry
+                        x:Name="TxtDescricaoDivida"
+                        BackgroundColor="Transparent"
+                        ClearButtonVisibility="WhileEditing"
+                        FontFamily="PoppinsRegular"
+                        FontSize="14"
+                        Placeholder="Ex.: Financiamento do baú"
+                        PlaceholderColor="#94A3B8"
+                        TextColor="#334155" />
+                </Border>
+
+                <!--  QUANTIDADE DE PARCELAS  -->
+                <HorizontalStackLayout Spacing="8">
+                    <Ellipse
+                        Fill="#E66D17"
+                        HeightRequest="11"
+                        VerticalOptions="Center"
+                        WidthRequest="11" />
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="15"
+                        Text="Qtd. de Parcelas"
+                        TextColor="#0F172A"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <Border
+                    Margin="0,5,0,22"
+                    Padding="12,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <Entry
+                        x:Name="TxtQuantidadeParcelas"
+                        BackgroundColor="Transparent"
+                        FontFamily="PoppinsRegular"
+                        FontSize="14"
+                        Keyboard="Numeric"
+                        MaxLength="4"
+                        Placeholder="Ex.: 12"
+                        PlaceholderColor="#94A3B8"
+                        TextColor="#334155" />
+                </Border>
+
+                <!--  VALOR DA PARCELA  -->
+                <HorizontalStackLayout Spacing="8">
+                    <Ellipse
+                        Fill="#E66D17"
+                        HeightRequest="11"
+                        VerticalOptions="Center"
+                        WidthRequest="11" />
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="15"
+                        Text="Valor da Parcela (R$)"
+                        TextColor="#0F172A"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <Border
+                    Margin="0,5,0,22"
+                    Padding="12,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <Entry
+                        x:Name="TxtValorParcela"
+                        BackgroundColor="Transparent"
+                        FontFamily="PoppinsRegular"
+                        FontSize="14"
+                        Keyboard="Numeric"
+                        Placeholder="R$ 0,00"
+                        PlaceholderColor="#94A3B8"
+                        TextColor="#334155" />
+                </Border>
+
+                <!--  SOMA TOTAL AUTOMÁTICA  -->
+                <HorizontalStackLayout Spacing="8">
+                    <Ellipse
+                        Fill="#10B981"
+                        HeightRequest="11"
+                        VerticalOptions="Center"
+                        WidthRequest="11" />
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="15"
+                        Text="Soma Total (Automático)"
+                        TextColor="#0F172A"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <Border
+                    Margin="0,5,0,22"
+                    Padding="14,12"
+                    BackgroundColor="#E0F2FE"
+                    Stroke="#BFDBFE"
+                    StrokeShape="RoundRectangle 18"
+                    StrokeThickness="1">
+
+                    <Grid ColumnDefinitions="*,Auto">
+
+                        <Label
+                            FontFamily="PoppinsMedium"
+                            FontSize="13"
+                            Text="Total das parcelas"
+                            TextColor="#475569"
+                            VerticalOptions="Center" />
+
+                        <Label
+                            x:Name="LblSomaTotal"
+                            Grid.Column="1"
+                            FontFamily="PoppinsBold"
+                            FontSize="18"
+                            Text="R$ 0,00"
+                            TextColor="#1675F8"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
+                <!--  QUITAÇÃO ANTECIPADA  -->
+                <HorizontalStackLayout Spacing="8">
+                    <Ellipse
+                        Fill="#E66D17"
+                        HeightRequest="11"
+                        VerticalOptions="Center"
+                        WidthRequest="11" />
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="15"
+                        Text="Valor Quitação Antecipada"
+                        TextColor="#0F172A"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <Border
+                    Margin="0,5,0,22"
+                    Padding="12,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <Entry
+                        x:Name="TxtValorQuitacao"
+                        BackgroundColor="Transparent"
+                        FontFamily="PoppinsRegular"
+                        FontSize="14"
+                        Keyboard="Numeric"
+                        Placeholder="R$ 0,00"
+                        PlaceholderColor="#94A3B8"
+                        TextColor="#334155" />
+                </Border>
+
+                <!--  VENCIMENTO DA PRIMEIRA PARCELA  -->
+                <HorizontalStackLayout Spacing="8">
+                    <Ellipse
+                        Fill="#E66D17"
+                        HeightRequest="11"
+                        VerticalOptions="Center"
+                        WidthRequest="11" />
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="15"
+                        Text="Vencimento da 1ª Parcela"
+                        TextColor="#0F172A"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <Border
+                    Margin="0,5,0,22"
+                    Padding="12,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <DatePicker
+                        x:Name="DpVencimentoPrimeiraParcela"
+                        BackgroundColor="Transparent"
+                        FontFamily="PoppinsRegular"
+                        FontSize="14"
+                        Format="dd/MM/yyyy"
+                        TextColor="#334155" />
+                </Border>
+
+                <!--  SIMULAÇÃO DE FALHA / ROLLBACK  -->
+                <Border
+                    Margin="0,0,0,18"
+                    Padding="12"
+                    BackgroundColor="#FFF7ED"
+                    Stroke="#FED7AA"
+                    StrokeShape="RoundRectangle 16"
+                    StrokeThickness="1">
+
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+
+                        <CheckBox
+                            x:Name="ChkSimularFalha"
+                            VerticalOptions="Start"
+                            Color="#E66D17" />
+
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+
+                            <Label
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="13"
+                                Text="Simular falha na inserção da última parcela"
+                                TextColor="#9A3412" />
+
+                            <Label
+                                FontFamily="PoppinsRegular"
+                                FontSize="11"
+                                Text="Demonstrar Rollback Transacional"
+                                TextColor="#9A3412" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <!--  INFORMAÇÃO  -->
+                <Label
+                    Margin="0,0,0,18"
+                    FontFamily="PoppinsRegular"
+                    FontSize="12"
+                    Text="Gera N parcelas mensais a partir do vencimento informado. Confira a prévia antes de concluir."
+                    TextColor="#64748B" />
+
+                <!--  PRÉVIA DAS PARCELAS  -->
+                <VerticalStackLayout
+                    x:Name="SecaoPreviaParcelas"
+                    IsVisible="False"
+                    Spacing="10">
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="17"
+                        Text="Prévia das Parcelas Mensais"
+                        TextColor="#0F172A" />
+
+                    <VerticalStackLayout x:Name="ListaParcelas" Spacing="8" />
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  RODAPÉ FIXO  -->
+        <Grid
+            Grid.Row="2"
+            Padding="16,10"
+            BackgroundColor="White"
+            ColumnDefinitions="*,Auto,Auto"
+            ColumnSpacing="6">
+
+            <Label
+                Grid.Column="0"
+                FontFamily="PoppinsRegular"
+                FontSize="11"
+                LineBreakMode="WordWrap"
+                Text="Confira os dados antes de gerar as parcelas"
+                TextColor="#64748B"
+                VerticalOptions="Center" />
+
+            <!--  CANCELAR  -->
+            <Button
+                Grid.Column="1"
+                Padding="12,0"
+                BackgroundColor="White"
+                BorderColor="#D1D5DB"
+                BorderWidth="1"
+                Clicked="OnCancelarClicked"
+                CornerRadius="9"
+                FontSize="12"
+                HeightRequest="42"
+                Text="Cancelar"
+                TextColor="#334155" />
+
+            <!--  GERAR PARCELAS  -->
+            <Button
+                Grid.Column="2"
+                Padding="12,0"
+                BackgroundColor="#2C63B1"
+                CornerRadius="9"
+                FontFamily="PoppinsSemiBold"
+                FontSize="12"
+                HeightRequest="42"
+                Text="Gerar Parcelas"
+                TextColor="White" />
+
+        </Grid>
+    </Grid>
+</ContentPage>

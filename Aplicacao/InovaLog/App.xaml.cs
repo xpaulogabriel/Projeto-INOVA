@@ -23,22 +23,26 @@ public partial class App : Application
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
-        // Inicia no Login.
-        var loginPage = _serviceProvider.GetRequiredService<LoginPage>();
-        var window = new Window(new NavigationPage(loginPage));
+#if DEBUG
+        // TESTE: abre direto na tela de motoristas, sem login.
+        var page = ActivatorUtilities.CreateInstance<FinanceiroPage>(_serviceProvider);
+        return new Window(new NavigationPage(page));
+#else
+    var loginPage = _serviceProvider.GetRequiredService<LoginPage>();
+    var window = new Window(new NavigationPage(loginPage));
 
-        // Verifica se já existe um Token JWT válido salvo.
-        MainThread.BeginInvokeOnMainThread(async () =>
+    MainThread.BeginInvokeOnMainThread(async () =>
+    {
+        bool sessaoValida = await _authService.ValidarSessaoExistenteAsync();
+
+        if (sessaoValida)
         {
-            bool sessaoValida = await _authService.ValidarSessaoExistenteAsync();
+            EntrarNoSistema();
+        }
+    });
 
-            if (sessaoValida)
-            {
-                EntrarNoSistema();
-            }
-        });
-
-        return window;
+    return window;
+#endif
     }
 
 

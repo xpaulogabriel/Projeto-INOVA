@@ -17,8 +17,8 @@
         <!--  CABEÇALHO  -->
         <Grid
             Grid.Row="0"
-            Padding="20,10,15,5"
-            ColumnDefinitions="Auto,*"
+            Padding="20,8,15,8"
+            ColumnDefinitions="*"
             ColumnSpacing="5"
             HeightRequest="85">
 
@@ -29,19 +29,10 @@
                 </LinearGradientBrush>
             </Grid.Background>
 
-            <ImageButton
-                Grid.Column="0"
-                Padding="8"
-                Aspect="AspectFit"
-                BackgroundColor="Transparent"
-                Source="btn_voltar.svg"
-                VerticalOptions="Center"
-                WidthRequest="55" />
-
             <Label
                 Grid.Column="1"
                 FontFamily="PoppinsSemiBold"
-                FontSize="20"
+                FontSize="22"
                 HorizontalOptions="Start"
                 Text="Nova Despesa / Receita"
                 TextColor="White"
@@ -591,6 +582,9 @@
                 BackgroundColor="Transparent"
                 StrokeShape="RoundRectangle 12"
                 StrokeThickness="0">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnMinhasViagensClicked" />
+                </Border.GestureRecognizers>
                 <VerticalStackLayout HorizontalOptions="Center" Spacing="3">
                     <Image
                         HeightRequest="22"

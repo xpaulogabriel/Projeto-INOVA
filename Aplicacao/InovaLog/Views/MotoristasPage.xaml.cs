@@ -141,4 +141,9 @@ public partial class MotoristasPage : ContentPage
             "Esta seção será desenvolvida posteriormente.",
             "OK");
     }
+
+    private async void OnGastoEstradaClicked(object sender, TappedEventArgs e)
+    {
+        await Navigation.PushAsync(new GastoEstradaPage());
+    }
 }

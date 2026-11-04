@@ -1,99 +1,87 @@
-
 using InovaLog.ViewModels;
 
 namespace InovaLog.Views;
 
 public partial class FinanceiroPage : ContentPage
 {
+    private int _abaSelecionada;
+
+    // Títulos das abas do Financeiro.
+    private readonly string[] _titulosAbas ={
+        "Resumo & Extrato","Financiamentos","Projeções"
+    };
+
     public FinanceiroPage()
     {
         InitializeComponent();
-
         // Mantém o ViewModel utilizado pelo gráfico.
         BindingContext = new FinanceiroViewModel();
-
-        // Abre a página inicialmente no Resumo.
-        SelecionarAba("resumo");
+        // Abre inicialmente no Resumo.
+        AtualizarAba(0);
     }
 
-    // Clique na aba Resumo & Extrato.
-    private void OnResumoTapped(object? sender, TappedEventArgs e)
-    {
-        SelecionarAba("resumo");
+    // VOLTAR UMA ABA.
+    private void OnAbaAnteriorClicked (object? sender,EventArgs e) {
+        if (_abaSelecionada > 0) { AtualizarAba(_abaSelecionada - 1);
+        }
     }
 
-    // Clique na aba Financiamentos.
-    private void OnFinanciamentosTapped(
-        object? sender,
-        TappedEventArgs e)
-    {
-        SelecionarAba("financiamentos");
+    // AVANÇAR UMA ABA.
+    private void OnProximaAbaClicked (object? sender,EventArgs e) {
+        if (_abaSelecionada < _titulosAbas.Length - 1) {
+            AtualizarAba(_abaSelecionada + 1);
+        }
     }
 
-    // Clique na aba Projeções.
-    private void OnProjecoesTapped(
-        object? sender,
-        TappedEventArgs e)
+    // ATUALIZA A ABA SELECIONADA.
+    private void AtualizarAba(int indice)
     {
-        SelecionarAba("projecoes");
-    }
+        if (indice < 0 || indice >= _titulosAbas.Length)
+            return;
 
-    // Exibe somente o conteúdo da aba selecionada.
-    private void SelecionarAba(string abaSelecionada)
-    {
-        bool resumo = abaSelecionada == "resumo";
-        bool financiamentos = abaSelecionada == "financiamentos";
-        bool projecoes = abaSelecionada == "projecoes";
+        _abaSelecionada = indice;
 
+        // Atualiza o título central do carrossel.
+        TextoAbaSelecionada.Text = _titulosAbas[indice];
+
+        bool resumo = indice == 0;
+        bool financiamentos = indice == 1;
+        bool projecoes = indice == 2;
+
+        // Exibe somente o conteúdo da aba selecionada.
         ConteudoResumo.IsVisible = resumo;
         ConteudoFinanciamentos.IsVisible = financiamentos;
         ConteudoProjecoes.IsVisible = projecoes;
 
-        // Mantém o rodapé original, ocultando somente
-        // o botão de ação quando Projeções estiver aberta.
+        // Configura o botão inferior.
         BtnAcaoFinanceira.IsVisible = !projecoes;
 
-        if (resumo)
-        {
+        if (resumo) {
             BtnAcaoFinanceira.Text = "+ NOVA DESPESA";
         }
-        else if (financiamentos)
-        {
+        else if (financiamentos) {
             BtnAcaoFinanceira.Text = "+ NOVA DÍVIDA";
         }
 
-        AtualizarEstiloAba(AbaResumo, resumo);
-        AtualizarEstiloAba(AbaFinanciamentos, financiamentos);
-        AtualizarEstiloAba(AbaProjecoes, projecoes);
+        // Desativa a seta esquerda na primeira aba.
+        BtnAbaAnterior.IsEnabled = indice > 0;
+        BtnAbaAnterior.Opacity = indice > 0 ? 1 : 0.3;
+
+        // Desativa a seta direita na última aba.
+        BtnProximaAba.IsEnabled =
+            indice < _titulosAbas.Length - 1;
+
+        BtnProximaAba.Opacity =
+            indice < _titulosAbas.Length - 1 ? 1 : 0.3;
     }
 
-    // Atualiza a aparência da aba selecionada.
-    private static void AtualizarEstiloAba(
-        Border aba,
-        bool selecionada)
-    {
-        if (aba.Content is not Label texto)
-            return;
-
-        if (selecionada)
-        {
-            aba.BackgroundColor = Color.FromArgb("#1675F8");
-            aba.Stroke = Colors.Transparent;
-            aba.StrokeThickness = 0;
-
-            texto.TextColor = Colors.White;
-            texto.FontFamily = "PoppinsSemiBold";
+    // NAVEGAÇÃO PARA NOVA DESPESA OU NOVA DÍVIDA.
+    private async void OnAcaoFinanceiraClicked (object? sender,EventArgs e) {
+        if (_abaSelecionada == 0) {
+            await Navigation.PushAsync(new NovaDespesaPag());
         }
-        else
-        {
-            aba.BackgroundColor = Colors.White;
-            aba.Stroke = new SolidColorBrush(
-                Color.FromArgb("#E2E8F0"));
-
-            aba.StrokeThickness = 1;
-
-            texto.TextColor = Color.FromArgb("#64748B");
-            texto.FontFamily = "PoppinsMedium";
+        else if (_abaSelecionada == 1) {
+            await Navigation.PushAsync(new NovaDividaPage());
         }
     }
 }

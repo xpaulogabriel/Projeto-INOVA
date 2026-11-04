@@ -17,8 +17,8 @@
         <!--  CABEÇALHO  -->
         <Grid
             Grid.Row="0"
-            Padding="20,10,15,5"
-            ColumnDefinitions="Auto,*,Auto"
+            Padding="20,8,15,8"
+            ColumnDefinitions="*"
             ColumnSpacing="5"
             HeightRequest="85">
 
@@ -29,15 +29,6 @@
                 </LinearGradientBrush>
             </Grid.Background>
 
-            <ImageButton
-                Grid.Column="0"
-                Padding="8"
-                Aspect="AspectFit"
-                BackgroundColor="Transparent"
-                Source="btn_voltar.svg"
-                VerticalOptions="Center"
-                WidthRequest="55" />
-
             <Label
                 Grid.Column="1"
                 FontFamily="PoppinsSemiBold"
@@ -47,13 +38,6 @@
                 TextColor="White"
                 VerticalOptions="Center" />
 
-            <Image
-                Grid.Column="2"
-                HeightRequest="70"
-                HorizontalOptions="End"
-                Source="logo_azul.png"
-                VerticalOptions="Center"
-                WidthRequest="70" />
         </Grid>
 
         <!--  FORMULÁRIO  -->
@@ -357,6 +341,7 @@
                 BackgroundColor="White"
                 BorderColor="#D1D5DB"
                 BorderWidth="1"
+                Clicked="OnCancelarClicked"
                 CornerRadius="9"
                 FontSize="12"
                 HeightRequest="42"

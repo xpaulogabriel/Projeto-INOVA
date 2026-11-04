@@ -20,7 +20,8 @@
         <Grid
             Grid.Row="0"
             Padding="20,8,15,8"
-            ColumnDefinitions="*,Auto">
+            ColumnDefinitions="*"
+            HeightRequest="85">
 
             <Grid.Background>
                 <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
@@ -31,8 +32,8 @@
 
             <Label
                 FontFamily="PoppinsSemiBold"
-                FontSize="19"
-                Text="Frota, Rotas &amp; Manutenção"
+                FontSize="22"
+                Text="Controle de Rotas"
                 TextColor="White"
                 VerticalOptions="Center" />
         </Grid>
@@ -151,9 +152,9 @@
                                         <Border.Shadow>
                                             <Shadow
                                                 Brush="Black"
-                                                Offset="0,1"
                                                 Opacity="0.06"
-                                                Radius="3" />
+                                                Radius="3"
+                                                Offset="0,1" />
                                         </Border.Shadow>
 
                                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
@@ -262,9 +263,9 @@
                                         <Border.Shadow>
                                             <Shadow
                                                 Brush="Black"
-                                                Offset="0,1"
                                                 Opacity="0.06"
-                                                Radius="3" />
+                                                Radius="3"
+                                                Offset="0,1" />
                                         </Border.Shadow>
 
                                         <VerticalStackLayout Spacing="10">
@@ -358,9 +359,9 @@
                                         <Border.Shadow>
                                             <Shadow
                                                 Brush="Black"
-                                                Offset="0,1"
                                                 Opacity="0.06"
-                                                Radius="3" />
+                                                Radius="3"
+                                                Offset="0,1" />
                                         </Border.Shadow>
 
                                         <Grid ColumnDefinitions="4,*" ColumnSpacing="12">
@@ -442,9 +443,9 @@
                                         <Border.Shadow>
                                             <Shadow
                                                 Brush="Black"
-                                                Offset="0,1"
                                                 Opacity="0.06"
-                                                Radius="3" />
+                                                Radius="3"
+                                                Offset="0,1" />
                                         </Border.Shadow>
 
                                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">

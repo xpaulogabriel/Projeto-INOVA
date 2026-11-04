@@ -18,7 +18,7 @@
         <!--  CABEÇALHO  -->
         <Grid
             Grid.Row="0"
-            Padding="20,10,15,5"
+            Padding="20,8,15,8"
             HeightRequest="85">
 
             <Grid.Background>

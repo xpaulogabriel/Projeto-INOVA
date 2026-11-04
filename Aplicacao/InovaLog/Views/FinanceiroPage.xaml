@@ -21,7 +21,7 @@
         <Grid
             Grid.Row="0"
             Padding="20,8,15,8"
-            ColumnDefinitions="*,Auto"
+            ColumnDefinitions="*"
             HeightRequest="85">
 
             <Grid.Background>
@@ -34,101 +34,67 @@
             <Label
                 Grid.Column="0"
                 FontFamily="PoppinsSemiBold"
-                FontSize="28"
+                FontSize="22"
                 Text="Financeiro"
                 TextColor="White"
                 VerticalOptions="Center" />
-
-            <Image
-                Grid.Column="1"
-                Aspect="AspectFit"
-                HeightRequest="60"
-                HorizontalOptions="End"
-                Source="logo_azul.png"
-                VerticalOptions="Center"
-                WidthRequest="60" />
         </Grid>
 
-        <!--  ABAS  -->
+        <!--  CARROSSEL DE ABAS SUPERIORES  -->
         <Grid
             Grid.Row="1"
-            Padding="10,8"
+            Padding="16,10"
             BackgroundColor="#F8F8F8"
-            ColumnDefinitions="*,*,*"
-            ColumnSpacing="6"
-            HeightRequest="65">
+            ColumnDefinitions="36,*,36"
+            ColumnSpacing="6">
 
-            <!--  ABA RESUMO  -->
-            <Border
-                x:Name="AbaResumo"
+            <!--  SETA ANTERIOR  -->
+            <ImageButton
+                x:Name="BtnAbaAnterior"
                 Grid.Column="0"
-                Padding="5"
-                BackgroundColor="#1675F8"
-                StrokeShape="RoundRectangle 18"
+                Padding="2"
+                BackgroundColor="Transparent"
+                Clicked="OnAbaAnteriorClicked"
+                HeightRequest="42"
+                Source="basil_arrow_left_outline.png"
+                VerticalOptions="Center" />
+
+            <!--  ABA SELECIONADA  -->
+            <Border
+                Grid.Column="1"
+                Padding="16,8"
+                BackgroundColor="#2C63B1"
+                HorizontalOptions="Center"
                 StrokeThickness="0"
                 VerticalOptions="Center">
 
-                <Border.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnResumoTapped" />
-                </Border.GestureRecognizers>
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="9999" />
+                </Border.StrokeShape>
 
                 <Label
+                    x:Name="TextoAbaSelecionada"
                     FontFamily="PoppinsSemiBold"
-                    FontSize="11"
+                    FontSize="14"
                     HorizontalTextAlignment="Center"
                     Text="Resumo &amp; Extrato"
                     TextColor="White"
                     VerticalTextAlignment="Center" />
             </Border>
 
-            <!--  ABA FINANCIAMENTOS  -->
-            <Border
-                x:Name="AbaFinanciamentos"
-                Grid.Column="1"
-                Padding="5"
-                BackgroundColor="White"
-                Stroke="#E2E8F0"
-                StrokeShape="RoundRectangle 18"
-                StrokeThickness="1"
-                VerticalOptions="Center">
-
-                <Border.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnFinanciamentosTapped" />
-                </Border.GestureRecognizers>
-
-                <Label
-                    FontFamily="PoppinsMedium"
-                    FontSize="11"
-                    HorizontalTextAlignment="Center"
-                    Text="Financiamentos"
-                    TextColor="#64748B"
-                    VerticalTextAlignment="Center" />
-            </Border>
-
-            <!--  ABA PROJEÇÕES  -->
-            <Border
-                x:Name="AbaProjecoes"
+            <!--  SETA PRÓXIMA  -->
+            <ImageButton
+                x:Name="BtnProximaAba"
                 Grid.Column="2"
-                Padding="5"
-                BackgroundColor="White"
-                Stroke="#E2E8F0"
-                StrokeShape="RoundRectangle 18"
-                StrokeThickness="1"
-                VerticalOptions="Center">
+                Padding="2"
+                BackgroundColor="Transparent"
+                Clicked="OnProximaAbaClicked"
+                HeightRequest="42"
+                Source="seta_direita.png"
+                VerticalOptions="Center" />
 
-                <Border.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnProjecoesTapped" />
-                </Border.GestureRecognizers>
-
-                <Label
-                    FontFamily="PoppinsMedium"
-                    FontSize="11"
-                    HorizontalTextAlignment="Center"
-                    Text="Projeções"
-                    TextColor="#64748B"
-                    VerticalTextAlignment="Center" />
-            </Border>
         </Grid>
+
 
         <!--  ÁREA PRINCIPAL  -->
         <ScrollView Grid.Row="2">
@@ -588,9 +554,10 @@
                                 Padding="10"
                                 BackgroundColor="#F8FAFC"
                                 StrokeShape="RoundRectangle 12"
-                                StrokeThickness="0">
+                                StrokeThickness="0"
+                                InputTransparent="False">
 
-                                <VerticalStackLayout Spacing="8">
+                                <VerticalStackLayout Spacing="10">
 
                                     <Grid ColumnDefinitions="*,Auto">
                                         <Label
@@ -637,7 +604,6 @@
                         StrokeThickness="1">
 
                         <VerticalStackLayout Spacing="10">
-
                             <Label
                                 FontFamily="PoppinsSemiBold"
                                 FontSize="14"
@@ -903,25 +869,18 @@
             BackgroundColor="White"
             ColumnDefinitions="*,Auto">
 
-            <Label
-                Grid.Column="0"
-                FontFamily="PoppinsMedium"
-                FontSize="12"
-                Text="Rota Atual: Ativa"
-                TextColor="#64748B"
-                VerticalOptions="Center" />
-
             <Button
                 x:Name="BtnAcaoFinanceira"
-                Grid.Column="1"
                 Padding="12,0"
                 BackgroundColor="#2C63B1"
+                Clicked="OnAcaoFinanceiraClicked"
                 CornerRadius="10"
                 FontFamily="PoppinsSemiBold"
                 FontSize="11"
                 HeightRequest="42"
                 Text="+ NOVA DESPESA"
                 TextColor="White" />
+
         </Grid>
 
     </Grid>

@@ -64,6 +64,8 @@ public static class MauiProgram
         builder.Services.AddTransient<InformacoesLoginViewModel>();
         builder.Services.AddTransient<FinanceiroViewModel>();
         builder.Services.AddTransient<GestorFrotasViewModel>();
+        builder.Services.AddTransient<MotoristasPage>();
+        builder.Services.AddTransient<GastoEstradaPage>();
 
         // 3. Registo de Views (Pré-Login)
         builder.Services.AddTransient<LoginPage>();

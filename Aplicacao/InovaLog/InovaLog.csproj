@@ -98,6 +98,9 @@
 		<MauiXaml Update="Views\NovaDespesaPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Views\NovaDividaPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Views\NovaRotaPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
