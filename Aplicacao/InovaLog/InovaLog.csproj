@@ -104,6 +104,9 @@
 		<MauiXaml Update="Views\NovaRotaPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Views\NovaViagemPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Views\NovoVeiculo.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>

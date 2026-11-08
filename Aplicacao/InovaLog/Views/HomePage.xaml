@@ -4,50 +4,886 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:InovaLog.ViewModels"
+    Title="Início"
+    x:DataType="vm:HomeViewModel"
+    BackgroundColor="#F8F8F8"
     NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Behaviors>
         <toolkit:StatusBarBehavior StatusBarColor="#2C63B1" StatusBarStyle="LightContent" />
     </ContentPage.Behaviors>
 
-    <Grid>
+    <Grid RowDefinitions="Auto,*" RowSpacing="0">
 
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                <GradientStop Offset="0.0" Color="#2C63B1" />
-                <GradientStop Offset="1.0" Color="#1EA1E8" />
-            </LinearGradientBrush>
-        </Grid.Background>
+        <!--  ======================================  -->
+        <!--  CABEÇALHO: foto, boas-vindas, perfil, status e Trocar Conta  -->
+        <!--  ======================================  -->
+        <Grid
+            Grid.Row="0"
+            Padding="20,10,15,10"
+            ColumnDefinitions="Auto,*,Auto"
+            ColumnSpacing="12"
+            MinimumHeightRequest="85">
 
-        <VerticalStackLayout
-            Padding="35"
-            HorizontalOptions="Center"
-            Spacing="20"
-            VerticalOptions="Center">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                    <GradientStop Offset="0" Color="#2C63B1" />
+                    <GradientStop Offset="1" Color="#1EA1E8" />
+                </LinearGradientBrush>
+            </Grid.Background>
 
-            <Image
-                HeightRequest="180"
-                HorizontalOptions="Center"
-                Opacity="0.9"
-                Source="logo_azul.png"
-                WidthRequest="180" />
+            <!--  FOTO DE PERFIL (mostra as iniciais até existir uma foto)  -->
+            <Border
+                Grid.Column="0"
+                BackgroundColor="#33FFFFFF"
+                HeightRequest="52"
+                Stroke="White"
+                StrokeShape="RoundRectangle 26"
+                StrokeThickness="2"
+                VerticalOptions="Center"
+                WidthRequest="52">
 
-            <Label
+                <Grid>
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        Text="{Binding Iniciais}"
+                        TextColor="White"
+                        VerticalOptions="Center" />
+
+                    <Image
+                        x:Name="FotoPerfil"
+                        Aspect="AspectFill"
+                        IsVisible="False" />
+                </Grid>
+            </Border>
+
+            <!--  BEM-VINDO / NOME / PERFIL / STATUS  -->
+            <VerticalStackLayout
+                Grid.Column="1"
+                Spacing="2"
+                VerticalOptions="Center">
+
+                <Label
+                    FontFamily="PoppinsRegular"
+                    FontSize="12"
+                    Text="Bem-vindo"
+                    TextColor="#E0F2FE" />
+
+                <Label
+                    FontFamily="PoppinsSemiBold"
+                    FontSize="17"
+                    LineBreakMode="TailTruncation"
+                    MaxLines="1"
+                    Text="{Binding NomeUsuario}"
+                    TextColor="White" />
+
+                <HorizontalStackLayout Margin="0,2,0,0" Spacing="8">
+
+                    <Border
+                        Padding="8,2"
+                        BackgroundColor="#33FFFFFF"
+                        StrokeShape="RoundRectangle 8"
+                        StrokeThickness="0"
+                        VerticalOptions="Center">
+
+                        <Label
+                            FontFamily="PoppinsBold"
+                            FontSize="10"
+                            Text="{Binding RotuloPerfil}"
+                            TextColor="White" />
+                    </Border>
+
+                    <HorizontalStackLayout Spacing="4" VerticalOptions="Center">
+                        <Border
+                            BackgroundColor="{Binding CorStatus}"
+                            HeightRequest="8"
+                            StrokeShape="RoundRectangle 4"
+                            StrokeThickness="0"
+                            VerticalOptions="Center"
+                            WidthRequest="8" />
+
+                        <Label
+                            FontFamily="PoppinsBold"
+                            FontSize="10"
+                            Text="{Binding TextoStatus}"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+
+            <!--  TROCAR CONTA  -->
+            <Button
+                Grid.Column="2"
+                Padding="12,0"
+                BackgroundColor="#33FFFFFF"
+                BorderColor="White"
+                BorderWidth="1"
+                Command="{Binding TrocarContaCommand}"
+                CornerRadius="10"
                 FontFamily="PoppinsSemiBold"
-                FontSize="34"
-                HorizontalTextAlignment="Center"
-                Text="Bem-vindo!"
-                TextColor="White" />
+                FontSize="11"
+                HeightRequest="34"
+                Text="Trocar Conta"
+                TextColor="White"
+                VerticalOptions="Center" />
+        </Grid>
 
-            <Label
-                FontFamily="PoppinsRegular"
-                FontSize="16"
-                HorizontalTextAlignment="Center"
-                Text="Que bom ter você aqui no INOVA."
-                TextColor="White" />
+        <!--  ======================================  -->
+        <!--  ÁREA PRINCIPAL  -->
+        <!--  ======================================  -->
+        <ScrollView Grid.Row="1">
 
-        </VerticalStackLayout>
+            <VerticalStackLayout Padding="16,16,16,25" Spacing="18">
 
+                <!--  RESUMO DO DIA  -->
+                <Border
+                    Padding="18"
+                    BackgroundColor="White"
+                    Stroke="#E2E8F0"
+                    StrokeShape="RoundRectangle 18"
+                    StrokeThickness="1">
+
+                    <VerticalStackLayout Spacing="16">
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="18"
+                                Text="Resumo do Dia"
+                                TextColor="#0F172A"
+                                VerticalOptions="Center" />
+
+                            <Border
+                                Grid.Column="1"
+                                Padding="10,5"
+                                BackgroundColor="#E0F2FE"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="0">
+
+                                <Label
+                                    FontFamily="PoppinsSemiBold"
+                                    FontSize="11"
+                                    Text="{Binding DataHoje}"
+                                    TextColor="#2C63B1" />
+                            </Border>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+
+                            <!--  VIAGENS EM ANDAMENTO  -->
+                            <VerticalStackLayout
+                                Grid.Column="0"
+                                HorizontalOptions="Center"
+                                Spacing="6">
+
+                                <Border
+                                    BackgroundColor="#E0F2FE"
+                                    HeightRequest="44"
+                                    HorizontalOptions="Center"
+                                    StrokeShape="RoundRectangle 13"
+                                    StrokeThickness="0"
+                                    WidthRequest="44">
+
+                                    <Image
+                                        HeightRequest="24"
+                                        HorizontalOptions="Center"
+                                        Source="nav_viagens.svg"
+                                        VerticalOptions="Center"
+                                        WidthRequest="24">
+                                        <Image.Behaviors>
+                                            <toolkit:IconTintColorBehavior TintColor="#2C63B1" />
+                                        </Image.Behaviors>
+                                    </Image>
+                                </Border>
+
+                                <Label
+                                    FontFamily="PoppinsBold"
+                                    FontSize="26"
+                                    HorizontalOptions="Center"
+                                    Text="{Binding ViagensEmAndamento}"
+                                    TextColor="#2C63B1" />
+
+                                <Label
+                                    FontFamily="PoppinsMedium"
+                                    FontSize="11"
+                                    HorizontalTextAlignment="Center"
+                                    Text="Viagens em andamento"
+                                    TextColor="#64748B" />
+                            </VerticalStackLayout>
+
+                            <!--  VEÍCULOS EM ROTA  -->
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                HorizontalOptions="Center"
+                                Spacing="6">
+
+                                <Border
+                                    BackgroundColor="#FEF3C7"
+                                    HeightRequest="44"
+                                    HorizontalOptions="Center"
+                                    StrokeShape="RoundRectangle 13"
+                                    StrokeThickness="0"
+                                    WidthRequest="44">
+
+                                    <Image
+                                        HeightRequest="24"
+                                        HorizontalOptions="Center"
+                                        Source="nav_frota.svg"
+                                        VerticalOptions="Center"
+                                        WidthRequest="24">
+                                        <Image.Behaviors>
+                                            <toolkit:IconTintColorBehavior TintColor="#F59E0B" />
+                                        </Image.Behaviors>
+                                    </Image>
+                                </Border>
+
+                                <Label
+                                    FontFamily="PoppinsBold"
+                                    FontSize="26"
+                                    HorizontalOptions="Center"
+                                    Text="{Binding VeiculosEmRota}"
+                                    TextColor="#F59E0B" />
+
+                                <Label
+                                    FontFamily="PoppinsMedium"
+                                    FontSize="11"
+                                    HorizontalTextAlignment="Center"
+                                    Text="Veículos em rota"
+                                    TextColor="#64748B" />
+                            </VerticalStackLayout>
+
+                            <!--  VEÍCULOS NA GARAGEM  -->
+                            <VerticalStackLayout
+                                Grid.Column="2"
+                                HorizontalOptions="Center"
+                                Spacing="6">
+
+                                <Border
+                                    BackgroundColor="#D1FAE5"
+                                    HeightRequest="44"
+                                    HorizontalOptions="Center"
+                                    StrokeShape="RoundRectangle 13"
+                                    StrokeThickness="0"
+                                    WidthRequest="44">
+
+                                    <Image
+                                        HeightRequest="24"
+                                        HorizontalOptions="Center"
+                                        Source="icone_garagem.svg"
+                                        VerticalOptions="Center"
+                                        WidthRequest="24">
+                                        <Image.Behaviors>
+                                            <toolkit:IconTintColorBehavior TintColor="#10B981" />
+                                        </Image.Behaviors>
+                                    </Image>
+                                </Border>
+
+                                <Label
+                                    FontFamily="PoppinsBold"
+                                    FontSize="26"
+                                    HorizontalOptions="Center"
+                                    Text="{Binding VeiculosNaGaragem}"
+                                    TextColor="#10B981" />
+
+                                <Label
+                                    FontFamily="PoppinsMedium"
+                                    FontSize="11"
+                                    HorizontalTextAlignment="Center"
+                                    Text="Na garagem"
+                                    TextColor="#64748B" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  PESQUISA RÁPIDA  -->
+                <VerticalStackLayout Spacing="10">
+
+                    <Border
+                        Padding="14,0,12,0"
+                        BackgroundColor="White"
+                        Stroke="#D1D5DB"
+                        StrokeShape="RoundRectangle 22"
+                        StrokeThickness="1">
+
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                            <Image
+                                Grid.Column="0"
+                                HeightRequest="18"
+                                Source="icone_busca.svg"
+                                VerticalOptions="Center"
+                                WidthRequest="18">
+                                <Image.Behaviors>
+                                    <toolkit:IconTintColorBehavior TintColor="#94A3B8" />
+                                </Image.Behaviors>
+                            </Image>
+
+                            <Entry
+                                Grid.Column="1"
+                                BackgroundColor="Transparent"
+                                ClearButtonVisibility="WhileEditing"
+                                FontFamily="PoppinsRegular"
+                                FontSize="14"
+                                Placeholder="Buscar viagens, veículos, rotas..."
+                                PlaceholderColor="#94A3B8"
+                                ReturnType="Search"
+                                Text="{Binding TextoBusca}"
+                                TextColor="#334155" />
+                        </Grid>
+                    </Border>
+
+                    <!--  RESULTADOS DA PESQUISA  -->
+                    <Border
+                        Padding="14"
+                        BackgroundColor="White"
+                        IsVisible="{Binding MostrarResultados}"
+                        Stroke="#E2E8F0"
+                        StrokeShape="RoundRectangle 15"
+                        StrokeThickness="1">
+
+                        <VerticalStackLayout Spacing="12">
+
+                            <Label
+                                FontFamily="PoppinsMedium"
+                                FontSize="13"
+                                IsVisible="{Binding SemResultados}"
+                                Text="Nenhum resultado encontrado."
+                                TextColor="#64748B" />
+
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Resultados}" Spacing="12">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:ResultadoBusca">
+                                        <Grid BackgroundColor="Transparent" ColumnDefinitions="*,Auto" ColumnSpacing="10">
+
+                                            <Grid.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OnResultadoTapped" />
+                                            </Grid.GestureRecognizers>
+
+                                            <VerticalStackLayout Spacing="3" VerticalOptions="Center">
+                                                <Label
+                                                    FontFamily="PoppinsSemiBold"
+                                                    FontSize="12"
+                                                    LineBreakMode="TailTruncation"
+                                                    MaxLines="1"
+                                                    Text="{Binding Titulo}"
+                                                    TextColor="#0F172A" />
+
+                                                <Label
+                                                    FontFamily="PoppinsRegular"
+                                                    FontSize="11"
+                                                    Text="{Binding Detalhe}"
+                                                    TextColor="#888888" />
+                                            </VerticalStackLayout>
+
+                                            <Border
+                                                Grid.Column="1"
+                                                Padding="10,4"
+                                                BackgroundColor="#E0F2FE"
+                                                StrokeShape="RoundRectangle 10"
+                                                StrokeThickness="0"
+                                                VerticalOptions="Center">
+
+                                                <Label
+                                                    FontFamily="PoppinsBold"
+                                                    FontSize="10"
+                                                    Text="{Binding Tipo}"
+                                                    TextColor="#2C63B1" />
+                                            </Border>
+                                        </Grid>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!--  ACESSO RÁPIDO AOS MÓDULOS  -->
+                <VerticalStackLayout Spacing="12">
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="18"
+                        Text="Acesso Rápido aos Módulos"
+                        TextColor="#0F172A" />
+
+                    <Grid
+                        ColumnDefinitions="*,*"
+                        ColumnSpacing="12"
+                        RowDefinitions="Auto,Auto"
+                        RowSpacing="12">
+
+                        <!--  VER VIAGENS  -->
+                        <Border
+                            x:Name="AtalhoViagens"
+                            Padding="14"
+                            BackgroundColor="White"
+                            Stroke="#E2E8F0"
+                            StrokeShape="RoundRectangle 15"
+                            StrokeThickness="1">
+
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding AbrirModuloCommand}" CommandParameter="Viagens" />
+                            </Border.GestureRecognizers>
+
+                            <VerticalStackLayout Spacing="10">
+                                <Border
+                                    BackgroundColor="#E0F2FE"
+                                    HeightRequest="44"
+                                    HorizontalOptions="Start"
+                                    StrokeShape="RoundRectangle 13"
+                                    StrokeThickness="0"
+                                    WidthRequest="44">
+
+                                    <Image
+                                        HeightRequest="24"
+                                        HorizontalOptions="Center"
+                                        Source="nav_viagens.svg"
+                                        VerticalOptions="Center"
+                                        WidthRequest="24">
+                                        <Image.Behaviors>
+                                            <toolkit:IconTintColorBehavior TintColor="#2C63B1" />
+                                        </Image.Behaviors>
+                                    </Image>
+                                </Border>
+
+                                <Label
+                                    FontFamily="PoppinsSemiBold"
+                                    FontSize="13"
+                                    Text="Ver Viagens"
+                                    TextColor="#0F172A" />
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!--  FROTA & ROTAS  -->
+                        <Border
+                            x:Name="AtalhoFrota"
+                            Padding="14"
+                            BackgroundColor="White"
+                            Stroke="#E2E8F0"
+                            StrokeShape="RoundRectangle 15"
+                            StrokeThickness="1">
+
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding AbrirModuloCommand}" CommandParameter="Frota" />
+                            </Border.GestureRecognizers>
+
+                            <VerticalStackLayout Spacing="10">
+                                <Border
+                                    BackgroundColor="#FEF3C7"
+                                    HeightRequest="44"
+                                    HorizontalOptions="Start"
+                                    StrokeShape="RoundRectangle 13"
+                                    StrokeThickness="0"
+                                    WidthRequest="44">
+
+                                    <Image
+                                        HeightRequest="24"
+                                        HorizontalOptions="Center"
+                                        Source="nav_frota.svg"
+                                        VerticalOptions="Center"
+                                        WidthRequest="24">
+                                        <Image.Behaviors>
+                                            <toolkit:IconTintColorBehavior TintColor="#F59E0B" />
+                                        </Image.Behaviors>
+                                    </Image>
+                                </Border>
+
+                                <Label
+                                    FontFamily="PoppinsSemiBold"
+                                    FontSize="13"
+                                    Text="Frota &amp; Rotas"
+                                    TextColor="#0F172A" />
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!--  FLUXO DE CAIXA  -->
+                        <Border
+                            x:Name="AtalhoFinanceiro"
+                            Padding="14"
+                            BackgroundColor="White"
+                            Stroke="#E2E8F0"
+                            StrokeShape="RoundRectangle 15"
+                            StrokeThickness="1">
+
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding AbrirModuloCommand}" CommandParameter="Financeiro" />
+                            </Border.GestureRecognizers>
+
+                            <VerticalStackLayout Spacing="10">
+                                <Border
+                                    BackgroundColor="#D1FAE5"
+                                    HeightRequest="44"
+                                    HorizontalOptions="Start"
+                                    StrokeShape="RoundRectangle 13"
+                                    StrokeThickness="0"
+                                    WidthRequest="44">
+
+                                    <Image
+                                        HeightRequest="24"
+                                        HorizontalOptions="Center"
+                                        Source="nav_financeiro.svg"
+                                        VerticalOptions="Center"
+                                        WidthRequest="24">
+                                        <Image.Behaviors>
+                                            <toolkit:IconTintColorBehavior TintColor="#10B981" />
+                                        </Image.Behaviors>
+                                    </Image>
+                                </Border>
+
+                                <Label
+                                    FontFamily="PoppinsSemiBold"
+                                    FontSize="13"
+                                    Text="Fluxo de Caixa"
+                                    TextColor="#0F172A" />
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!--  UTILIZADORES & CONFIG  -->
+                        <Border
+                            x:Name="AtalhoConfig"
+                            Padding="14"
+                            BackgroundColor="White"
+                            Stroke="#E2E8F0"
+                            StrokeShape="RoundRectangle 15"
+                            StrokeThickness="1">
+
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding AbrirModuloCommand}" CommandParameter="Configuracoes" />
+                            </Border.GestureRecognizers>
+
+                            <VerticalStackLayout Spacing="10">
+                                <Border
+                                    BackgroundColor="#FFEDD5"
+                                    HeightRequest="44"
+                                    HorizontalOptions="Start"
+                                    StrokeShape="RoundRectangle 13"
+                                    StrokeThickness="0"
+                                    WidthRequest="44">
+
+                                    <Image
+                                        HeightRequest="24"
+                                        HorizontalOptions="Center"
+                                        Source="nav_config.svg"
+                                        VerticalOptions="Center"
+                                        WidthRequest="24">
+                                        <Image.Behaviors>
+                                            <toolkit:IconTintColorBehavior TintColor="#F97316" />
+                                        </Image.Behaviors>
+                                    </Image>
+                                </Border>
+
+                                <Label
+                                    FontFamily="PoppinsSemiBold"
+                                    FontSize="13"
+                                    Text="Utilizadores &amp; Config"
+                                    TextColor="#0F172A" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </Grid>
+                </VerticalStackLayout>
+
+                <!--  ÚLTIMAS ATIVIDADES  -->
+                <VerticalStackLayout IsVisible="{Binding MostrarAtividades}" Spacing="12">
+
+                    <VerticalStackLayout Spacing="2">
+                        <Label
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="18"
+                            Text="Últimas Atividades"
+                            TextColor="#0F172A" />
+
+                        <Label
+                            FontFamily="PoppinsRegular"
+                            FontSize="12"
+                            Text="Ciclos de Viagem &amp; Custo/KM"
+                            TextColor="#64748B" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding UltimasAtividades}" Spacing="12">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="vm:AtividadeViagem">
+                                <Border
+                                    Padding="14"
+                                    BackgroundColor="White"
+                                    Stroke="#E2E8F0"
+                                    StrokeShape="RoundRectangle 15"
+                                    StrokeThickness="1">
+
+                                    <VerticalStackLayout Spacing="12">
+
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                            <VerticalStackLayout Spacing="4" VerticalOptions="Center">
+                                                <Label
+                                                    FontFamily="PoppinsSemiBold"
+                                                    FontSize="12"
+                                                    Text="{Binding Codigo}"
+                                                    TextColor="#0F172A" />
+
+                                                <Label
+                                                    FontFamily="PoppinsRegular"
+                                                    FontSize="11"
+                                                    Text="{Binding Rota}"
+                                                    TextColor="#888888" />
+                                            </VerticalStackLayout>
+
+                                            <Border
+                                                Grid.Column="1"
+                                                Padding="10,4"
+                                                BackgroundColor="{Binding CorFundoStatus}"
+                                                StrokeShape="RoundRectangle 10"
+                                                StrokeThickness="0"
+                                                VerticalOptions="Start">
+
+                                                <Label
+                                                    FontFamily="PoppinsBold"
+                                                    FontSize="10"
+                                                    Text="{Binding Status}"
+                                                    TextColor="{Binding CorTextoStatus}" />
+                                            </Border>
+                                        </Grid>
+
+                                        <BoxView BackgroundColor="#E2E8F0" HeightRequest="1" />
+
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <Label
+                                                FontFamily="PoppinsMedium"
+                                                FontSize="12"
+                                                Text="{Binding CustoPorKm}"
+                                                TextColor="#64748B"
+                                                VerticalOptions="Center" />
+
+                                            <Label
+                                                Grid.Column="1"
+                                                FontFamily="PoppinsBold"
+                                                FontSize="12"
+                                                Text="{Binding Liquido}"
+                                                TextColor="{Binding CorLiquido}"
+                                                VerticalOptions="Center" />
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <!--  TOP 3 ROTAS MAIS LUCRATIVAS  -->
+                <Border
+                    Padding="18"
+                    BackgroundColor="White"
+                    IsVisible="{Binding MostrarFinanceiro}"
+                    Stroke="#E2E8F0"
+                    StrokeShape="RoundRectangle 18"
+                    StrokeThickness="1">
+
+                    <VerticalStackLayout Spacing="15">
+
+                        <Label
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="18"
+                            Text="Top 3 Rotas Mais Lucrativas (Líquido)"
+                            TextColor="#0F172A" />
+
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding TopRotas}" Spacing="14">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="vm:RotaLucrativa">
+                                    <Grid ColumnDefinitions="36,*,Auto" ColumnSpacing="10">
+
+                                        <Border
+                                            Grid.Column="0"
+                                            BackgroundColor="{Binding CorFundoPosicao}"
+                                            HeightRequest="36"
+                                            StrokeShape="RoundRectangle 18"
+                                            StrokeThickness="0"
+                                            VerticalOptions="Center"
+                                            WidthRequest="36">
+
+                                            <Label
+                                                FontFamily="PoppinsBold"
+                                                FontSize="12"
+                                                HorizontalOptions="Center"
+                                                Text="{Binding PosicaoTexto}"
+                                                TextColor="{Binding CorTextoPosicao}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+
+                                        <Label
+                                            Grid.Column="1"
+                                            FontFamily="PoppinsMedium"
+                                            FontSize="13"
+                                            Text="{Binding Rota}"
+                                            TextColor="#0F172A"
+                                            VerticalOptions="Center" />
+
+                                        <Label
+                                            Grid.Column="2"
+                                            FontFamily="PoppinsBold"
+                                            FontSize="12"
+                                            Text="{Binding ValorTexto}"
+                                            TextColor="{Binding CorValor}"
+                                            VerticalOptions="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+
+                        <Button
+                            BackgroundColor="#2C63B1"
+                            Command="{Binding ExportarCsvCommand}"
+                            CornerRadius="10"
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="14"
+                            HeightRequest="42"
+                            Text="EXPORTAR CSV"
+                            TextColor="White" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  META MENSAL DE FRETES  -->
+                <Border
+                    Padding="18"
+                    BackgroundColor="White"
+                    IsVisible="{Binding MostrarFinanceiro}"
+                    Stroke="#E2E8F0"
+                    StrokeShape="RoundRectangle 18"
+                    StrokeThickness="1">
+
+                    <VerticalStackLayout Spacing="15">
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="18"
+                                Text="Meta Mensal de Fretes"
+                                TextColor="#0F172A"
+                                VerticalOptions="Center" />
+
+                            <Border
+                                Grid.Column="1"
+                                Padding="10,5"
+                                BackgroundColor="#E0F2FE"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="0">
+
+                                <Label
+                                    FontFamily="PoppinsSemiBold"
+                                    FontSize="11"
+                                    Text="{Binding MesMeta}"
+                                    TextColor="#2C63B1" />
+                            </Border>
+                        </Grid>
+
+                        <!--  PROGRESSO  -->
+                        <VerticalStackLayout Spacing="7">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="5">
+                                <Label
+                                    FontFamily="PoppinsMedium"
+                                    FontSize="13"
+                                    Text="Progresso da meta"
+                                    TextColor="#64748B" />
+
+                                <Label
+                                    Grid.Column="1"
+                                    FontFamily="PoppinsSemiBold"
+                                    FontSize="13"
+                                    Text="{Binding PercentualTexto}"
+                                    TextColor="#0F172A" />
+                            </Grid>
+
+                            <ProgressBar Progress="{Binding ProgressoMeta}" ProgressColor="#1675F8" />
+                        </VerticalStackLayout>
+
+                        <BoxView BackgroundColor="#E2E8F0" HeightRequest="1" />
+
+                        <!--  META  -->
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <Ellipse
+                                Margin="0,0,10,0"
+                                Fill="#2C63B1"
+                                HeightRequest="11"
+                                VerticalOptions="Center"
+                                WidthRequest="11" />
+
+                            <Label
+                                Grid.Column="1"
+                                FontFamily="PoppinsMedium"
+                                FontSize="14"
+                                Text="Meta"
+                                TextColor="#0F172A"
+                                VerticalOptions="Center" />
+
+                            <Label
+                                Grid.Column="2"
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="13"
+                                Text="{Binding MetaTexto}"
+                                TextColor="#2C63B1"
+                                VerticalOptions="Center" />
+                        </Grid>
+
+                        <BoxView BackgroundColor="#E2E8F0" HeightRequest="1" />
+
+                        <!--  FATURADO  -->
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <Ellipse
+                                Margin="0,0,10,0"
+                                Fill="#10B981"
+                                HeightRequest="11"
+                                VerticalOptions="Center"
+                                WidthRequest="11" />
+
+                            <Label
+                                Grid.Column="1"
+                                FontFamily="PoppinsMedium"
+                                FontSize="14"
+                                Text="Faturado no mês"
+                                TextColor="#0F172A"
+                                VerticalOptions="Center" />
+
+                            <Label
+                                Grid.Column="2"
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="13"
+                                Text="{Binding FaturadoTexto}"
+                                TextColor="#10B981"
+                                VerticalOptions="Center" />
+                        </Grid>
+
+                        <BoxView BackgroundColor="#E2E8F0" HeightRequest="1" />
+
+                        <!--  RESTANTE  -->
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <Ellipse
+                                Margin="0,0,10,0"
+                                Fill="#F59E0B"
+                                HeightRequest="11"
+                                VerticalOptions="Center"
+                                WidthRequest="11" />
+
+                            <Label
+                                Grid.Column="1"
+                                FontFamily="PoppinsMedium"
+                                FontSize="14"
+                                Text="Restante para a meta"
+                                TextColor="#0F172A"
+                                VerticalOptions="Center" />
+
+                            <Label
+                                Grid.Column="2"
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="13"
+                                Text="{Binding RestanteTexto}"
+                                TextColor="#F59E0B"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
     </Grid>
-
 </ContentPage>

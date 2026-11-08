@@ -18,7 +18,7 @@
         <Grid
             Grid.Row="0"
             Padding="20,10,15,5"
-            ColumnDefinitions="Auto,*,Auto"
+            ColumnDefinitions="Auto"
             ColumnSpacing="5"
             HeightRequest="85">
 
@@ -28,16 +28,6 @@
                     <GradientStop Offset="1.0" Color="#1EA1E8" />
                 </LinearGradientBrush>
             </Grid.Background>
-
-            <ImageButton
-                Grid.Column="0"
-                Padding="8"
-                Aspect="AspectFit"
-                BackgroundColor="Transparent"
-                Clicked="OnCancelarClicked"
-                Source="btn_voltar.svg"
-                VerticalOptions="Center"
-                WidthRequest="55" />
 
             <Label
                 Grid.Column="1"
@@ -242,50 +232,55 @@
                         TextColor="#334155" />
                 </Border>
 
+                <!--  AVISO DE PREENCHIMENTO OBRIGATÓRIO  -->
+                <Label
+                    Margin="0,5,0,0"
+                    FontFamily="PoppinsSemiBold"
+                    FontSize="12"
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    Text="TODOS OS DADOS SÃO OBRIGATÓRIOS"
+                    TextColor="#E66D17" />
+
             </VerticalStackLayout>
         </ScrollView>
 
         <!--  RODAPÉ FIXO  -->
         <Grid
             Grid.Row="2"
-            Padding="16,10"
+            Padding="20,12"
             BackgroundColor="White"
-            ColumnDefinitions="*,Auto,Auto"
-            ColumnSpacing="6">
-
-            <Label
-                Grid.Column="0"
-                FontFamily="PoppinsRegular"
-                FontSize="11"
-                LineBreakMode="WordWrap"
-                Text="Prévia visual — dados não serão salvos"
-                TextColor="#64748B"
-                VerticalOptions="Center" />
+            ColumnDefinitions="*,*"
+            ColumnSpacing="15">
 
             <Button
-                Grid.Column="1"
+                Grid.Column="0"
                 Padding="12,0"
                 BackgroundColor="White"
                 BorderColor="#D1D5DB"
                 BorderWidth="1"
                 Clicked="OnCancelarClicked"
                 CornerRadius="9"
+                FontFamily="PoppinsSemiBold"
                 FontSize="12"
-                HeightRequest="42"
-                Text="Cancelar"
+                HeightRequest="44"
+                HorizontalOptions="Fill"
+                Text="CANCELAR"
                 TextColor="#334155" />
 
             <Button
-                Grid.Column="2"
+                Grid.Column="1"
                 Padding="12,0"
                 BackgroundColor="#2C63B1"
                 Clicked="OnSalvarClicked"
                 CornerRadius="9"
                 FontFamily="PoppinsSemiBold"
                 FontSize="12"
-                HeightRequest="42"
-                Text="Salvar"
+                HeightRequest="44"
+                HorizontalOptions="Fill"
+                Text="SALVAR"
                 TextColor="White" />
+
         </Grid>
 
     </Grid>

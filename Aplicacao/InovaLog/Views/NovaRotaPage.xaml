@@ -9,17 +9,17 @@
     NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Behaviors>
-        <toolkit:StatusBarBehavior StatusBarColor="#2C63B1" StatusBarStyle="LightContent" />
+        <toolkit:StatusBarBehavior
+            StatusBarColor="#2C63B1"
+            StatusBarStyle="LightContent" />
     </ContentPage.Behaviors>
 
     <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
 
-        <!--  CABEÇALHO  -->
+        <!-- CABEÇALHO -->
         <Grid
             Grid.Row="0"
             Padding="20,8,15,8"
-            ColumnDefinitions="Auto,*"
-            ColumnSpacing="5"
             HeightRequest="85">
 
             <Grid.Background>
@@ -29,30 +29,20 @@
                 </LinearGradientBrush>
             </Grid.Background>
 
-            <ImageButton
-                Grid.Column="0"
-                Padding="8"
-                Aspect="AspectFit"
-                BackgroundColor="Transparent"
-                Clicked="OnCancelarClicked"
-                Source="btn_voltar.svg"
-                VerticalOptions="Center"
-                WidthRequest="55" />
-
             <Label
-                Grid.Column="1"
                 FontFamily="PoppinsSemiBold"
                 FontSize="22"
                 HorizontalOptions="Start"
                 Text="Nova Rota"
                 TextColor="White"
                 VerticalOptions="Center" />
-
         </Grid>
 
-        <!--  FORMULÁRIO  -->
+        <!-- FORMULÁRIO -->
         <ScrollView Grid.Row="1">
-            <VerticalStackLayout Padding="20,20,20,25" Spacing="0">
+            <VerticalStackLayout
+                Padding="20,20,20,25"
+                Spacing="0">
 
                 <Label
                     FontFamily="PoppinsSemiBold"
@@ -64,16 +54,16 @@
                     Margin="0,5,0,25"
                     FontFamily="PoppinsRegular"
                     FontSize="13"
-                    Text="Preencha a origem e a distância estimada do trecho."
+                    Text="Preencha a origem, o destino e a distância estimada do trecho."
                     TextColor="#64748B" />
 
-                <!--  ORIGEM  -->
+                <!-- ORIGEM -->
                 <HorizontalStackLayout Spacing="8">
                     <Ellipse
                         Fill="#E66D17"
                         HeightRequest="11"
-                        VerticalOptions="Center"
-                        WidthRequest="11" />
+                        WidthRequest="11"
+                        VerticalOptions="Center" />
 
                     <Label
                         FontFamily="PoppinsSemiBold"
@@ -102,13 +92,48 @@
                         TextColor="#334155" />
                 </Border>
 
-                <!--  DISTÂNCIA ESTIMADA  -->
+                <!-- DESTINO -->
                 <HorizontalStackLayout Spacing="8">
                     <Ellipse
                         Fill="#E66D17"
                         HeightRequest="11"
-                        VerticalOptions="Center"
-                        WidthRequest="11" />
+                        WidthRequest="11"
+                        VerticalOptions="Center" />
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="15"
+                        Text="Destino"
+                        TextColor="#0F172A"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+                <Border
+                    Margin="0,5,0,25"
+                    Padding="12,0"
+                    BackgroundColor="White"
+                    Stroke="#D1D5DB"
+                    StrokeShape="RoundRectangle 22"
+                    StrokeThickness="1">
+
+                    <Entry
+                        x:Name="TxtDestino"
+                        BackgroundColor="Transparent"
+                        ClearButtonVisibility="WhileEditing"
+                        FontFamily="PoppinsRegular"
+                        FontSize="14"
+                        Placeholder="Informe o destino"
+                        PlaceholderColor="#94A3B8"
+                        TextColor="#334155" />
+                </Border>
+
+                <!-- DISTÂNCIA ESTIMADA -->
+                <HorizontalStackLayout Spacing="8">
+                    <Ellipse
+                        Fill="#E66D17"
+                        HeightRequest="11"
+                        WidthRequest="11"
+                        VerticalOptions="Center" />
 
                     <Label
                         FontFamily="PoppinsSemiBold"
@@ -126,7 +151,9 @@
                     StrokeShape="RoundRectangle 22"
                     StrokeThickness="1">
 
-                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                    <Grid
+                        ColumnDefinitions="*,Auto"
+                        ColumnSpacing="8">
 
                         <Entry
                             x:Name="TxtDistancia"
@@ -151,49 +178,49 @@
                     </Grid>
                 </Border>
 
+                <!-- AVISO DE PREENCHIMENTO -->
+                <Label
+                    Margin="0,5,0,0"
+                    FontFamily="PoppinsSemiBold"
+                    FontSize="11"
+                    Text="TODOS OS DADOS SÃO OBRIGATÓRIOS"
+                    TextColor="#E66D17" />
+
             </VerticalStackLayout>
         </ScrollView>
 
-        <!--  RODAPÉ FIXO  -->
+        <!-- RODAPÉ FIXO -->
         <Grid
             Grid.Row="2"
-            Padding="16,10"
+            Padding="16,12"
             BackgroundColor="White"
-            ColumnDefinitions="*,Auto,Auto"
-            ColumnSpacing="6">
-
-            <Label
-                Grid.Column="0"
-                FontFamily="PoppinsRegular"
-                FontSize="11"
-                LineBreakMode="WordWrap"
-                Text="Prévia visual — dados não serão salvos"
-                TextColor="#64748B"
-                VerticalOptions="Center" />
+            ColumnDefinitions="*,*"
+            ColumnSpacing="12">
 
             <Button
-                Grid.Column="1"
+                Grid.Column="0"
                 Padding="12,0"
                 BackgroundColor="White"
                 BorderColor="#D1D5DB"
                 BorderWidth="1"
                 Clicked="OnCancelarClicked"
                 CornerRadius="9"
+                FontFamily="PoppinsSemiBold"
                 FontSize="12"
-                HeightRequest="42"
-                Text="Cancelar"
+                HeightRequest="44"
+                Text="CANCELAR"
                 TextColor="#334155" />
 
             <Button
-                Grid.Column="2"
+                Grid.Column="1"
                 Padding="12,0"
                 BackgroundColor="#2C63B1"
                 Clicked="OnSalvarClicked"
                 CornerRadius="9"
                 FontFamily="PoppinsSemiBold"
                 FontSize="12"
-                HeightRequest="42"
-                Text="Salvar"
+                HeightRequest="44"
+                Text="SALVAR"
                 TextColor="White" />
 
         </Grid>

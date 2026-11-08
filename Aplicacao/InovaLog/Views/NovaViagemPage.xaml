@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="InovaLog.Views.NovaViagemPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Title="Nova Viagem"
+    BackgroundColor="#F8F8F8"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#2C63B1" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <Grid>
+
+        <!--  TELA PRINCIPAL  -->
+        <Grid RowDefinitions="Auto,*,1,Auto" RowSpacing="0">
+
+            <!--  CABEÇALHO  -->
+            <Grid
+                Grid.Row="0"
+                Padding="10,8,15,8"
+                ColumnDefinitions="Auto,*"
+                ColumnSpacing="6"
+                HeightRequest="85">
+
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                        <GradientStop Offset="0.0" Color="#2C63B1" />
+                        <GradientStop Offset="1.0" Color="#1EA1E8" />
+                    </LinearGradientBrush>
+                </Grid.Background>
+
+                <!--  BOTÃO HAMBÚRGUER  -->
+                <Grid
+                    x:Name="BtnMenuHamburguer"
+                    Grid.Column="0"
+                    BackgroundColor="Transparent"
+                    HeightRequest="44"
+                    VerticalOptions="Center"
+                    WidthRequest="44">
+
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnMenuClicked" />
+                    </Grid.GestureRecognizers>
+
+                    <VerticalStackLayout
+                        HorizontalOptions="Center"
+                        Spacing="5"
+                        VerticalOptions="Center">
+
+                        <BoxView
+                            BackgroundColor="White"
+                            CornerRadius="2"
+                            HeightRequest="3"
+                            WidthRequest="24" />
+                        <BoxView
+                            BackgroundColor="White"
+                            CornerRadius="2"
+                            HeightRequest="3"
+                            WidthRequest="24" />
+                        <BoxView
+                            BackgroundColor="White"
+                            CornerRadius="2"
+                            HeightRequest="3"
+                            WidthRequest="24" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <!--  TÍTULO  -->
+                <Label
+                    Grid.Column="1"
+                    FontFamily="PoppinsSemiBold"
+                    FontSize="22"
+                    Text="Nova Viagem"
+                    TextColor="White"
+                    VerticalOptions="Center" />
+            </Grid>
+
+            <!--  FORMULÁRIO  -->
+            <ScrollView Grid.Row="1">
+                <VerticalStackLayout Padding="20,20,20,25" Spacing="0">
+
+                    <!--  VEÍCULO (CAMINHÃO)  -->
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Ellipse
+                            Fill="#E66D17"
+                            HeightRequest="11"
+                            VerticalOptions="Center"
+                            WidthRequest="11" />
+                        <Label
+                            Grid.Column="1"
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="15"
+                            Text="Veículo (Caminhão)"
+                            TextColor="#0F172A"
+                            VerticalOptions="Center" />
+                    </Grid>
+
+                    <Border
+                        Margin="0,5,0,22"
+                        Padding="12,0"
+                        BackgroundColor="White"
+                        Stroke="#D1D5DB"
+                        StrokeShape="RoundRectangle 22"
+                        StrokeThickness="1">
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+
+                            <Picker
+                                x:Name="PckVeiculo"
+                                Title="Selecione o veículo"
+                                Grid.Column="0"
+                                FontFamily="PoppinsRegular"
+                                FontSize="14"
+                                TextColor="#334155"
+                                TitleColor="#94A3B8">
+
+                                <Picker.Items>
+                                    <x:String>INV-2026 - FH 540 6x4 (158400 KM)</x:String>
+                                    <x:String>DAF-7788 - XF 530 (59200 KM)</x:String>
+                                </Picker.Items>
+                            </Picker>
+
+                            <ImageButton
+                                Grid.Column="1"
+                                Padding="8"
+                                Aspect="AspectFit"
+                                BackgroundColor="Transparent"
+                                HeightRequest="30"
+                                InputTransparent="True"
+                                Source="seta_para_baixo.png"
+                                VerticalOptions="Center"
+                                WidthRequest="30" />
+                        </Grid>
+                    </Border>
+
+                    <!--  ROTA PADRÃO  -->
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Ellipse
+                            Fill="#E66D17"
+                            HeightRequest="11"
+                            VerticalOptions="Center"
+                            WidthRequest="11" />
+                        <Label
+                            Grid.Column="1"
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="15"
+                            Text="Rota Padrão (Molde Origem → Destino)"
+                            TextColor="#0F172A"
+                            VerticalOptions="Center" />
+                    </Grid>
+
+                    <Border
+                        Margin="0,5,0,22"
+                        Padding="12,0"
+                        BackgroundColor="White"
+                        Stroke="#D1D5DB"
+                        StrokeShape="RoundRectangle 22"
+                        StrokeThickness="1">
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+
+                            <Picker
+                                x:Name="PckRotaPadrao"
+                                Title="Selecione a rota"
+                                Grid.Column="0"
+                                FontFamily="PoppinsRegular"
+                                FontSize="14"
+                                TextColor="#334155"
+                                TitleColor="#94A3B8">
+
+                                <Picker.Items>
+                                    <x:String>Sete Lagoas - MG → Santana - BA (980 KM)</x:String>
+                                    <x:String>São Bernardo Campo - SP → Betim - MG (580 KM)</x:String>
+                                    <x:String>Varginha - MG → Três Pontas - MG (150 KM)</x:String>
+                                </Picker.Items>
+                            </Picker>
+
+                            <ImageButton
+                                Grid.Column="1"
+                                Padding="8"
+                                Aspect="AspectFit"
+                                BackgroundColor="Transparent"
+                                HeightRequest="30"
+                                InputTransparent="True"
+                                Source="seta_para_baixo.png"
+                                VerticalOptions="Center"
+                                WidthRequest="30" />
+                        </Grid>
+                    </Border>
+
+                    <!--  MOTORISTA RESPONSÁVEL  -->
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Ellipse
+                            Fill="#E66D17"
+                            HeightRequest="11"
+                            VerticalOptions="Center"
+                            WidthRequest="11" />
+                        <Label
+                            Grid.Column="1"
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="15"
+                            Text="Motorista Responsável"
+                            TextColor="#0F172A"
+                            VerticalOptions="Center" />
+                    </Grid>
+
+                    <Border
+                        Margin="0,5,0,22"
+                        Padding="12,0"
+                        BackgroundColor="White"
+                        Stroke="#D1D5DB"
+                        StrokeShape="RoundRectangle 22"
+                        StrokeThickness="1">
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+
+                            <Picker
+                                x:Name="PckMotorista"
+                                Title="Selecione o motorista"
+                                Grid.Column="0"
+                                FontFamily="PoppinsRegular"
+                                FontSize="14"
+                                TextColor="#334155"
+                                TitleColor="#94A3B8">
+
+                                <Picker.Items>
+                                    <x:String>Carlos Silva (Motorista) (CNH E)</x:String>
+                                </Picker.Items>
+                            </Picker>
+
+                            <ImageButton
+                                Grid.Column="1"
+                                Padding="8"
+                                Aspect="AspectFit"
+                                BackgroundColor="Transparent"
+                                HeightRequest="30"
+                                InputTransparent="True"
+                                Source="seta_para_baixo.png"
+                                VerticalOptions="Center"
+                                WidthRequest="30" />
+                        </Grid>
+                    </Border>
+
+                    <!--  TIPO DE VIAGEM  -->
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Ellipse
+                            Fill="#E66D17"
+                            HeightRequest="11"
+                            VerticalOptions="Center"
+                            WidthRequest="11" />
+                        <Label
+                            Grid.Column="1"
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="15"
+                            Text="Tipo de Viagem (Ciclo Logístico)"
+                            TextColor="#0F172A"
+                            VerticalOptions="Center" />
+                    </Grid>
+
+                    <Border
+                        Margin="0,5,0,22"
+                        Padding="12,0"
+                        BackgroundColor="White"
+                        Stroke="#D1D5DB"
+                        StrokeShape="RoundRectangle 22"
+                        StrokeThickness="1">
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+
+                            <Picker
+                                x:Name="PckTipoViagem"
+                                Title="Selecione o tipo"
+                                Grid.Column="0"
+                                FontFamily="PoppinsRegular"
+                                FontSize="14"
+                                TextColor="#334155"
+                                TitleColor="#94A3B8">
+
+                                <Picker.Items>
+                                    <x:String>Ida com Carga (Gera Frete)</x:String>
+                                    <x:String>Retorno Vazio (Abater Custo na Viagem de Ida)</x:String>
+                                </Picker.Items>
+                            </Picker>
+
+                            <ImageButton
+                                Grid.Column="1"
+                                Padding="8"
+                                Aspect="AspectFit"
+                                BackgroundColor="Transparent"
+                                HeightRequest="30"
+                                InputTransparent="True"
+                                Source="seta_para_baixo.png"
+                                VerticalOptions="Center"
+                                WidthRequest="30" />
+                        </Grid>
+                    </Border>
+
+                    <!--  HODÔMETRO INICIAL  -->
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Ellipse
+                            Fill="#E66D17"
+                            HeightRequest="11"
+                            VerticalOptions="Center"
+                            WidthRequest="11" />
+                        <Label
+                            Grid.Column="1"
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="15"
+                            Text="Hodômetro Inicial (KM Atual do Painel)"
+                            TextColor="#0F172A"
+                            VerticalOptions="Center" />
+                    </Grid>
+
+                    <Border
+                        Margin="0,5,0,22"
+                        Padding="12,0"
+                        BackgroundColor="White"
+                        Stroke="#D1D5DB"
+                        StrokeShape="RoundRectangle 22"
+                        StrokeThickness="1">
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <Entry
+                                x:Name="TxtHodometroInicial"
+                                Grid.Column="0"
+                                BackgroundColor="Transparent"
+                                FontFamily="PoppinsRegular"
+                                FontSize="14"
+                                Keyboard="Numeric"
+                                Placeholder="Ex.: 158400"
+                                PlaceholderColor="#94A3B8"
+                                TextColor="#334155" />
+
+                            <Label
+                                Grid.Column="1"
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="14"
+                                Text="KM"
+                                TextColor="#64748B"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+
+                    <!--  STATUS INICIAL  -->
+                    <Border
+                        Margin="0,0,0,22"
+                        Padding="14,12"
+                        BackgroundColor="#FEF3C7"
+                        Stroke="#FDE68A"
+                        StrokeShape="RoundRectangle 18"
+                        StrokeThickness="1">
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label
+                                FontFamily="PoppinsMedium"
+                                FontSize="13"
+                                Text="Status inicial"
+                                TextColor="#475569"
+                                VerticalOptions="Center" />
+
+                            <Label
+                                Grid.Column="1"
+                                FontFamily="PoppinsBold"
+                                FontSize="14"
+                                Text="EM_ANDAMENTO"
+                                TextColor="#B45309"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+
+                    <!--  CAMPOS OBRIGATÓRIOS  -->
+                    <HorizontalStackLayout Spacing="6">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="*"
+                            TextColor="#DC2626"
+                            VerticalOptions="Center" />
+
+                        <Label
+                            FontFamily="PoppinsRegular"
+                            FontSize="12"
+                            Text="Todos os campos são obrigatórios."
+                            TextColor="#64748B"
+                            VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+            </ScrollView>
+
+            <BoxView Grid.Row="2" Color="#E2E8F0" />
+
+            <!--  RODAPÉ FIXO  -->
+            <Grid
+                Grid.Row="3"
+                Padding="16,10"
+                BackgroundColor="White">
+
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="12">
+
+                    <!--  CANCELAR  -->
+                    <Button
+                        Padding="24,0"
+                        BackgroundColor="White"
+                        BorderColor="#D1D5DB"
+                        BorderWidth="1"
+                        Clicked="OnCancelarClicked"
+                        CornerRadius="9"
+                        FontSize="12"
+                        HeightRequest="42"
+                        Text="Cancelar"
+                        TextColor="#334155" />
+
+                    <!--  INICIAR VIAGEM  -->
+                    <Button
+                        Padding="24,0"
+                        BackgroundColor="#2C63B1"
+                        Clicked="OnIniciarViagemClicked"
+                        CornerRadius="9"
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="12"
+                        HeightRequest="42"
+                        Text="Iniciar Viagem"
+                        TextColor="White" />
+
+                </HorizontalStackLayout>
+            </Grid>
+        </Grid>
+
+        <!--  MENU LATERAL (por cima da tela)  -->
+        <Grid x:Name="OverlayMenu" IsVisible="False">
+
+            <!--  FUNDO ESCURO (toque fecha o menu)  -->
+            <BoxView
+                x:Name="FundoMenu"
+                BackgroundColor="Black"
+                Opacity="0">
+                <BoxView.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnFecharMenuTapped" />
+                </BoxView.GestureRecognizers>
+            </BoxView>
+
+            <!--  PAINEL  -->
+            <Grid
+                x:Name="PainelMenu"
+                BackgroundColor="White"
+                HorizontalOptions="Start"
+                RowDefinitions="Auto,*"
+                RowSpacing="0"
+                WidthRequest="280">
+
+                <!--  TOPO DO MENU  -->
+                <Grid
+                    Grid.Row="0"
+                    Padding="20,8,15,8"
+                    ColumnDefinitions="*,Auto"
+                    HeightRequest="85">
+
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                            <GradientStop Offset="0.0" Color="#2C63B1" />
+                            <GradientStop Offset="1.0" Color="#1EA1E8" />
+                        </LinearGradientBrush>
+                    </Grid.Background>
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="20"
+                        Text="Menu"
+                        TextColor="White"
+                        VerticalOptions="Center" />
+
+                    <Label
+                        Grid.Column="1"
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="22"
+                        Text="✕"
+                        TextColor="White"
+                        VerticalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnFecharMenuTapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+
+                <!--  ITENS  -->
+                <VerticalStackLayout
+                    Grid.Row="1"
+                    Padding="12,16"
+                    Spacing="6">
+
+                    <!--  MINHAS VIAGENS  -->
+                    <Border
+                        Padding="14,12"
+                        BackgroundColor="Transparent"
+                        StrokeThickness="0">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnMenuMinhasViagensTapped" />
+                        </Border.GestureRecognizers>
+
+                        <HorizontalStackLayout Spacing="14">
+                            <Image
+                                HeightRequest="22"
+                                Source="icone_viagens.png"
+                                VerticalOptions="Center"
+                                WidthRequest="22">
+                                <Image.Behaviors>
+                                    <toolkit:IconTintColorBehavior TintColor="#64748B" />
+                                </Image.Behaviors>
+                            </Image>
+
+                            <Label
+                                FontFamily="PoppinsRegular"
+                                FontSize="15"
+                                Text="Minhas Viagens"
+                                TextColor="#334155"
+                                VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                    </Border>
+
+                    <!--  GASTO DE ESTRADA  -->
+                    <Border
+                        Padding="14,12"
+                        BackgroundColor="Transparent"
+                        StrokeThickness="0">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnMenuGastoEstradaTapped" />
+                        </Border.GestureRecognizers>
+
+                        <HorizontalStackLayout Spacing="14">
+                            <Image
+                                HeightRequest="22"
+                                Source="icone_gasto.svg"
+                                VerticalOptions="Center"
+                                WidthRequest="22">
+                                <Image.Behaviors>
+                                    <toolkit:IconTintColorBehavior TintColor="#64748B" />
+                                </Image.Behaviors>
+                            </Image>
+
+                            <Label
+                                FontFamily="PoppinsRegular"
+                                FontSize="15"
+                                Text="Gasto de Estrada"
+                                TextColor="#334155"
+                                VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                    </Border>
+
+                    <!--  NOVA VIAGEM (ativo)  -->
+                    <Border
+                        Padding="14,12"
+                        BackgroundColor="#EAF2FF"
+                        StrokeThickness="0">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnMenuNovaViagemTapped" />
+                        </Border.GestureRecognizers>
+
+                        <HorizontalStackLayout Spacing="14">
+                            <Image
+                                HeightRequest="22"
+                                Source="icone_nova_viagem.png"
+                                VerticalOptions="Center"
+                                WidthRequest="22">
+                                <Image.Behaviors>
+                                    <toolkit:IconTintColorBehavior TintColor="#1D61D2" />
+                                </Image.Behaviors>
+                            </Image>
+
+                            <Label
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="15"
+                                Text="Nova Viagem"
+                                TextColor="#1D61D2"
+                                VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                    </Border>
+
+                </VerticalStackLayout>
+            </Grid>
+        </Grid>
+
+    </Grid>
+</ContentPage>

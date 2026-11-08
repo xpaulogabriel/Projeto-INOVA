@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="InovaLog.Views.TrocarContaPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Title="Trocar Conta"
+    BackgroundColor="#F8F8F8"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#2C63B1" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
+
+        <!--  CABEÇALHO  -->
+        <Grid
+            Grid.Row="0"
+            Padding="20,8,15,8"
+            ColumnDefinitions="*,Auto"
+            HeightRequest="85">
+
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                    <GradientStop Offset="0" Color="#2C63B1" />
+                    <GradientStop Offset="1" Color="#1EA1E8" />
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <Label
+                Grid.Column="0"
+                FontFamily="PoppinsSemiBold"
+                FontSize="22"
+                Text="Trocar Conta"
+                TextColor="White"
+                VerticalOptions="Center" />
+
+            <Label
+                Grid.Column="1"
+                Padding="10"
+                FontFamily="PoppinsMedium"
+                FontSize="14"
+                Text="Fechar"
+                TextColor="White"
+                VerticalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnFecharTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+        </Grid>
+
+        <!--  SELEÇÃO DE PERFIL  -->
+        <ScrollView Grid.Row="1">
+
+            <VerticalStackLayout Padding="16,16,16,25" Spacing="14">
+
+                <VerticalStackLayout Spacing="2">
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="18"
+                        Text="Selecione o perfil"
+                        TextColor="#0F172A" />
+
+                    <Label
+                        FontFamily="PoppinsRegular"
+                        FontSize="12"
+                        Text="Escolha o módulo que deseja acessar."
+                        TextColor="#64748B" />
+                </VerticalStackLayout>
+
+                <!--  MOTORISTA  -->
+                <Border
+                    x:Name="CardMotorista"
+                    Padding="14"
+                    BackgroundColor="White"
+                    Stroke="#E2E8F0"
+                    StrokeShape="RoundRectangle 15"
+                    StrokeThickness="1">
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer CommandParameter="Motorista" Tapped="OnPerfilTapped" />
+                    </Border.GestureRecognizers>
+
+                    <Grid ColumnDefinitions="48,*,Auto" ColumnSpacing="10">
+
+                        <Border
+                            Grid.Column="0"
+                            BackgroundColor="#E0F2FE"
+                            HeightRequest="44"
+                            StrokeShape="RoundRectangle 13"
+                            StrokeThickness="0"
+                            VerticalOptions="Center"
+                            WidthRequest="44">
+
+                            <Image
+                                HeightRequest="24"
+                                HorizontalOptions="Center"
+                                Source="nav_viagens.svg"
+                                VerticalOptions="Center"
+                                WidthRequest="24">
+                                <Image.Behaviors>
+                                    <toolkit:IconTintColorBehavior TintColor="#2C63B1" />
+                                </Image.Behaviors>
+                            </Image>
+                        </Border>
+
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            Spacing="3"
+                            VerticalOptions="Center">
+                            <Label
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="14"
+                                Text="Motorista"
+                                TextColor="#0F172A" />
+                            <Label
+                                FontFamily="PoppinsRegular"
+                                FontSize="12"
+                                Text="Acompanhe e gerencie suas viagens"
+                                TextColor="#64748B" />
+                        </VerticalStackLayout>
+
+                        <Border
+                            x:Name="BadgeMotorista"
+                            Grid.Column="2"
+                            Padding="10,4"
+                            BackgroundColor="#D1FAE5"
+                            IsVisible="False"
+                            StrokeShape="RoundRectangle 10"
+                            StrokeThickness="0"
+                            VerticalOptions="Center">
+                            <Label
+                                FontFamily="PoppinsBold"
+                                FontSize="10"
+                                Text="ATUAL"
+                                TextColor="#10B981" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!--  GESTOR DE ROTAS  -->
+                <Border
+                    x:Name="CardGestorRotas"
+                    Padding="14"
+                    BackgroundColor="White"
+                    Stroke="#E2E8F0"
+                    StrokeShape="RoundRectangle 15"
+                    StrokeThickness="1">
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer CommandParameter="GestorRotas" Tapped="OnPerfilTapped" />
+                    </Border.GestureRecognizers>
+
+                    <Grid ColumnDefinitions="48,*,Auto" ColumnSpacing="10">
+
+                        <Border
+                            Grid.Column="0"
+                            BackgroundColor="#FEF3C7"
+                            HeightRequest="44"
+                            StrokeShape="RoundRectangle 13"
+                            StrokeThickness="0"
+                            VerticalOptions="Center"
+                            WidthRequest="44">
+
+                            <Image
+                                HeightRequest="24"
+                                HorizontalOptions="Center"
+                                Source="nav_frota.svg"
+                                VerticalOptions="Center"
+                                WidthRequest="24">
+                                <Image.Behaviors>
+                                    <toolkit:IconTintColorBehavior TintColor="#F59E0B" />
+                                </Image.Behaviors>
+                            </Image>
+                        </Border>
+
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            Spacing="3"
+                            VerticalOptions="Center">
+                            <Label
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="14"
+                                Text="Gestor de Rotas"
+                                TextColor="#0F172A" />
+                            <Label
+                                FontFamily="PoppinsRegular"
+                                FontSize="12"
+                                Text="Frota, veículos, rotas e viagens"
+                                TextColor="#64748B" />
+                        </VerticalStackLayout>
+
+                        <Border
+                            x:Name="BadgeGestorRotas"
+                            Grid.Column="2"
+                            Padding="10,4"
+                            BackgroundColor="#D1FAE5"
+                            IsVisible="False"
+                            StrokeShape="RoundRectangle 10"
+                            StrokeThickness="0"
+                            VerticalOptions="Center">
+                            <Label
+                                FontFamily="PoppinsBold"
+                                FontSize="10"
+                                Text="ATUAL"
+                                TextColor="#10B981" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!--  FINANCEIRO  -->
+                <Border
+                    x:Name="CardFinanceiro"
+                    Padding="14"
+                    BackgroundColor="White"
+                    Stroke="#E2E8F0"
+                    StrokeShape="RoundRectangle 15"
+                    StrokeThickness="1">
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer CommandParameter="Financeiro" Tapped="OnPerfilTapped" />
+                    </Border.GestureRecognizers>
+
+                    <Grid ColumnDefinitions="48,*,Auto" ColumnSpacing="10">
+
+                        <Border
+                            Grid.Column="0"
+                            BackgroundColor="#D1FAE5"
+                            HeightRequest="44"
+                            StrokeShape="RoundRectangle 13"
+                            StrokeThickness="0"
+                            VerticalOptions="Center"
+                            WidthRequest="44">
+
+                            <Image
+                                HeightRequest="24"
+                                HorizontalOptions="Center"
+                                Source="nav_financeiro.svg"
+                                VerticalOptions="Center"
+                                WidthRequest="24">
+                                <Image.Behaviors>
+                                    <toolkit:IconTintColorBehavior TintColor="#10B981" />
+                                </Image.Behaviors>
+                            </Image>
+                        </Border>
+
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            Spacing="3"
+                            VerticalOptions="Center">
+                            <Label
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="14"
+                                Text="Financeiro"
+                                TextColor="#0F172A" />
+                            <Label
+                                FontFamily="PoppinsRegular"
+                                FontSize="12"
+                                Text="Receitas, despesas e fluxo de caixa"
+                                TextColor="#64748B" />
+                        </VerticalStackLayout>
+
+                        <Border
+                            x:Name="BadgeFinanceiro"
+                            Grid.Column="2"
+                            Padding="10,4"
+                            BackgroundColor="#D1FAE5"
+                            IsVisible="False"
+                            StrokeShape="RoundRectangle 10"
+                            StrokeThickness="0"
+                            VerticalOptions="Center">
+                            <Label
+                                FontFamily="PoppinsBold"
+                                FontSize="10"
+                                Text="ATUAL"
+                                TextColor="#10B981" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!--  ADMINISTRADOR  -->
+                <Border
+                    x:Name="CardAdmin"
+                    Padding="14"
+                    BackgroundColor="White"
+                    Stroke="#E2E8F0"
+                    StrokeShape="RoundRectangle 15"
+                    StrokeThickness="1">
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer CommandParameter="Admin" Tapped="OnPerfilTapped" />
+                    </Border.GestureRecognizers>
+
+                    <Grid ColumnDefinitions="48,*,Auto" ColumnSpacing="10">
+
+                        <Border
+                            Grid.Column="0"
+                            BackgroundColor="#FFEDD5"
+                            HeightRequest="44"
+                            StrokeShape="RoundRectangle 13"
+                            StrokeThickness="0"
+                            VerticalOptions="Center"
+                            WidthRequest="44">
+
+                            <Image
+                                HeightRequest="24"
+                                HorizontalOptions="Center"
+                                Source="nav_config.svg"
+                                VerticalOptions="Center"
+                                WidthRequest="24">
+                                <Image.Behaviors>
+                                    <toolkit:IconTintColorBehavior TintColor="#F97316" />
+                                </Image.Behaviors>
+                            </Image>
+                        </Border>
+
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            Spacing="3"
+                            VerticalOptions="Center">
+                            <Label
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="14"
+                                Text="Administrador"
+                                TextColor="#0F172A" />
+                            <Label
+                                FontFamily="PoppinsRegular"
+                                FontSize="12"
+                                Text="Acesso a todos os módulos"
+                                TextColor="#64748B" />
+                        </VerticalStackLayout>
+
+                        <Border
+                            x:Name="BadgeAdmin"
+                            Grid.Column="2"
+                            Padding="10,4"
+                            BackgroundColor="#D1FAE5"
+                            IsVisible="False"
+                            StrokeShape="RoundRectangle 10"
+                            StrokeThickness="0"
+                            VerticalOptions="Center">
+                            <Label
+                                FontFamily="PoppinsBold"
+                                FontSize="10"
+                                Text="ATUAL"
+                                TextColor="#10B981" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  RODAPÉ: TERMINAR SESSÃO  -->
+        <Grid
+            Grid.Row="2"
+            Padding="14,15"
+            BackgroundColor="White">
+
+            <Button
+                BackgroundColor="#EF4444"
+                Clicked="OnTerminarSessaoClicked"
+                CornerRadius="10"
+                FontFamily="PoppinsSemiBold"
+                FontSize="14"
+                HeightRequest="42"
+                Text="TERMINAR SESSÃO"
+                TextColor="White" />
+        </Grid>
+
+    </Grid>
+</ContentPage>

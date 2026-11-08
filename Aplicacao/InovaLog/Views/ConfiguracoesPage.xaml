@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="InovaLog.Views.ConfiguracoesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:InovaLog.ViewModels"
+    Title="Configurações"
+    x:DataType="vm:ConfiguracoesViewModel"
+    BackgroundColor="#F8F8F8"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#2C63B1" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <Grid RowDefinitions="Auto,Auto,*" RowSpacing="0">
+
+        <!--  CABEÇALHO  -->
+        <Grid
+            Grid.Row="0"
+            Padding="20,8,15,8"
+            ColumnDefinitions="*"
+            HeightRequest="85">
+
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                    <GradientStop Offset="0" Color="#2C63B1" />
+                    <GradientStop Offset="1" Color="#1EA1E8" />
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <Label
+                FontFamily="PoppinsSemiBold"
+                FontSize="22"
+                HorizontalOptions="Start"
+                Text="Configurações"
+                TextColor="White"
+                VerticalOptions="Center" />
+
+            <Image
+                HeightRequest="80"
+                HorizontalOptions="End"
+                Opacity="0.25"
+                Source="logo_azul.png"
+                VerticalOptions="Center"
+                WidthRequest="80" />
+        </Grid>
+
+        <!--  ABAS (somem quando o perfil não tem acesso a nenhuma)  -->
+        <ScrollView
+            x:Name="BarraAbas"
+            Grid.Row="1"
+            HorizontalScrollBarVisibility="Never"
+            Orientation="Horizontal">
+
+            <HorizontalStackLayout Padding="16,10" Spacing="8">
+
+                <Border
+                    x:Name="AbaUsuarios"
+                    Padding="16,7"
+                    BackgroundColor="#1EA1E8"
+                    StrokeShape="RoundRectangle 18"
+                    StrokeThickness="0"
+                    VerticalOptions="Center">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnAbaUsuariosTapped" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="12"
+                        HorizontalTextAlignment="Center"
+                        Text="Usuários"
+                        TextColor="White"
+                        VerticalTextAlignment="Center" />
+                </Border>
+
+                <Border
+                    x:Name="AbaCategorias"
+                    Padding="16,7"
+                    BackgroundColor="White"
+                    Stroke="#E2E8F0"
+                    StrokeShape="RoundRectangle 18"
+                    StrokeThickness="1"
+                    VerticalOptions="Center">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnAbaCategoriasTapped" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        FontFamily="PoppinsMedium"
+                        FontSize="12"
+                        HorizontalTextAlignment="Center"
+                        Text="Categorias"
+                        TextColor="#64748B"
+                        VerticalTextAlignment="Center" />
+                </Border>
+
+                <Border
+                    x:Name="AbaPagamentos"
+                    Padding="16,7"
+                    BackgroundColor="White"
+                    Stroke="#E2E8F0"
+                    StrokeShape="RoundRectangle 18"
+                    StrokeThickness="1"
+                    VerticalOptions="Center">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnAbaPagamentosTapped" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        FontFamily="PoppinsMedium"
+                        FontSize="12"
+                        HorizontalTextAlignment="Center"
+                        Text="Pagamentos"
+                        TextColor="#64748B"
+                        VerticalTextAlignment="Center" />
+                </Border>
+            </HorizontalStackLayout>
+        </ScrollView>
+
+        <!--  ÁREA PRINCIPAL  -->
+        <ScrollView Grid.Row="2">
+
+            <Grid>
+
+                <!--  ======================================  -->
+                <!--  CONTEÚDO: USUÁRIOS  -->
+                <!--  ======================================  -->
+                <VerticalStackLayout
+                    x:Name="ConteudoUsuarios"
+                    Padding="16,8,16,25"
+                    IsVisible="True"
+                    Spacing="18">
+
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+
+                        <VerticalStackLayout
+                            Grid.Column="0"
+                            Spacing="2"
+                            VerticalOptions="Center">
+                            <Label
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="18"
+                                Text="Colaboradores Cadastrados"
+                                TextColor="#0F172A" />
+
+                            <Label
+                                FontFamily="PoppinsRegular"
+                                FontSize="12"
+                                Text="Toque em Usar Conta para trocar de perfil."
+                                TextColor="#64748B" />
+                        </VerticalStackLayout>
+
+                        <Button
+                            Grid.Column="1"
+                            Padding="14,0"
+                            BackgroundColor="#2C63B1"
+                            Command="{Binding NovoUsuarioCommand}"
+                            CornerRadius="12"
+                            FontFamily="PoppinsSemiBold"
+                            FontSize="12"
+                            HeightRequest="40"
+                            Text="+ NOVO"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+                    </Grid>
+
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Usuarios}" Spacing="12">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="vm:UsuarioItem">
+                                <Border
+                                    Padding="14"
+                                    BackgroundColor="White"
+                                    Stroke="{Binding Borda}"
+                                    StrokeShape="RoundRectangle 15"
+                                    StrokeThickness="{Binding EspessuraBorda}">
+
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+
+                                        <VerticalStackLayout
+                                            Grid.Column="0"
+                                            Spacing="6"
+                                            VerticalOptions="Center">
+
+                                            <Label
+                                                FontFamily="PoppinsSemiBold"
+                                                FontSize="13"
+                                                Text="{Binding NomeExibicao}"
+                                                TextColor="#0F172A" />
+
+                                            <Border
+                                                Padding="8,3"
+                                                BackgroundColor="#E0F2FE"
+                                                HorizontalOptions="Start"
+                                                StrokeShape="RoundRectangle 8"
+                                                StrokeThickness="0">
+                                                <Label
+                                                    FontFamily="PoppinsBold"
+                                                    FontSize="10"
+                                                    Text="{Binding RotuloPerfil}"
+                                                    TextColor="#2C63B1" />
+                                            </Border>
+
+                                            <Label
+                                                FontFamily="PoppinsRegular"
+                                                FontSize="12"
+                                                Text="{Binding Email}"
+                                                TextColor="#64748B" />
+
+                                            <Label
+                                                FontFamily="PoppinsRegular"
+                                                FontSize="11"
+                                                IsVisible="{Binding TemDocumentos}"
+                                                Text="{Binding Documentos}"
+                                                TextColor="#888888" />
+                                        </VerticalStackLayout>
+
+                                        <VerticalStackLayout
+                                            Grid.Column="1"
+                                            HorizontalOptions="End"
+                                            Spacing="8"
+                                            VerticalOptions="Center">
+
+                                            <Button
+                                                Padding="14,0"
+                                                BackgroundColor="{Binding CorFundoBotao}"
+                                                Clicked="OnUsarContaClicked"
+                                                CornerRadius="8"
+                                                FontFamily="PoppinsSemiBold"
+                                                FontSize="11"
+                                                HeightRequest="30"
+                                                Opacity="{Binding OpacidadeBotao}"
+                                                Text="{Binding TextoBotao}"
+                                                TextColor="{Binding CorTextoBotao}" />
+
+                                            <Border
+                                                Padding="10,4"
+                                                BackgroundColor="{Binding CorFundoStatus}"
+                                                HorizontalOptions="End"
+                                                StrokeShape="RoundRectangle 10"
+                                                StrokeThickness="0">
+                                                <Label
+                                                    FontFamily="PoppinsBold"
+                                                    FontSize="10"
+                                                    Text="{Binding TextoStatus}"
+                                                    TextColor="{Binding CorTextoStatus}" />
+                                            </Border>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <!--  ======================================  -->
+                <!--  CONTEÚDO: CATEGORIAS  -->
+                <!--  ======================================  -->
+                <VerticalStackLayout
+                    x:Name="ConteudoCategorias"
+                    Padding="16,8,16,25"
+                    IsVisible="False"
+                    Spacing="18">
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="18"
+                        Text="Categorias Financeiras"
+                        TextColor="#0F172A" />
+
+                    <!--  NOVA CATEGORIA  -->
+                    <Border
+                        Padding="14"
+                        BackgroundColor="White"
+                        Stroke="#E2E8F0"
+                        StrokeShape="RoundRectangle 18"
+                        StrokeThickness="1">
+
+                        <Grid
+                            ColumnDefinitions="*,Auto"
+                            ColumnSpacing="10"
+                            RowDefinitions="Auto,Auto"
+                            RowSpacing="12">
+
+                            <Border
+                                Grid.Row="0"
+                                Grid.ColumnSpan="2"
+                                Padding="12,0"
+                                BackgroundColor="White"
+                                Stroke="#D1D5DB"
+                                StrokeShape="RoundRectangle 22"
+                                StrokeThickness="1">
+                                <Entry
+                                    BackgroundColor="Transparent"
+                                    ClearButtonVisibility="WhileEditing"
+                                    FontFamily="PoppinsRegular"
+                                    FontSize="14"
+                                    Placeholder="Nova categoria"
+                                    PlaceholderColor="#94A3B8"
+                                    Text="{Binding NovaCategoria}"
+                                    TextColor="#334155" />
+                            </Border>
+
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Padding="12,0"
+                                BackgroundColor="White"
+                                Stroke="#D1D5DB"
+                                StrokeShape="RoundRectangle 22"
+                                StrokeThickness="1">
+                                <Picker
+                                    Title="Tipo"
+                                    FontFamily="PoppinsRegular"
+                                    FontSize="14"
+                                    SelectedIndex="{Binding TipoCategoriaIndex}"
+                                    TextColor="#334155"
+                                    TitleColor="#94A3B8">
+                                    <Picker.Items>
+                                        <x:String>Entrada</x:String>
+                                        <x:String>Saída</x:String>
+                                    </Picker.Items>
+                                </Picker>
+                            </Border>
+
+                            <Button
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Padding="14,0"
+                                BackgroundColor="#2C63B1"
+                                Command="{Binding IncluirCategoriaCommand}"
+                                CornerRadius="12"
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="12"
+                                HeightRequest="40"
+                                Text="+ INCLUIR"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+
+                    <!--  LISTA  -->
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Categorias}" Spacing="12">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="vm:CategoriaItem">
+                                <Border
+                                    Padding="14,10"
+                                    BackgroundColor="White"
+                                    Opacity="{Binding OpacidadeLinha}"
+                                    Stroke="#E2E8F0"
+                                    StrokeShape="RoundRectangle 15"
+                                    StrokeThickness="1">
+
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+
+                                        <VerticalStackLayout
+                                            Grid.Column="0"
+                                            Spacing="5"
+                                            VerticalOptions="Center">
+
+                                            <Label
+                                                FontFamily="PoppinsSemiBold"
+                                                FontSize="13"
+                                                Text="{Binding Nome}"
+                                                TextColor="#0F172A" />
+
+                                            <Border
+                                                Padding="8,3"
+                                                BackgroundColor="{Binding CorFundoTipo}"
+                                                HorizontalOptions="Start"
+                                                StrokeShape="RoundRectangle 8"
+                                                StrokeThickness="0">
+                                                <Label
+                                                    FontFamily="PoppinsBold"
+                                                    FontSize="10"
+                                                    Text="{Binding TipoTexto}"
+                                                    TextColor="{Binding CorTextoTipo}" />
+                                            </Border>
+                                        </VerticalStackLayout>
+
+                                        <Button
+                                            Grid.Column="1"
+                                            Padding="14,0"
+                                            BackgroundColor="{Binding CorFundoBotao}"
+                                            Clicked="OnAlternarCategoriaClicked"
+                                            CornerRadius="8"
+                                            FontFamily="PoppinsSemiBold"
+                                            FontSize="11"
+                                            HeightRequest="30"
+                                            Text="{Binding TextoBotao}"
+                                            TextColor="{Binding CorTextoBotao}"
+                                            VerticalOptions="Center" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <!--  ======================================  -->
+                <!--  CONTEÚDO: PAGAMENTOS  -->
+                <!--  ======================================  -->
+                <VerticalStackLayout
+                    x:Name="ConteudoPagamentos"
+                    Padding="16,8,16,25"
+                    IsVisible="False"
+                    Spacing="18">
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="18"
+                        Text="Formas de Pagamento Aceitas"
+                        TextColor="#0F172A" />
+
+                    <!--  NOVA FORMA DE PAGAMENTO  -->
+                    <Border
+                        Padding="14"
+                        BackgroundColor="White"
+                        Stroke="#E2E8F0"
+                        StrokeShape="RoundRectangle 18"
+                        StrokeThickness="1">
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+
+                            <Border
+                                Grid.Column="0"
+                                Padding="12,0"
+                                BackgroundColor="White"
+                                Stroke="#D1D5DB"
+                                StrokeShape="RoundRectangle 22"
+                                StrokeThickness="1">
+                                <Entry
+                                    BackgroundColor="Transparent"
+                                    ClearButtonVisibility="WhileEditing"
+                                    FontFamily="PoppinsRegular"
+                                    FontSize="14"
+                                    Placeholder="Ex: Vale Pedágio, TED..."
+                                    PlaceholderColor="#94A3B8"
+                                    Text="{Binding NovaFormaPagamento}"
+                                    TextColor="#334155" />
+                            </Border>
+
+                            <Button
+                                Grid.Column="1"
+                                Padding="14,0"
+                                BackgroundColor="#2C63B1"
+                                Command="{Binding IncluirFormaPagamentoCommand}"
+                                CornerRadius="12"
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="12"
+                                HeightRequest="40"
+                                Text="+ INCLUIR"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+
+                    <!--  LISTA  -->
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding FormasPagamento}" Spacing="12">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="vm:FormaPagamentoItem">
+                                <Border
+                                    Padding="14,12"
+                                    BackgroundColor="White"
+                                    Opacity="{Binding OpacidadeLinha}"
+                                    Stroke="#E2E8F0"
+                                    StrokeShape="RoundRectangle 15"
+                                    StrokeThickness="1">
+
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+
+                                        <Label
+                                            Grid.Column="0"
+                                            FontFamily="PoppinsSemiBold"
+                                            FontSize="13"
+                                            Text="{Binding Nome}"
+                                            TextColor="#0F172A"
+                                            VerticalOptions="Center" />
+
+                                        <Border
+                                            Grid.Column="1"
+                                            Padding="10,4"
+                                            BackgroundColor="{Binding CorFundoStatus}"
+                                            StrokeShape="RoundRectangle 10"
+                                            StrokeThickness="0"
+                                            VerticalOptions="Center">
+
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OnAlternarPagamentoTapped" />
+                                            </Border.GestureRecognizers>
+
+                                            <Label
+                                                FontFamily="PoppinsBold"
+                                                FontSize="10"
+                                                Text="{Binding TextoStatus}"
+                                                TextColor="{Binding CorTextoStatus}" />
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+
+                    <Label
+                        FontFamily="PoppinsRegular"
+                        FontSize="12"
+                        Text="Toque no status para ativar ou inativar uma forma de pagamento."
+                        TextColor="#64748B" />
+                </VerticalStackLayout>
+
+                <!--  ======================================  -->
+                <!--  CONTEÚDO: MINHA CONTA (Motorista e Gestor)  -->
+                <!--  ======================================  -->
+                <VerticalStackLayout
+                    x:Name="ConteudoMinhaConta"
+                    Padding="16,16,16,25"
+                    IsVisible="False"
+                    Spacing="18">
+
+                    <Label
+                        FontFamily="PoppinsSemiBold"
+                        FontSize="18"
+                        Text="Minha Conta"
+                        TextColor="#0F172A" />
+
+                    <Border
+                        Padding="18"
+                        BackgroundColor="White"
+                        Stroke="#E2E8F0"
+                        StrokeShape="RoundRectangle 18"
+                        StrokeThickness="1">
+
+                        <VerticalStackLayout Spacing="10">
+
+                            <Label
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="15"
+                                Text="{Binding NomeConta}"
+                                TextColor="#0F172A" />
+
+                            <Border
+                                Padding="8,3"
+                                BackgroundColor="#E0F2FE"
+                                HorizontalOptions="Start"
+                                StrokeShape="RoundRectangle 8"
+                                StrokeThickness="0">
+                                <Label
+                                    FontFamily="PoppinsBold"
+                                    FontSize="10"
+                                    Text="{Binding RotuloPerfilConta}"
+                                    TextColor="#2C63B1" />
+                            </Border>
+
+                            <Label
+                                FontFamily="PoppinsRegular"
+                                FontSize="13"
+                                Text="{Binding EmailConta}"
+                                TextColor="#475569" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Label
+                        FontFamily="PoppinsRegular"
+                        FontSize="12"
+                        Text="Seu perfil não possui configurações administrativas."
+                        TextColor="#64748B" />
+                </VerticalStackLayout>
+
+            </Grid>
+        </ScrollView>
+    </Grid>
+</ContentPage>

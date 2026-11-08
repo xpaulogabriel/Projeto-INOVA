@@ -7,25 +7,58 @@
     Shell.FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False"
     Shell.TabBarBackgroundColor="White"
+    Shell.TabBarForegroundColor="#F58220"
     Shell.TabBarTitleColor="#F58220"
     Shell.TabBarUnselectedColor="#888888">
 
-    <!-- Barra Inferior Oficial do Sistema (Pós-Login) -->
+    <!--
+        BARRA INFERIOR OFICIAL DO SISTEMA (pós-login)
+
+        Para trocar um ícone: substitua o arquivo SVG em Resources/Images
+        mantendo o mesmo nome (nav_inicio.svg, nav_viagens.svg, nav_frota.svg,
+        nav_financeiro.svg, nav_config.svg). Use SVG com UMA cor só (preto):
+        o Shell pinta o ícone de laranja (selecionado) ou cinza (não selecionado).
+
+        O atributo Route de cada aba deve ser igual ao retornado por
+        SessaoPerfil.RotaDe(...). Abas escondidas por perfil: ver AppShell.xaml.cs.
+    -->
     <TabBar>
+
         <ShellContent
+            x:Name="TabInicio"
             Title="Início"
             ContentTemplate="{DataTemplate views:HomePage}"
+            Icon="nav_inicio.svg"
             Route="HomePage" />
 
         <ShellContent
+            x:Name="TabViagens"
+            Title="Viagens"
+            ContentTemplate="{DataTemplate views:MotoristasPage}"
+            Icon="nav_viagens.svg"
+            Route="ViagensPage" />
+
+        <ShellContent
+            x:Name="TabFrota"
+            Title="Frota"
+            ContentTemplate="{DataTemplate views:GestorFrotasPage}"
+            Icon="nav_frota.svg"
+            Route="FrotaPage" />
+
+        <ShellContent
+            x:Name="TabFinanceiro"
             Title="Financeiro"
             ContentTemplate="{DataTemplate views:FinanceiroPage}"
+            Icon="nav_financeiro.svg"
             Route="FinanceiroPage" />
 
         <ShellContent
-            Title="Usuários"
-            ContentTemplate="{DataTemplate views:CadastroUsuarioPage}"
-            Route="CadastroUsuarioPage" />
+            x:Name="TabConfig"
+            Title="Config"
+            ContentTemplate="{DataTemplate views:ConfiguracoesPage}"
+            Icon="nav_config.svg"
+            Route="ConfiguracoesPage" />
+
     </TabBar>
 
 </Shell>

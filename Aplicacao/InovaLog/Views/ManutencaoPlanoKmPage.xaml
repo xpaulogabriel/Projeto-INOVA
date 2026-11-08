@@ -9,18 +9,16 @@
     NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Behaviors>
-        <toolkit:StatusBarBehavior
-            StatusBarColor="#2C63B1"
-            StatusBarStyle="LightContent" />
+        <toolkit:StatusBarBehavior StatusBarColor="#2C63B1" StatusBarStyle="LightContent" />
     </ContentPage.Behaviors>
 
     <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
 
-        <!-- CABEÇALHO -->
+        <!--  CABEÇALHO  -->
         <Grid
             Grid.Row="0"
             Padding="20,10,15,5"
-            ColumnDefinitions="Auto,*"
+            ColumnDefinitions="Auto"
             ColumnSpacing="5"
             HeightRequest="85">
 
@@ -31,20 +29,11 @@
                 </LinearGradientBrush>
             </Grid.Background>
 
-            <ImageButton
-                Grid.Column="0"
-                Padding="8"
-                Aspect="AspectFit"
-                BackgroundColor="Transparent"
-                Clicked="OnCancelarClicked"
-                Source="btn_voltar.svg"
-                VerticalOptions="Center"
-                WidthRequest="55" />
 
             <Label
                 Grid.Column="1"
                 FontFamily="PoppinsSemiBold"
-                FontSize="18"
+                FontSize="22"
                 HorizontalOptions="Start"
                 Text="Manutenção &amp; Plano por KM"
                 TextColor="White"
@@ -52,7 +41,7 @@
 
         </Grid>
 
-        <!-- FORMULÁRIO -->
+        <!--  FORMULÁRIO  -->
         <ScrollView Grid.Row="1">
             <VerticalStackLayout Padding="20,20,20,25" Spacing="0">
 
@@ -69,7 +58,7 @@
                     Text="Preencha os dados do serviço e o plano de manutenção."
                     TextColor="#64748B" />
 
-                <!-- VEÍCULO -->
+                <!--  VEÍCULO  -->
                 <HorizontalStackLayout Spacing="8">
                     <Ellipse
                         Fill="#E66D17"
@@ -104,7 +93,7 @@
                         TextColor="#334155" />
                 </Border>
 
-                <!-- TIPO DE REGISTO -->
+                <!--  TIPO DE REGISTRO  -->
                 <HorizontalStackLayout Spacing="8">
                     <Ellipse
                         Fill="#E66D17"
@@ -115,7 +104,7 @@
                     <Label
                         FontFamily="PoppinsSemiBold"
                         FontSize="15"
-                        Text="Tipo de Registo"
+                        Text="Tipo de Registro"
                         TextColor="#0F172A"
                         VerticalOptions="Center" />
                 </HorizontalStackLayout>
@@ -139,7 +128,7 @@
                         TextColor="#334155" />
                 </Border>
 
-                <!-- DESCRIÇÃO DO SERVIÇO -->
+                <!--  DESCRIÇÃO DO SERVIÇO  -->
                 <HorizontalStackLayout Spacing="8">
                     <Ellipse
                         Fill="#E66D17"
@@ -175,7 +164,7 @@
                         TextColor="#334155" />
                 </Border>
 
-                <!-- QUILOMETRAGEM ALVO/ATUAL -->
+                <!--  QUILOMETRAGEM ALVO/ATUAL  -->
                 <HorizontalStackLayout Spacing="8">
                     <Ellipse
                         Fill="#E66D17"
@@ -222,7 +211,7 @@
                     </Grid>
                 </Border>
 
-                <!-- CUSTO DO SERVIÇO -->
+                <!--  CUSTO DO SERVIÇO  -->
                 <HorizontalStackLayout Spacing="8">
                     <Ellipse
                         Fill="#E66D17"
@@ -268,7 +257,7 @@
                     </Grid>
                 </Border>
 
-                <!-- OFICINA / FORNECEDOR -->
+                <!--  OFICINA / FORNECEDOR  -->
                 <HorizontalStackLayout Spacing="8">
                     <Ellipse
                         Fill="#E66D17"
@@ -303,41 +292,44 @@
                         TextColor="#334155" />
                 </Border>
 
+                <!--  AVISO DE PREENCHIMENTO OBRIGATÓRIO  -->
+                <Label
+                    Margin="0,5,0,10"
+                    FontFamily="PoppinsSemiBold"
+                    FontSize="12"
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    Text="TODOS OS DADOS SÃO OBRIGATÓRIOS"
+                    TextColor="#E66D17" />
+
             </VerticalStackLayout>
         </ScrollView>
 
-        <!-- RODAPÉ FIXO -->
+        <!--  RODAPÉ FIXO  -->
         <Grid
             Grid.Row="2"
             Padding="16,10"
             BackgroundColor="White"
-            ColumnDefinitions="*,Auto,Auto"
-            ColumnSpacing="6">
-
-            <Label
-                Grid.Column="0"
-                FontFamily="PoppinsRegular"
-                FontSize="11"
-                LineBreakMode="WordWrap"
-                Text="Prévia visual — dados não serão salvos"
-                TextColor="#64748B"
-                VerticalOptions="Center" />
+            ColumnDefinitions="*,*"
+            ColumnSpacing="12">
 
             <Button
-                Grid.Column="1"
+                Grid.Column="0"
                 Padding="12,0"
                 BackgroundColor="White"
                 BorderColor="#D1D5DB"
                 BorderWidth="1"
                 Clicked="OnCancelarClicked"
                 CornerRadius="9"
+                FontFamily="PoppinsSemiBold"
                 FontSize="12"
                 HeightRequest="42"
-                Text="Cancelar"
+                HorizontalOptions="Fill"
+                Text="CANCELAR"
                 TextColor="#334155" />
 
             <Button
-                Grid.Column="2"
+                Grid.Column="1"
                 Padding="12,0"
                 BackgroundColor="#2C63B1"
                 Clicked="OnSalvarClicked"
@@ -345,7 +337,8 @@
                 FontFamily="PoppinsSemiBold"
                 FontSize="12"
                 HeightRequest="42"
-                Text="Salvar"
+                HorizontalOptions="Fill"
+                Text="SALVAR"
                 TextColor="White" />
 
         </Grid>

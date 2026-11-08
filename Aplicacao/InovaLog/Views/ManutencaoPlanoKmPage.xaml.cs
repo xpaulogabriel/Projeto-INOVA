@@ -8,13 +8,22 @@ public partial class ManutencaoPlanoKmPage : ContentPage
         InitializeComponent();
     }
 
-    private async void OnCancelarClicked(object sender, EventArgs e)
+    private async void OnCancelarClicked(object? sender, EventArgs e)
     {
-        await DisplayAlert(
-            "Prévia da tela",
-            "A tela Manutenção & Plano por KM está em modo de visualização. Nenhum dado foi salvo.",
-            "OK");
+        if (Navigation.NavigationStack.Count > 1)
+        {
+            await Navigation.PopAsync();
+        }
+        else
+        {
+            await DisplayAlert(
+                "Atenção",
+                "Não existe uma página anterior para voltar.",
+                "OK");
+        }
     }
+
+
 
     private async void OnSalvarClicked(object sender, EventArgs e)
     {

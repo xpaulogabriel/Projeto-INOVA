@@ -150,7 +150,7 @@
                 <!--  SOMA TOTAL AUTOMÁTICA  -->
                 <HorizontalStackLayout Spacing="8">
                     <Ellipse
-                        Fill="#10B981"
+                        Fill="#E66D17"
                         HeightRequest="11"
                         VerticalOptions="Center"
                         WidthRequest="11" />
@@ -165,7 +165,7 @@
 
                 <Border
                     Margin="0,5,0,22"
-                    Padding="14,12"
+                    Padding="14,10"
                     BackgroundColor="#E0F2FE"
                     Stroke="#BFDBFE"
                     StrokeShape="RoundRectangle 18"
@@ -259,6 +259,23 @@
                         TextColor="#334155" />
                 </Border>
 
+                <!--  CAMPOS OBRIGATÓRIOS  -->
+                <HorizontalStackLayout Margin="0,0,0,18" Spacing="6">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Text="*"
+                        TextColor="#DC2626"
+                        VerticalOptions="Center" />
+
+                    <Label
+                        FontFamily="PoppinsRegular"
+                        FontSize="14"
+                        Text="Todos os campos são obrigatórios."
+                        TextColor="#64748B"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
                 <!--  SIMULAÇÃO DE FALHA / ROLLBACK  -->
                 <Border
                     Margin="0,0,0,18"
@@ -285,10 +302,11 @@
 
                             <Label
                                 FontFamily="PoppinsRegular"
-                                FontSize="11"
+                                FontSize="12"
                                 Text="Demonstrar Rollback Transacional"
                                 TextColor="#9A3412" />
                         </VerticalStackLayout>
+
                     </Grid>
                 </Border>
 
@@ -296,7 +314,7 @@
                 <Label
                     Margin="0,0,0,18"
                     FontFamily="PoppinsRegular"
-                    FontSize="12"
+                    FontSize="13"
                     Text="Gera N parcelas mensais a partir do vencimento informado. Confira a prévia antes de concluir."
                     TextColor="#64748B" />
 
@@ -322,45 +340,35 @@
         <Grid
             Grid.Row="2"
             Padding="16,10"
-            BackgroundColor="White"
-            ColumnDefinitions="*,Auto,Auto"
-            ColumnSpacing="6">
+            BackgroundColor="White">
 
-            <Label
-                Grid.Column="0"
-                FontFamily="PoppinsRegular"
-                FontSize="11"
-                LineBreakMode="WordWrap"
-                Text="Confira os dados antes de gerar as parcelas"
-                TextColor="#64748B"
-                VerticalOptions="Center" />
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="12">
 
-            <!--  CANCELAR  -->
-            <Button
-                Grid.Column="1"
-                Padding="12,0"
-                BackgroundColor="White"
-                BorderColor="#D1D5DB"
-                BorderWidth="1"
-                Clicked="OnCancelarClicked"
-                CornerRadius="9"
-                FontSize="12"
-                HeightRequest="42"
-                Text="Cancelar"
-                TextColor="#334155" />
+                <!--  CANCELAR  -->
+                <Button
+                    Padding="34,0"
+                    BackgroundColor="White"
+                    BorderColor="#D1D5DB"
+                    BorderWidth="1"
+                    Clicked="OnCancelarClicked"
+                    CornerRadius="9"
+                    FontSize="14"
+                    HeightRequest="42"
+                    Text="CANCELAR"
+                    TextColor="#334155" />
 
-            <!--  GERAR PARCELAS  -->
-            <Button
-                Grid.Column="2"
-                Padding="12,0"
-                BackgroundColor="#2C63B1"
-                CornerRadius="9"
-                FontFamily="PoppinsSemiBold"
-                FontSize="12"
-                HeightRequest="42"
-                Text="Gerar Parcelas"
-                TextColor="White" />
+                <!--  GERAR PARCELAS  -->
+                <Button
+                    Padding="34,0"
+                    BackgroundColor="#2C63B1"
+                    CornerRadius="9"
+                    FontFamily="PoppinsSemiBold"
+                    FontSize="14"
+                    HeightRequest="42"
+                    Text="GERAR PARCELAS"
+                    TextColor="White" />
 
+            </HorizontalStackLayout>
         </Grid>
     </Grid>
 </ContentPage>

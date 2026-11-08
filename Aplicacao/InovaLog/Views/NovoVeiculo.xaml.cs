@@ -8,12 +8,19 @@ public partial class NovoVeiculoPage : ContentPage
         InitializeComponent();
     }
 
-    private async void OnCancelarClicked(object sender, EventArgs e)
+    private async void OnCancelarClicked(object? sender, EventArgs e)
     {
-        await DisplayAlert(
-            "Prévia do formulário",
-            "O botão Cancelar está em modo de visualização. Nenhuma alteração foi salva.",
-            "OK");
+        if (Navigation.NavigationStack.Count > 1)
+        {
+            await Navigation.PopAsync();
+        }
+        else
+        {
+            await DisplayAlert(
+                "Atenção",
+                "Não existe uma página anterior para voltar.",
+                "OK");
+        }
     }
 
     private async void OnSalvarClicked(object sender, EventArgs e)

@@ -1,4 +1,4 @@
-﻿
+
 using InovaLog.Services;
 using InovaLog.ViewModels;
 using InovaLog.Views;
@@ -23,10 +23,11 @@ public partial class App : Application
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
-#if DEBUG
-        // TESTE: abre direto na tela de motoristas, sem login.
-        var page = ActivatorUtilities.CreateInstance<FinanceiroPage>(_serviceProvider);
-        return new Window(new NavigationPage(page));
+ #if DEBUG
+        // TESTE: abre direto no sistema (barra de navegação inferior), sem passar pelo login.
+        // Linhas antigas, caso queira voltar a testar só a tela de Frota:
+          var page = ActivatorUtilities.CreateInstance<HomePage>(_serviceProvider);
+        return new Window(new AppShell());
 #else
     var loginPage = _serviceProvider.GetRequiredService<LoginPage>();
     var window = new Window(new NavigationPage(loginPage));

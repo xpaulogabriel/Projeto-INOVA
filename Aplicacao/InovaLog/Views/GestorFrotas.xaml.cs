@@ -1,15 +1,16 @@
 
-using InovaLog.ViewModels;
-
 namespace InovaLog.Views;
 
 public partial class GestorFrotasPage : ContentPage
 {
-    public GestorFrotasPage(GestorFrotasViewModel viewModel)
+    public GestorFrotasPage()
     {
         InitializeComponent();
-        BindingContext = viewModel;
     }
+
+    // =========================
+    // ABAS
+    // =========================
 
     private void OnVeiculosTapped(object? sender, TappedEventArgs e)
     {
@@ -59,30 +60,30 @@ public partial class GestorFrotasPage : ContentPage
         }
     }
 
-    private async void OnNovoVeiculoClicked(
-        object? sender, EventArgs e)
+    // =========================
+    // NOVO VEÍCULO
+    // =========================
+
+    private async void OnNovoVeiculoClicked(object? sender, EventArgs e)
     {
-        await DisplayAlert(
-            "Novo veículo",
-            "O formulário de cadastro será implementado em uma próxima etapa.",
-            "OK");
+        await Navigation.PushAsync(new NovoVeiculoPage());
     }
 
-    private async void OnNovaRotaClicked(
-        object? sender, EventArgs e)
+    // =========================
+    // NOVA ROTA
+    // =========================
+
+    private async void OnNovaRotaClicked(object? sender, EventArgs e)
     {
-        await DisplayAlert(
-            "Nova rota",
-            "O formulário de cadastro será implementado em uma próxima etapa.",
-            "OK");
+        await Navigation.PushAsync(new NovaRotaPage());
     }
 
-    private async void OnRegistrarServicoClicked(
-        object? sender, EventArgs e)
+    // =========================
+    // REGISTRAR SERVIÇO
+    // =========================
+
+    private async void OnRegistrarServicoClicked(object? sender, EventArgs e)
     {
-        await DisplayAlert(
-            "Registrar serviço",
-            "O formulário de serviços será implementado em uma próxima etapa.",
-            "OK");
+        await Navigation.PushAsync(new ManutencaoPlanoKmPage());
     }
 }

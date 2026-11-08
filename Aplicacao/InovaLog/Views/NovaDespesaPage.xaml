@@ -19,7 +19,7 @@
             Grid.Row="0"
             Padding="20,8,15,8"
             ColumnDefinitions="*"
-            ColumnSpacing="5"
+            
             HeightRequest="85">
 
             <Grid.Background>
@@ -32,7 +32,7 @@
             <Label
                 Grid.Column="1"
                 FontFamily="PoppinsSemiBold"
-                FontSize="25"
+                FontSize="22"
                 HorizontalOptions="Start"
                 Text="Nova Despesa"
                 TextColor="White"
@@ -276,7 +276,7 @@
                 </HorizontalStackLayout>
 
                 <Border
-                    Margin="0,5,0,10"
+                    Margin="0,5,0,20"
                     Padding="12,0"
                     BackgroundColor="White"
                     Stroke="#D1D5DB"
@@ -312,10 +312,35 @@
                             Source="seta_para_baixo.png"
                             VerticalOptions="Center"
                             WidthRequest="30" />
+
                     </Grid>
+
                 </Border>
 
+                <Grid
+                    Padding="16,4"
+                    ColumnDefinitions="Auto,*"
+                    ColumnSpacing="6">
+
+                    <Label
+                        Grid.Column="0"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Text="*"
+                        TextColor="#DC2626"
+                        VerticalOptions="Center" />
+
+                    <Label
+                        Grid.Column="1"
+                        FontSize="14"
+                        Text="Todos os campos são obrigatórios."
+                        TextColor="#64748B"
+                        VerticalOptions="Center" />
+
+                </Grid>
+
             </VerticalStackLayout>
+
         </ScrollView>
 
         <!--  RODAPÉ FIXO  -->
@@ -323,41 +348,36 @@
             Grid.Row="2"
             Padding="16,10"
             BackgroundColor="White"
-            ColumnDefinitions="*,Auto,Auto"
+            ColumnDefinitions="*,*"
             ColumnSpacing="6">
 
-            <Label
-                Grid.Column="0"
-                FontFamily="PoppinsRegular"
-                FontSize="11"
-                LineBreakMode="WordWrap"
-                Text="Todos os campos são obrigatórios"
-                TextColor="#64748B"
-                VerticalOptions="Center" />
-
             <Button
-                Grid.Column="1"
-                Padding="12,0"
+                Grid.Column="0"
+                Padding="54,0"
                 BackgroundColor="White"
                 BorderColor="#D1D5DB"
                 BorderWidth="1"
                 Clicked="OnCancelarClicked"
                 CornerRadius="9"
-                FontSize="12"
+                FontSize="14"
                 HeightRequest="42"
-                Text="Cancelar"
+                HorizontalOptions="End"
+                Text="CANCELAR"
                 TextColor="#334155" />
 
             <Button
-                Grid.Column="2"
-                Padding="12,0"
+                Grid.Column="1"
+                Padding="54,0"
                 BackgroundColor="#2C63B1"
                 CornerRadius="9"
                 FontFamily="PoppinsSemiBold"
-                FontSize="12"
+                FontSize="14"
                 HeightRequest="42"
-                Text="Salvar"
+                HorizontalOptions="Center"
+                Text="SALVAR"
                 TextColor="White" />
         </Grid>
+        
     </Grid>
+    
 </ContentPage>
