@@ -6,11 +6,10 @@ namespace InovaLog.Models
 {
     [SQLite.Table("auditoria_logs")]
     [Postgrest.Attributes.Table("auditoria_logs")]
-
     public class AuditoriaLog : BaseModel
     {
-        [PrimaryKey, SQLite.Column("id")]
-        [Postgrest.Attributes.Column("id")]
+        [SQLite.PrimaryKey, SQLite.Column("id")]
+        [Postgrest.Attributes.PrimaryKey("id", false)]
         public string Id { get; set; }
 
         [SQLite.Column("usuario_id")]
@@ -29,7 +28,6 @@ namespace InovaLog.Models
         [Postgrest.Attributes.Column("acao")]
         public string Acao { get; set; }
 
-        // Mapeado como string no C# para armazenar o JSONB
         [SQLite.Column("dados_antigos")]
         [Postgrest.Attributes.Column("dados_antigos")]
         public string DadosAntigos { get; set; }

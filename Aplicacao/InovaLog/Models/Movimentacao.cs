@@ -6,11 +6,10 @@ namespace InovaLog.Models
 {
     [SQLite.Table("movimentacoes")]
     [Postgrest.Attributes.Table("movimentacoes")]
-
     public class Movimentacao : BaseModel
     {
-        [PrimaryKey, SQLite.Column("id")]
-        [Postgrest.Attributes.Column("id")]
+        [SQLite.PrimaryKey, SQLite.Column("id")]
+        [Postgrest.Attributes.PrimaryKey("id", false)]
         public string Id { get; set; }
 
         [SQLite.Column("categoria_id")]

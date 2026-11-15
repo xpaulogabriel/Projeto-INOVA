@@ -1,17 +1,15 @@
-﻿using Postgrest.Attributes;
-using Postgrest.Models;
+﻿using System;
 using SQLite;
-using System;
+using Postgrest.Attributes;
 
 namespace InovaLog.Models
 {
     [SQLite.Table("dividas")]
     [Postgrest.Attributes.Table("dividas")]
-
     public class Divida : BaseModel
     {
-        [PrimaryKey, SQLite.Column("id")]
-        [Postgrest.Attributes.Column("id")]
+        [SQLite.PrimaryKey, SQLite.Column("id")]
+        [Postgrest.Attributes.PrimaryKey("id", false)]
         public string Id { get; set; }
 
         [SQLite.Column("categoria_id")]
@@ -42,5 +40,4 @@ namespace InovaLog.Models
         [Postgrest.Attributes.Column("criado_em")]
         public DateTime? CriadoEm { get; set; }
     }
-
 }

@@ -1,17 +1,15 @@
-﻿using Postgrest.Attributes;
-using Postgrest.Models;
+﻿using System;
 using SQLite;
-using System;
+using Postgrest.Attributes;
 
 namespace InovaLog.Models
 {
     [SQLite.Table("viagens")]
     [Postgrest.Attributes.Table("viagens")]
-
     public class Viagem : BaseModel
     {
-        [PrimaryKey, SQLite.Column("id")]
-        [Postgrest.Attributes.Column("id")]
+        [SQLite.PrimaryKey, SQLite.Column("id")]
+        [Postgrest.Attributes.PrimaryKey("id", false)]
         public string Id { get; set; }
 
         [SQLite.Column("veiculo_id")]

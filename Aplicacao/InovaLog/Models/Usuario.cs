@@ -1,20 +1,18 @@
-﻿using Postgrest.Attributes;
-using Postgrest.Models;
+﻿using System;
 using SQLite;
-using System;
+using Postgrest.Attributes;
 
 namespace InovaLog.Models
 {
     [SQLite.Table("usuarios")]
     [Postgrest.Attributes.Table("usuarios")]
-
     public class Usuario : BaseModel
     {
-        [PrimaryKey, SQLite.Column("id")]
-        [Postgrest.Attributes.Column("id")]
+        [SQLite.PrimaryKey, SQLite.Column("id")]
+        [Postgrest.Attributes.PrimaryKey("id", false)]
         public string Id { get; set; }
 
-        [SQLite.Column("google_id"), Unique]
+        [SQLite.Column("google_id"), SQLite.Unique]
         [Postgrest.Attributes.Column("google_id")]
         public string GoogleId { get; set; }
 
@@ -22,7 +20,7 @@ namespace InovaLog.Models
         [Postgrest.Attributes.Column("nome")]
         public string Nome { get; set; }
 
-        [SQLite.Column("email"), Unique]
+        [SQLite.Column("email"), SQLite.Unique]
         [Postgrest.Attributes.Column("email")]
         public string Email { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using SQLite;
+using Postgrest.Attributes;
 
 namespace InovaLog.Models
 {
@@ -8,8 +8,8 @@ namespace InovaLog.Models
     [Postgrest.Attributes.Table("historico_manutencoes")]
     public class HistoricoManutencao : BaseModel
     {
-        [PrimaryKey, SQLite.Column("id")]
-        [Postgrest.Attributes.Column("id")]
+        [SQLite.PrimaryKey, SQLite.Column("id")]
+        [Postgrest.Attributes.PrimaryKey("id", false)]
         public string Id { get; set; }
 
         [SQLite.Column("veiculo_id")]
