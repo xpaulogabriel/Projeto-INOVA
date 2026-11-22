@@ -5,6 +5,8 @@ using InovaLog.Views;
 using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using LiveChartsCore.SkiaSharpView.Maui;
+using DotNetEnv;
+using System.Reflection;
 
 namespace InovaLog;
 
@@ -45,9 +47,16 @@ public static class MauiProgram
 #endif
         });
 
-        // 1. Configuração do Supabase e Serviços
-        var supabaseUrl = "https://projeto-placeholder.supabase.co"; // Trocaremos na Fase B
-        var supabaseKey = "chave-placeholder"; // Trocaremos na Fase B
+        // 1. Configuração do Supabase e Serviços via .env
+        var assembly = Assembly.GetExecutingAssembly();
+        var stream = assembly.GetManifestResourceStream("InovaLog..env");
+        if (stream != null)
+        {
+            DotNetEnv.Env.Load(stream);
+        }
+
+        var supabaseUrl = DotNetEnv.Env.GetString("SUPABASE_URL");
+        var supabaseKey = DotNetEnv.Env.GetString("SUPABASE_KEY");
 
         var options = new Supabase.SupabaseOptions
         {
@@ -82,6 +91,7 @@ public static class MauiProgram
 
         // 5. Registro de Banco offline
         builder.Services.AddSingleton<DatabaseService>();
+
 
 #if DEBUG
         builder.Logging.AddDebug();

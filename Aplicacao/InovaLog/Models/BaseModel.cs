@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace InovaLog.Models
 {
-    public abstract class BaseModel
+    public abstract class BaseModel : Postgrest.Models.BaseModel
     {
         [SQLite.Column("sincronizado")]
         [JsonIgnore]
