@@ -129,4 +129,15 @@ public static class SessaoPerfil
 
         return (partes[0][..1] + partes[1][..1]).ToUpperInvariant();
     }
+
+    /// <summary>Converte o texto do banco/SecureStorage para o enum PerfilUsuario.</summary>
+    public static PerfilUsuario ConverterPerfil(string? perfilTexto) =>
+        (perfilTexto ?? string.Empty).Trim().ToLowerInvariant() switch
+        {
+            "admin" or "administrador" => PerfilUsuario.Admin,
+            "gestor" or "gestorrotas" or "gestor de rotas" => PerfilUsuario.GestorRotas,
+            "financeiro" => PerfilUsuario.Financeiro,
+            "motorista" => PerfilUsuario.Motorista,
+            _ => PerfilUsuario.Motorista // Padrão mais restritivo por segurança
+        };
 }

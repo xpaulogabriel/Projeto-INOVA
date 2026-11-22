@@ -80,6 +80,9 @@ public static class MauiProgram
         builder.Services.AddTransient<NovaRotaPage>();
         builder.Services.AddTransient<GestorFrotasPage>();
 
+        // 5. Registro de Banco offline
+        builder.Services.AddSingleton<DatabaseService>();
+
 #if DEBUG
         builder.Logging.AddDebug();
 #endif

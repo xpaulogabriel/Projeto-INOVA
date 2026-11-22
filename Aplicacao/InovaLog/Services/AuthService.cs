@@ -1,5 +1,7 @@
-﻿using System.Text.Json;
+﻿using InovaLog.Models;
 using Supabase.Gotrue;
+using System.Globalization;
+using static Postgrest.Constants;
 using static Supabase.Gotrue.Constants;
 
 namespace InovaLog.Services;
@@ -8,18 +10,30 @@ public class AuthService
 {
     private readonly Supabase.Client _supabaseClient;
 
+    // Tempo máximo que o motorista pode usar o app sem internet após o último login online
+    private const int DiasValidadeOffline = 7;
+
+    // Chaves do cofre seguro (SecureStorage)
+    private const string KeyAccessToken = "auth_token";
+    private const string KeyRefreshToken = "refresh_token";
+    private const string KeyUserEmail = "user_email";
+    private const string KeyUserName = "user_name";
+    private const string KeyUserRole = "user_role";
+    private const string KeyOfflineExpires = "offline_expires_at";
+
     public AuthService(Supabase.Client supabaseClient)
     {
         _supabaseClient = supabaseClient;
     }
 
-    // Verifica se o aparelho tem conexão com a internet
     public bool TemInternet()
     {
         return Connectivity.Current.NetworkAccess == NetworkAccess.Internet;
     }
 
-    // 1. Login Tradicional (E-mail e Senha)
+    // =========================================================================
+    // 1. LOGIN COM E-MAIL E SENHA (ONLINE)
+    // =========================================================================
     public async Task<(bool Sucesso, string Mensagem)> LoginComEmailAsync(string email, string senha)
     {
         if (!TemInternet())
@@ -29,13 +43,10 @@ public class AuthService
         {
             var sessao = await _supabaseClient.Auth.SignIn(email, senha);
 
-            if (sessao != null && !string.IsNullOrEmpty(sessao.AccessToken))
-            {
-                await SalvarSessaoLocalAsync(sessao);
-                return (true, string.Empty);
-            }
+            if (sessao == null || string.IsNullOrEmpty(sessao.AccessToken) || string.IsNullOrEmpty(sessao.User?.Email))
+                return (false, "E-mail ou senha inválidos.");
 
-            return (false, "E-mail ou senha inválidos.");
+            return await FinalizarLoginOnlineAsync(sessao);
         }
         catch (Exception)
         {
@@ -43,7 +54,9 @@ public class AuthService
         }
     }
 
-    // 2. Login via Google (OAuth2 + Deep Link)
+    // =========================================================================
+    // 2. LOGIN COM GOOGLE / GMAIL (ONLINE)
+    // =========================================================================
     public async Task<(bool Sucesso, string Mensagem)> LoginComGoogleAsync()
     {
         if (!TemInternet())
@@ -61,10 +74,9 @@ public class AuthService
                 authResult.Properties.TryGetValue("refresh_token", out var refreshToken))
             {
                 var sessao = await _supabaseClient.Auth.SetSession(accessToken, refreshToken);
-                if (sessao != null)
+                if (sessao != null && !string.IsNullOrEmpty(sessao.User?.Email))
                 {
-                    await SalvarSessaoLocalAsync(sessao);
-                    return (true, string.Empty);
+                    return await FinalizarLoginOnlineAsync(sessao);
                 }
             }
 
@@ -80,28 +92,62 @@ public class AuthService
         }
     }
 
-    // 3. Validação de Sessão Existente (Funciona Online e Offline)
+    // =========================================================================
+    // 3. VALIDAÇÃO DE SESSÃO NO BOOT (ONLINE E OFFLINE COM TEMPO)
+    // =========================================================================
     public async Task<bool> ValidarSessaoExistenteAsync()
     {
         try
         {
-            var token = await SecureStorage.Default.GetAsync("auth_token");
-            if (string.IsNullOrEmpty(token))
+            var token = await SecureStorage.Default.GetAsync(KeyAccessToken);
+            var refreshToken = await SecureStorage.Default.GetAsync(KeyRefreshToken);
+            var email = await SecureStorage.Default.GetAsync(KeyUserEmail);
+            var nome = await SecureStorage.Default.GetAsync(KeyUserName);
+            var roleTexto = await SecureStorage.Default.GetAsync(KeyUserRole);
+            var expiresTexto = await SecureStorage.Default.GetAsync(KeyOfflineExpires);
+
+            // Se faltar qualquer dado essencial no cofre, exige novo login
+            if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email) ||
+                string.IsNullOrEmpty(roleTexto) || string.IsNullOrEmpty(expiresTexto))
+            {
                 return false;
+            }
 
-            // Verifica localmente se o Token JWT ainda está dentro do prazo de validade
-            if (TokenJwtAindaValido(token))
+            // Verifica se o tempo de login offline expirou
+            if (!DateTime.TryParse(expiresTexto, null, DateTimeStyles.RoundtripKind, out var dataLimiteOffline) ||
+                DateTime.UtcNow > dataLimiteOffline)
             {
-                var refreshToken = await SecureStorage.Default.GetAsync("refresh_token");
-                if (TemInternet() && !string.IsNullOrEmpty(refreshToken))
+                Logout();
+                return false;
+            }
+
+            // CENÁRIO A: TEM INTERNET -> Tenta renovar sessão e revalidar papel/status no Supabase
+            if (TemInternet() && !string.IsNullOrEmpty(refreshToken))
+            {
+                try
                 {
-                    try { await _supabaseClient.Auth.SetSession(token, refreshToken); } catch { }
+                    var sessaoRenovada = await _supabaseClient.Auth.SetSession(token, refreshToken);
+                    if (sessaoRenovada != null)
+                    {
+                        var validacao = await FinalizarLoginOnlineAsync(sessaoRenovada);
+                        if (validacao.Sucesso)
+                            return true;
+
+                        // Se o Admin desativou o usuário no banco, derruba o acesso
+                        Logout();
+                        return false;
+                    }
                 }
-                return true;
+                catch
+                {
+                    // Se o servidor oscilar, cai para a validação offline abaixo
+                }
             }
 
-            Logout();
-            return false;
+            // CENÁRIO B: SEM INTERNET (OU SERVIDOR INSTÁVEL) -> Libera usando os dados do cofre seguro
+            var perfil = SessaoPerfil.ConverterPerfil(roleTexto);
+            SessaoPerfil.Definir(perfil, nome ?? email, email);
+            return true;
         }
         catch
         {
@@ -109,56 +155,89 @@ public class AuthService
         }
     }
 
-    // Lê a data de expiração (exp) do JWT nativamente sem depender de bibliotecas externas
-    private static bool TokenJwtAindaValido(string token)
+    // =========================================================================
+    // MÉTODOS INTERNOS: CONSULTA DE PAPEL NO SUPABASE + GRAVAÇÃO NO COFRE
+    // =========================================================================
+    private async Task<(bool Sucesso, string Mensagem)> FinalizarLoginOnlineAsync(Session sessao)
     {
-        try
+        var emailAutenticado = sessao.User!.Email!.Trim().ToLowerInvariant();
+
+        // 1. Busca o usuário na tabela 'usuarios'
+        var respostaUsuario = await _supabaseClient
+            .From<Usuario>()
+            .Filter("email", Operator.Equals, emailAutenticado)
+            .Get();
+
+        var usuarioBanco = respostaUsuario.Models.FirstOrDefault();
+
+        if (usuarioBanco == null)
         {
-            var partes = token.Split('.');
-            if (partes.Length != 3) return false;
-
-            var payload = partes[1].Replace('-', '+').Replace('_', '/');
-            switch (payload.Length % 4)
-            {
-                case 2: payload += "=="; break;
-                case 3: payload += "="; break;
-            }
-
-            var jsonBytes = Convert.FromBase64String(payload);
-            using var doc = JsonDocument.Parse(jsonBytes);
-
-            if (doc.RootElement.TryGetProperty("exp", out var expElement))
-            {
-                var expSeconds = expElement.GetInt64();
-                var dataExpiracao = DateTimeOffset.FromUnixTimeSeconds(expSeconds).UtcDateTime;
-                return DateTime.UtcNow < dataExpiracao;
-            }
-
-            return false;
+            Logout();
+            return (false, "Este e-mail não está cadastrado no InovaLog. Solicite acesso ao administrador.");
         }
-        catch
+
+        // Ativo é bool?, então validamos se é explicitamente true
+        if (usuarioBanco.Ativo != true)
         {
-            return false;
+            Logout();
+            return (false, "Seu acesso está desativado. Procure o administrador.");
         }
+
+        // 2. Busca o nome do papel na tabela 'perfis' usando o PerfilId
+        string? nomePerfilBanco = null;
+        if (usuarioBanco.PerfilId.HasValue)
+        {
+            var respostaPerfil = await _supabaseClient
+                .From<Perfil>()
+                .Filter("id", Operator.Equals, usuarioBanco.PerfilId.Value)
+                .Get();
+
+            // Ajuste para .Nome se a propriedade na sua Model Perfil.cs se chamar Nome
+            nomePerfilBanco = respostaPerfil.Models.FirstOrDefault()?.Nome;
+        }
+
+        var perfilEnum = SessaoPerfil.ConverterPerfil(nomePerfilBanco);
+        var nomeUsuario = string.IsNullOrWhiteSpace(usuarioBanco.Nome)
+            ? emailAutenticado
+            : usuarioBanco.Nome;
+
+        // 3. Hidrata o SessaoPerfil e grava no cofre seguro (SecureStorage)
+        SessaoPerfil.Definir(perfilEnum, nomeUsuario, emailAutenticado);
+        await SalvarSessaoLocalAsync(sessao, nomeUsuario, emailAutenticado, perfilEnum);
+
+        return (true, string.Empty);
     }
 
-    private static async Task SalvarSessaoLocalAsync(Session sessao)
+    private static async Task SalvarSessaoLocalAsync(
+        Session sessao,
+        string nome,
+        string email,
+        PerfilUsuario perfil)
     {
         if (!string.IsNullOrEmpty(sessao.AccessToken))
-            await SecureStorage.Default.SetAsync("auth_token", sessao.AccessToken);
+            await SecureStorage.Default.SetAsync(KeyAccessToken, sessao.AccessToken);
 
         if (!string.IsNullOrEmpty(sessao.RefreshToken))
-            await SecureStorage.Default.SetAsync("refresh_token", sessao.RefreshToken);
+            await SecureStorage.Default.SetAsync(KeyRefreshToken, sessao.RefreshToken);
 
-        if (!string.IsNullOrEmpty(sessao.User?.Email))
-            Preferences.Default.Set("user_email", sessao.User.Email);
+        await SecureStorage.Default.SetAsync(KeyUserEmail, email);
+        await SecureStorage.Default.SetAsync(KeyUserName, nome);
+        await SecureStorage.Default.SetAsync(KeyUserRole, perfil.ToString());
+
+        // Grava a data limite de uso offline em formato ISO 8601 UTC
+        var dataLimite = DateTime.UtcNow.AddDays(DiasValidadeOffline).ToString("O");
+        await SecureStorage.Default.SetAsync(KeyOfflineExpires, dataLimite);
     }
 
     public void Logout()
     {
         try { _supabaseClient.Auth.SignOut(); } catch { }
-        SecureStorage.Default.Remove("auth_token");
-        SecureStorage.Default.Remove("refresh_token");
-        Preferences.Default.Remove("user_email");
+        SecureStorage.Default.Remove(KeyAccessToken);
+        SecureStorage.Default.Remove(KeyRefreshToken);
+        SecureStorage.Default.Remove(KeyUserEmail);
+        SecureStorage.Default.Remove(KeyUserName);
+        SecureStorage.Default.Remove(KeyUserRole);
+        SecureStorage.Default.Remove(KeyOfflineExpires);
+        SessaoPerfil.Reiniciar();
     }
 }

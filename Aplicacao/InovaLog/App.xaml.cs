@@ -15,7 +15,7 @@ public partial class App : Application
         AuthService authService)
     {
         InitializeComponent();
-
+        syncService.IniciarMonitoramentoConexao();
         _serviceProvider = serviceProvider;
         _authService = authService;
     }
@@ -24,8 +24,7 @@ public partial class App : Application
     protected override Window CreateWindow(IActivationState? activationState)
     {
  #if DEBUG
-        // TESTE: abre direto no sistema (barra de navegação inferior), sem passar pelo login.
-        // Linhas antigas, caso queira voltar a testar só a tela de Frota:
+
           var page = ActivatorUtilities.CreateInstance<HomePage>(_serviceProvider);
         return new Window(new AppShell());
 #else

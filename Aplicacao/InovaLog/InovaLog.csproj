@@ -60,10 +60,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Services\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Compile Update="Views\NovaDespesaPage.xaml.cs">
 	    <DependentUpon>NovaDespesaPage.xaml</DependentUpon>
 	  </Compile>
