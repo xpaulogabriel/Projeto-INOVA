@@ -5,7 +5,6 @@ using InovaLog.Views;
 using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using LiveChartsCore.SkiaSharpView.Maui;
-using DotNetEnv;
 using System.Reflection;
 
 namespace InovaLog;
@@ -47,24 +46,15 @@ public static class MauiProgram
 #endif
         });
 
-        // 1. Configuração do Supabase e Serviços via .env
-        var assembly = Assembly.GetExecutingAssembly();
-        var stream = assembly.GetManifestResourceStream("InovaLog..env");
-        if (stream != null)
-        {
-            DotNetEnv.Env.Load(stream);
-        }
-
-        var supabaseUrl = DotNetEnv.Env.GetString("SUPABASE_URL");
-        var supabaseKey = DotNetEnv.Env.GetString("SUPABASE_KEY");
-
+        // 1. Configuração do Supabase e Serviços
         var options = new Supabase.SupabaseOptions
         {
             AutoRefreshToken = true,
             AutoConnectRealtime = false
         };
 
-        builder.Services.AddSingleton(provider => new Supabase.Client(supabaseUrl, supabaseKey, options));
+        builder.Services.AddSingleton(provider =>
+            new Supabase.Client(Secrets.SupabaseUrl, Secrets.SupabaseKey, options));
         builder.Services.AddSingleton<AuthService>();
 
         // 2. Registo de ViewModels
@@ -89,9 +79,18 @@ public static class MauiProgram
         builder.Services.AddTransient<NovaRotaPage>();
         builder.Services.AddTransient<GestorFrotasPage>();
 
-        // 5. Registro de Banco offline
+        // 5. Registro de Banco offline e Sincronização
         builder.Services.AddSingleton<DatabaseService>();
+        builder.Services.AddSingleton(provider =>
+            new SyncService(
+                provider.GetRequiredService<DatabaseService>(),
+                new HttpClient(),
+                Secrets.SupabaseUrl,
+                Secrets.SupabaseKey));
 
+        // 6. Relação de cadastro usuário
+        builder.Services.AddTransient<CadastroUsuarioViewModel>();
+        builder.Services.AddTransient<CadastroUsuarioPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();

@@ -47,7 +47,6 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 
 		<!-- Variáveis de Ambiente (.env) -->
-		<EmbeddedResource Include=".env" />
 	</ItemGroup>
 
 	<ItemGroup>

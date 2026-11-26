@@ -37,17 +37,18 @@ public partial class LoginViewModel : ObservableObject
         }
 
         EstaCarregando = true;
-        var resultado = await _authService.LoginComEmailAsync(Email.Trim(), Senha);
-        EstaCarregando = false;
+        try
+        {
+            var resultado = await _authService.LoginComEmailAsync(Email.Trim(), Senha);
 
-        if (resultado.Sucesso)
-        {
-            // Login validado na nuvem: Salva o JWT e entra no AppShell (sem retorno para o login)
-            App.EntrarNoSistema();
+            if (resultado.Sucesso)
+                App.EntrarNoSistema();
+            else
+                await ExibirAlerta("Falha no Login", resultado.Mensagem);
         }
-        else
+        finally
         {
-            await ExibirAlerta("Falha no Login", resultado.Mensagem);
+            EstaCarregando = false;
         }
     }
 

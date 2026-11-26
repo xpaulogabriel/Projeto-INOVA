@@ -44,8 +44,13 @@ namespace InovaLog.Services
         /// <summary>
         /// Ativa o monitoramento automático de internet para sincronizar assim que o sinal voltar.
         /// </summary>
+        private bool _monitorando;
+
         public void IniciarMonitoramentoConexao()
         {
+            if (_monitorando) return;
+            _monitorando = true;
+
             Connectivity.Current.ConnectivityChanged += async (sender, e) =>
             {
                 if (e.NetworkAccess == NetworkAccess.Internet)
@@ -215,7 +220,7 @@ namespace InovaLog.Services
             _httpClient.DefaultRequestHeaders.Add("apikey", _supabaseAnonKey);
 
             // Usa o JWT do usuário logado (se disponível no SecureStorage) para respeitar as políticas RLS do Supabase
-            var token = await SecureStorage.Default.GetAsync("jwt_token");
+            var token = await SecureStorage.Default.GetAsync("auth_token");
             var bearer = string.IsNullOrWhiteSpace(token) ? _supabaseAnonKey : token;
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearer);

@@ -18,31 +18,43 @@ namespace InovaLog.Services
             _dbPath = Path.Combine(FileSystem.AppDataDirectory, "inovalog_local.db3");
         }
 
+        private readonly SemaphoreSlim _initLock = new(1, 1);
+
         private async Task InitAsync()
         {
             if (_database != null)
                 return;
 
-            var flags = SQLiteOpenFlags.ReadWrite |
-                        SQLiteOpenFlags.Create |
-                        SQLiteOpenFlags.SharedCache;
+            await _initLock.WaitAsync();
+            try
+            {
+                if (_database != null)
+                    return;
 
-            _database = new SQLiteAsyncConnection(_dbPath, flags);
+                var flags = SQLiteOpenFlags.ReadWrite |
+                            SQLiteOpenFlags.Create |
+                            SQLiteOpenFlags.SharedCache;
 
-            // Criação de todas as tabelas baseadas nas suas Models
-            await _database.CreateTableAsync<Perfil>();
-            await _database.CreateTableAsync<Usuario>();
-            await _database.CreateTableAsync<Sessao>();
-            await _database.CreateTableAsync<Veiculo>();
-            await _database.CreateTableAsync<Rota>();
-            await _database.CreateTableAsync<Viagem>();
-            await _database.CreateTableAsync<PlanoManutencao>();
-            await _database.CreateTableAsync<HistoricoManutencao>();
-            await _database.CreateTableAsync<Categoria>();
-            await _database.CreateTableAsync<FormaPagamento>();
-            await _database.CreateTableAsync<Divida>();
-            await _database.CreateTableAsync<Movimentacao>();
-            await _database.CreateTableAsync<AuditoriaLog>();
+                _database = new SQLiteAsyncConnection(_dbPath, flags);
+
+                await _database.CreateTableAsync<Perfil>();
+                await _database.CreateTableAsync<Usuario>();
+                await _database.CreateTableAsync<Sessao>();
+                await _database.CreateTableAsync<Veiculo>();
+                await _database.CreateTableAsync<Rota>();
+                await _database.CreateTableAsync<Viagem>();
+                await _database.CreateTableAsync<PlanoManutencao>();
+                await _database.CreateTableAsync<HistoricoManutencao>();
+                await _database.CreateTableAsync<Categoria>();
+                await _database.CreateTableAsync<FormaPagamento>();
+                await _database.CreateTableAsync<Divida>();
+                await _database.CreateTableAsync<Movimentacao>();
+                await _database.CreateTableAsync<AuditoriaLog>();
+            }
+            finally
+            {
+                _initLock.Release();
+            }
         }
 
         /// <summary>

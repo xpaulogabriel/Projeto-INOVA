@@ -64,23 +64,49 @@ public class AuthService
 
         try
         {
-            var providerAuth = await _supabaseClient.Auth.SignIn(Provider.Google);
+            var providerAuth = await _supabaseClient.Auth.SignIn(
+                Provider.Google,
+                new SignInOptions
+                {
+                    RedirectTo = "inovalog://login-callback",
+                    FlowType = OAuthFlowType.PKCE
+                });
 
             var authResult = await WebAuthenticator.Default.AuthenticateAsync(
                 providerAuth.Uri,
                 new Uri("inovalog://login-callback"));
 
-            if (authResult.Properties.TryGetValue("access_token", out var accessToken) &&
-                authResult.Properties.TryGetValue("refresh_token", out var refreshToken))
+            if (authResult.Properties.TryGetValue("error_description", out var descricaoErro))
             {
-                var sessao = await _supabaseClient.Auth.SetSession(accessToken, refreshToken);
-                if (sessao != null && !string.IsNullOrEmpty(sessao.User?.Email))
-                {
-                    return await FinalizarLoginOnlineAsync(sessao);
-                }
+                authResult.Properties.TryGetValue("error_code", out var codigoErro);
+                var textoLimpo = Uri.UnescapeDataString(descricaoErro).Replace("+", " ");
+                return (false, $"Erro do Supabase ({codigoErro}): {textoLimpo}");
             }
 
-            return (false, "Não foi possível validar a permissão do Google.");
+            Session? sessao = null;
+
+            // Fluxo PKCE (padrão mobile: retorna ?code=...)
+            if (authResult.Properties.TryGetValue("code", out var code) &&
+                !string.IsNullOrEmpty(providerAuth.PKCEVerifier))
+            {
+                sessao = await _supabaseClient.Auth.ExchangeCodeForSession(
+                    providerAuth.PKCEVerifier,
+                    code);
+            }
+            // Fallback para fluxo Implicit (retorna #access_token=...)
+            else if (authResult.Properties.TryGetValue("access_token", out var accessToken) &&
+                     authResult.Properties.TryGetValue("refresh_token", out var refreshToken))
+            {
+                sessao = await _supabaseClient.Auth.SetSession(accessToken, refreshToken);
+            }
+
+            if (sessao != null && !string.IsNullOrEmpty(sessao.User?.Email))
+            {
+                return await FinalizarLoginOnlineAsync(sessao);
+            }
+
+            var chavesRetornadas = string.Join(", ", authResult.Properties.Keys);
+            return (false, $"Não foi possível validar a permissão do Google. Chaves recebidas: [{chavesRetornadas}]");
         }
         catch (TaskCanceledException)
         {
@@ -165,7 +191,7 @@ public class AuthService
         // 1. Busca o usuário na tabela 'usuarios'
         var respostaUsuario = await _supabaseClient
             .From<Usuario>()
-            .Filter("email", Operator.Equals, emailAutenticado)
+            .Filter("email", Operator.ILike, emailAutenticado)
             .Get();
 
         var usuarioBanco = respostaUsuario.Models.FirstOrDefault();

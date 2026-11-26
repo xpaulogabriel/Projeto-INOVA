@@ -72,6 +72,7 @@
 
                     <Entry
                         Placeholder="Usuário / E-mail"
+                        Keyboard="Email"
                         Text="{Binding Email}"
                         FontFamily="PoppinsRegular"
                         PlaceholderColor="#A6A1A1"
@@ -147,13 +148,14 @@
                         BackgroundColor="White"
                         BorderColor="#DDDDDD"
                         BorderWidth="1"
+                        Command="{Binding EntrarComGoogleCommand}"
                         CornerRadius="22"
                         FontFamily="PoppinsSemiBold"
                         FontSize="16"
                         HeightRequest="46"
                         ImageSource="icon_google.png"
                         Text="Google"
-                        TextColor="#565050" />
+                        TextColor="#565050" />  
 
                 </Grid>
 
@@ -169,6 +171,10 @@
                     TextColor="Black" />
 
             </VerticalStackLayout>
+            <ActivityIndicator
+                Color="#E66D17"
+                IsRunning="{Binding EstaCarregando}"
+                IsVisible="{Binding EstaCarregando}" />
 
         </Grid>
 

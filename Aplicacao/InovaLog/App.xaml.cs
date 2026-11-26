@@ -18,44 +18,65 @@ public partial class App : Application
         _serviceProvider = serviceProvider;
         _authService = authService;
         _syncService = syncService;
-
-        _syncService.IniciarMonitoramentoConexao();
     }
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
-        // Inicia sempre trancado na LoginPage (inclusive em DEBUG para podermos testar)
-        var loginPage = _serviceProvider.GetRequiredService<LoginPage>();
-        var window = new Window(new NavigationPage(loginPage));
-
-        MainThread.BeginInvokeOnMainThread(async () =>
+        try
         {
-            bool sessaoValida = await _authService.ValidarSessaoExistenteAsync();
+            var loginPage = _serviceProvider.GetRequiredService<LoginPage>();
+            var window = new Window(new NavigationPage(loginPage));
 
-            if (sessaoValida)
+            MainThread.BeginInvokeOnMainThread(async () =>
             {
-                EntrarNoSistema();
-            }
-        });
+                try
+                {
+                    bool sessaoValida = await _authService.ValidarSessaoExistenteAsync();
+                    if (sessaoValida)
+                    {
+                        EntrarNoSistema();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"[ERRO VALIDAR SESSAO]: {ex}");
+                }
+            });
 
-        return window;
+            return window;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[ERRO CREATE WINDOW]: {ex}");
+            throw;
+        }
     }
 
     public static void EntrarNoSistema()
     {
-        if (Current?.Windows.Count > 0)
+        MainThread.BeginInvokeOnMainThread(() =>
         {
-            Current.Windows[0].Page = new AppShell();
-        }
+            if (Current is App app && app.Windows.Count > 0)
+            {
+                app.Windows[0].Page = new AppShell();
+
+                // Ativa o monitoramento de rede e dispara a 1ª sincronização em segundo plano
+                app._syncService.IniciarMonitoramentoConexao();
+                _ = app._syncService.SincronizarTudoAsync();
+            }
+        });
     }
 
     public static void VoltarParaLogin()
     {
-        if (Current is App app && app.Windows.Count > 0)
+        MainThread.BeginInvokeOnMainThread(() =>
         {
-            app._authService.Logout();
-            var novaLoginPage = app._serviceProvider.GetRequiredService<LoginPage>();
-            app.Windows[0].Page = new NavigationPage(novaLoginPage);
-        }
+            if (Current is App app && app.Windows.Count > 0)
+            {
+                app._authService.Logout();
+                var novaLoginPage = app._serviceProvider.GetRequiredService<LoginPage>();
+                app.Windows[0].Page = new NavigationPage(novaLoginPage);
+            }
+        });
     }
 }
