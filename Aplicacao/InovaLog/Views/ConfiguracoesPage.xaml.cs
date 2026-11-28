@@ -57,7 +57,11 @@ public partial class ConfiguracoesPage : ContentPage
     private void OnAbaUsuariosTapped(object? sender, TappedEventArgs e) => MostrarAba(IndiceUsuarios);
     private void OnAbaCategoriasTapped(object? sender, TappedEventArgs e) => MostrarAba(IndiceCategorias);
     private void OnAbaPagamentosTapped(object? sender, TappedEventArgs e) => MostrarAba(IndicePagamentos);
-    private void OnAbaLogsTapped(object? sender, TappedEventArgs e) => MostrarAba(IndiceLogs);
+    private async void OnAbaLogsTapped(object? sender, TappedEventArgs e)
+    {
+        MostrarAba(IndiceLogs);
+        await _viewModel.CarregarDadosAsync();
+    }
 
     private void MostrarAba(int aba)
     {

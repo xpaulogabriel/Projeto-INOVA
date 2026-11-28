@@ -30,11 +30,11 @@ namespace InovaLog.Models
 
         [SQLite.Column("dados_antigos")]
         [Postgrest.Attributes.Column("dados_antigos")]
-        public string DadosAntigos { get; set; }
+        public object? DadosAntigos { get; set; }
 
         [SQLite.Column("dados_novos")]
         [Postgrest.Attributes.Column("dados_novos")]
-        public string DadosNovos { get; set; }
+        public object? DadosNovos { get; set; }
 
         [SQLite.Column("criado_em")]
         [Postgrest.Attributes.Column("criado_em")]
