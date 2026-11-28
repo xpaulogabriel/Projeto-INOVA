@@ -24,6 +24,18 @@ namespace InovaLog.Models
         [Postgrest.Attributes.Column("email")]
         public string Email { get; set; }
 
+        [SQLite.Column("cpf_cnpj"), SQLite.Unique]
+        [Postgrest.Attributes.Column("cpf_cnpj")]
+        public string CpfCnpj { get; set; }
+
+        [SQLite.Column("data_nascimento")]
+        [Postgrest.Attributes.Column("data_nascimento")]
+        public DateTime? DataNascimento { get; set; }
+
+        [SQLite.Column("telefone")]
+        [Postgrest.Attributes.Column("telefone")]
+        public string Telefone { get; set; }
+
         [SQLite.Column("foto_url")]
         [Postgrest.Attributes.Column("foto_url")]
         public string FotoUrl { get; set; }

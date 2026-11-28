@@ -14,6 +14,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(NovaRotaPage), typeof(NovaRotaPage));
         Routing.RegisterRoute(nameof(TrocarContaPage), typeof(TrocarContaPage));
         Routing.RegisterRoute(nameof(CadastroUsuarioPage), typeof(CadastroUsuarioPage));
+        Routing.RegisterRoute(nameof(MinhaContaPage), typeof(MinhaContaPage));
 
         // Esconde/mostra as abas conforme o perfil ativo.
         SessaoPerfil.PerfilAlterado += AplicarPermissoesNasAbas;

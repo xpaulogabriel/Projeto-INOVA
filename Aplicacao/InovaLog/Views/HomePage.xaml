@@ -57,6 +57,9 @@
                         x:Name="FotoPerfil"
                         Aspect="AspectFill"
                         IsVisible="False" />
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding AbrirMinhaContaCommand}" />
+                    </Border.GestureRecognizers>
                 </Grid>
             </Border>
 
@@ -113,23 +116,27 @@
                             VerticalOptions="Center" />
                     </HorizontalStackLayout>
                 </HorizontalStackLayout>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding AbrirMinhaContaCommand}" />
+                </Border.GestureRecognizers>
             </VerticalStackLayout>
 
             <!--  TROCAR CONTA  -->
             <Button
-                Grid.Column="2"
-                Padding="12,0"
-                BackgroundColor="#33FFFFFF"
-                BorderColor="White"
-                BorderWidth="1"
-                Command="{Binding TrocarContaCommand}"
-                CornerRadius="10"
-                FontFamily="PoppinsSemiBold"
-                FontSize="11"
-                HeightRequest="34"
-                Text="Trocar Conta"
-                TextColor="White"
-                VerticalOptions="Center" />
+    Grid.Column="2"
+    Padding="12,0"
+    BackgroundColor="#33FFFFFF"
+    BorderColor="White"
+    BorderWidth="1"
+    Command="{Binding SincronizarCommand}"
+    CornerRadius="10"
+    FontFamily="PoppinsSemiBold"
+    FontSize="11"
+    HeightRequest="34"
+    IsEnabled="{Binding PodeSincronizar}"
+    Text="{Binding TextoBotaoSync}"
+    TextColor="White"
+    VerticalOptions="Center" />
         </Grid>
 
         <!--  ======================================  -->

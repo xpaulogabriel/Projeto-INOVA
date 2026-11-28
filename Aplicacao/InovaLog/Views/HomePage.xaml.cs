@@ -1,24 +1,38 @@
 using InovaLog.Services;
 using InovaLog.ViewModels;
+using Microsoft.Maui.Networking;
 
 namespace InovaLog.Views;
 
 public partial class HomePage : ContentPage
 {
-    private readonly HomeViewModel _viewModel = new();
+    private readonly HomeViewModel _viewModel;
 
-    public HomePage()
+    public HomePage(HomeViewModel viewModel)
     {
         InitializeComponent();
+        _viewModel = viewModel;
         BindingContext = _viewModel;
     }
 
-    // Sempre que a tela aparece (ex.: depois de Trocar Conta), relê o perfil ativo.
+    // Sempre que a tela aparece, relê o perfil ativo e o status de conexão.
     protected override void OnAppearing()
     {
         base.OnAppearing();
         _viewModel.AtualizarSessao();
         OrganizarAtalhos();
+        Connectivity.Current.ConnectivityChanged += OnConnectivityChanged;
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        Connectivity.Current.ConnectivityChanged -= OnConnectivityChanged;
+    }
+
+    private void OnConnectivityChanged(object? sender, ConnectivityChangedEventArgs e)
+    {
+        MainThread.BeginInvokeOnMainThread(() => _viewModel.AtualizarSessao());
     }
 
     // Mostra só os atalhos que o perfil pode usar e arruma em 2 colunas, sem buracos.
@@ -62,19 +76,16 @@ public partial class HomePage : ContentPage
     // MÉTODOS ORIGINAIS DA HOMEPAGE (mantidos)
     // ==============================================================
 
-    // Chame este evento no botão "+ Nova Viagem / Rota" do HomePage.xaml
     private async void NovaRota_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync(nameof(NovaRotaPage));
     }
 
-    // Chame este evento no botão "Lançar Despesa" do HomePage.xaml
     private async void NovaDespesa_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync(nameof(NovaDespesaPag));
     }
 
-    // Caso queira adicionar um botão/toque para testar o Logout e voltar ao Login
     private void Sair_Clicked(object sender, EventArgs e)
     {
         App.VoltarParaLogin();

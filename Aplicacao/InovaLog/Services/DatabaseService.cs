@@ -1,24 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-using SQLite;
-using Microsoft.Maui.Storage;
 using InovaLog.Models;
+using Microsoft.Maui.Storage;
+using Newtonsoft.Json;
+using SQLite;
 
 namespace InovaLog.Services
 {
+    [SQLite.Table("registros_locais")]
+    internal class RegistroLocal
+    {
+        [SQLite.PrimaryKey]
+        public string Chave { get; set; } = string.Empty; // Formato: "NomeTabela:Id"
+
+        [SQLite.Indexed]
+        public string Tabela { get; set; } = string.Empty;
+
+        public string RegistroId { get; set; } = string.Empty;
+        public string JsonDados { get; set; } = string.Empty;
+        public bool Sincronizado { get; set; } = true;
+        public bool PrecisaAtualizar { get; set; } = false;
+    }
+
     public class DatabaseService
     {
         private SQLiteAsyncConnection _database;
         private readonly string _dbPath;
+        private readonly SemaphoreSlim _initLock = new(1, 1);
 
         public DatabaseService()
         {
             _dbPath = Path.Combine(FileSystem.AppDataDirectory, "inovalog_local.db3");
         }
-
-        private readonly SemaphoreSlim _initLock = new(1, 1);
 
         private async Task InitAsync()
         {
@@ -35,21 +52,10 @@ namespace InovaLog.Services
                             SQLiteOpenFlags.Create |
                             SQLiteOpenFlags.SharedCache;
 
-                _database = new SQLiteAsyncConnection(_dbPath, flags);
+                var conn = new SQLiteAsyncConnection(_dbPath, flags);
+                await conn.CreateTableAsync<RegistroLocal>();
 
-                await _database.CreateTableAsync<Perfil>();
-                await _database.CreateTableAsync<Usuario>();
-                await _database.CreateTableAsync<Sessao>();
-                await _database.CreateTableAsync<Veiculo>();
-                await _database.CreateTableAsync<Rota>();
-                await _database.CreateTableAsync<Viagem>();
-                await _database.CreateTableAsync<PlanoManutencao>();
-                await _database.CreateTableAsync<HistoricoManutencao>();
-                await _database.CreateTableAsync<Categoria>();
-                await _database.CreateTableAsync<FormaPagamento>();
-                await _database.CreateTableAsync<Divida>();
-                await _database.CreateTableAsync<Movimentacao>();
-                await _database.CreateTableAsync<AuditoriaLog>();
+                _database = conn;
             }
             finally
             {
@@ -57,9 +63,6 @@ namespace InovaLog.Services
             }
         }
 
-        /// <summary>
-        /// Retorna a conexão ativa para consultas LINQ personalizadas nos outros Services.
-        /// </summary>
         public async Task<SQLiteAsyncConnection> GetConnectionAsync()
         {
             await InitAsync();
@@ -73,22 +76,27 @@ namespace InovaLog.Services
         public async Task<List<T>> GetAllAsync<T>() where T : BaseModel, new()
         {
             await InitAsync();
-            return await _database.Table<T>().ToListAsync();
+            var tabela = typeof(T).Name;
+            var linhas = await _database.Table<RegistroLocal>()
+                .Where(x => x.Tabela == tabela)
+                .ToListAsync();
+
+            return linhas.Select(Deserializar<T>).Where(x => x != null).ToList()!;
         }
 
         public async Task<T> GetByIdAsync<T>(object id) where T : BaseModel, new()
         {
             await InitAsync();
-            return await _database.FindAsync<T>(id);
+            var chave = MontarChave<T>(id?.ToString());
+            var linha = await _database.FindAsync<RegistroLocal>(chave);
+            return linha == null ? null! : Deserializar<T>(linha)!;
         }
 
-        /// <summary>
-        /// Insere ou atualiza um registro no banco local.
-        /// </summary>
         public async Task<int> SaveAsync<T>(T item) where T : BaseModel, new()
         {
             await InitAsync();
-            return await _database.InsertOrReplaceAsync(item);
+            var registro = CriarRegistro(item);
+            return await _database.InsertOrReplaceAsync(registro);
         }
 
         public async Task<int> SaveAllAsync<T>(IEnumerable<T> items) where T : BaseModel, new()
@@ -99,31 +107,93 @@ namespace InovaLog.Services
             {
                 foreach (var item in items)
                 {
-                    count += conn.InsertOrReplace(item);
+                    count += conn.InsertOrReplace(CriarRegistro(item));
                 }
             });
             return count;
         }
 
+        /// <summary>
+        /// Substitui o cache local sincronizado pela lista atual da nuvem, removendo registros deletados no Supabase.
+        /// </summary>
+        public async Task ReplaceAllSyncedAsync<T>(IEnumerable<T> items) where T : BaseModel, new()
+        {
+            await InitAsync();
+            var tabela = typeof(T).Name;
+
+            await _database.RunInTransactionAsync(conn =>
+            {
+                conn.Execute(
+                    "DELETE FROM registros_locais WHERE Tabela = ? AND Sincronizado = 1 AND PrecisaAtualizar = 0",
+                    tabela);
+
+                foreach (var item in items)
+                {
+                    item.Sincronizado = true;
+                    item.PrecisaAtualizar = false;
+                    conn.InsertOrReplace(CriarRegistro(item));
+                }
+            });
+        }
+
         public async Task<int> DeleteAsync<T>(T item) where T : BaseModel, new()
         {
             await InitAsync();
-            return await _database.DeleteAsync(item);
+            var id = ObterId(item);
+            var chave = MontarChave<T>(id);
+            return await _database.DeleteAsync<RegistroLocal>(chave);
         }
 
         // ==========================================
         // SUPORTE AO OFFLINE-FIRST
         // ==========================================
 
-        /// <summary>
-        /// Busca todos os registros de uma tabela que ainda não foram enviados ao Supabase.
-        /// </summary>
         public async Task<List<T>> GetPendentesSincronizacaoAsync<T>() where T : BaseModel, new()
         {
             await InitAsync();
-            return await _database.Table<T>()
-                .Where(x => !x.Sincronizado || x.PrecisaAtualizar)
+            var tabela = typeof(T).Name;
+            var linhas = await _database.Table<RegistroLocal>()
+                .Where(x => x.Tabela == tabela && (!x.Sincronizado || x.PrecisaAtualizar))
                 .ToListAsync();
+
+            return linhas.Select(Deserializar<T>).Where(x => x != null).ToList()!;
         }
+
+        // ==========================================
+        // AUXILIARES
+        // ==========================================
+
+        private static RegistroLocal CriarRegistro<T>(T item) where T : BaseModel
+        {
+            var id = ObterId(item);
+            return new RegistroLocal
+            {
+                Chave = MontarChave<T>(id),
+                Tabela = typeof(T).Name,
+                RegistroId = id,
+                JsonDados = JsonConvert.SerializeObject(item),
+                Sincronizado = item.Sincronizado,
+                PrecisaAtualizar = item.PrecisaAtualizar
+            };
+        }
+
+        private static T? Deserializar<T>(RegistroLocal linha) where T : BaseModel
+        {
+            var obj = JsonConvert.DeserializeObject<T>(linha.JsonDados);
+            if (obj != null)
+            {
+                obj.Sincronizado = linha.Sincronizado;
+                obj.PrecisaAtualizar = linha.PrecisaAtualizar;
+            }
+            return obj;
+        }
+
+        private static string ObterId<T>(T item)
+        {
+            var prop = typeof(T).GetProperty("Id");
+            return prop?.GetValue(item)?.ToString() ?? Guid.NewGuid().ToString();
+        }
+
+        private static string MontarChave<T>(string? id) => $"{typeof(T).Name}:{id}";
     }
 }

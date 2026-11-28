@@ -1,50 +1,45 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using InovaLog.Models;
 using InovaLog.Services;
 using InovaLog.Views;
 using Microsoft.Maui.Graphics;
 
 namespace InovaLog.ViewModels;
 
-// ==================================================================
-// ITENS DAS LISTAS DE CONFIGURAÇÕES
-// ==================================================================
-
-/// <summary>Cartão da aba "Usuários".</summary>
-public class UsuarioItem
+public partial class UsuarioItem : ObservableObject
 {
-    private static readonly Color Azul = Color.FromArgb("#2C63B1");
-    private static readonly Color AzulClaro = Color.FromArgb("#E0F2FE");
-
-    public PerfilUsuario Perfil { get; init; }
-    public string NomeCurto { get; init; } = string.Empty;      // usado no cabeçalho da Home
-    public string NomeExibicao { get; init; } = string.Empty;   // ex.: "Pedro Santos (Gestor Frota)"
+    public string Id { get; init; } = string.Empty;
+    public string NomeExibicao { get; init; } = string.Empty;
     public string Email { get; init; } = string.Empty;
-    public string Documentos { get; init; } = string.Empty;     // CNH / CPF (só motoristas)
-    public string RotuloPerfil { get; init; } = string.Empty;   // ADMINISTRADOR, GESTOR...
-    public bool Ativo { get; init; } = true;
-    public bool EhContaAtual { get; init; }
+    public string Documentos { get; init; } = string.Empty;
+    public string RotuloPerfil { get; init; } = string.Empty;
+    public Usuario ModelOriginal { get; init; } = null!;
+
+    [ObservableProperty] private bool ativo = true;
 
     public bool TemDocumentos => !string.IsNullOrWhiteSpace(Documentos);
 
-    // Botão "Conta Atual" / "Usar Conta"
-    public string TextoBotao => EhContaAtual ? "Conta Atual" : "Usar Conta";
-    public Color CorFundoBotao => EhContaAtual ? Azul : AzulClaro;
-    public Color CorTextoBotao => EhContaAtual ? Colors.White : Azul;
-    public double OpacidadeBotao => Ativo ? 1 : 0.5;
-
-    // Selo "Ativo" / "Bloqueado"
     public string TextoStatus => Ativo ? "Ativo" : "Bloqueado";
     public Color CorFundoStatus => Ativo ? Color.FromArgb("#D1FAE5") : Color.FromArgb("#FEE2E2");
     public Color CorTextoStatus => Ativo ? Color.FromArgb("#10B981") : Color.FromArgb("#EF4444");
 
-    // Destaque do cartão da conta em uso
-    public Brush Borda => new SolidColorBrush(EhContaAtual ? Azul : Color.FromArgb("#E2E8F0"));
-    public double EspessuraBorda => EhContaAtual ? 2 : 1;
+    public string TextoAcao => Ativo ? "Bloquear" : "Ativar";
+    public Color CorFundoAcao => Ativo ? Color.FromArgb("#FEE2E2") : Color.FromArgb("#D1FAE5");
+    public Color CorTextoAcao => Ativo ? Color.FromArgb("#EF4444") : Color.FromArgb("#10B981");
+
+    partial void OnAtivoChanged(bool value)
+    {
+        OnPropertyChanged(nameof(TextoStatus));
+        OnPropertyChanged(nameof(CorFundoStatus));
+        OnPropertyChanged(nameof(CorTextoStatus));
+        OnPropertyChanged(nameof(TextoAcao));
+        OnPropertyChanged(nameof(CorFundoAcao));
+        OnPropertyChanged(nameof(CorTextoAcao));
+    }
 }
 
-/// <summary>Linha da aba "Categorias".</summary>
 public class CategoriaItem : ObservableObject
 {
     private bool _ativa = true;
@@ -77,7 +72,6 @@ public class CategoriaItem : ObservableObject
     public double OpacidadeLinha => Ativa ? 1 : 0.55;
 }
 
-/// <summary>Linha da aba "Pagamentos".</summary>
 public class FormaPagamentoItem : ObservableObject
 {
     private bool _ativa = true;
@@ -105,16 +99,13 @@ public class FormaPagamentoItem : ObservableObject
     public double OpacidadeLinha => Ativa ? 1 : 0.55;
 }
 
-// ==================================================================
-// VIEW MODEL DA TELA DE CONFIGURAÇÕES
-// ==================================================================
-
 public partial class ConfiguracoesViewModel : ObservableObject
 {
-    // ---------------- USUÁRIOS ----------------
+    private readonly DatabaseService _db;
+    private readonly Supabase.Client _supabaseClient;
+
     public ObservableCollection<UsuarioItem> Usuarios { get; } = new();
 
-    // ---------------- CATEGORIAS (dados fictícios) ----------------
     public ObservableCollection<CategoriaItem> Categorias { get; } = new()
     {
         new CategoriaItem { Nome = "Fretes", Entrada = true },
@@ -126,11 +117,8 @@ public partial class ConfiguracoesViewModel : ObservableObject
     };
 
     [ObservableProperty] private string novaCategoria = string.Empty;
-
-    // 0 = Entrada, 1 = Saída (padrão do Picker)
     [ObservableProperty] private int tipoCategoriaIndex = 1;
 
-    // ---------------- FORMAS DE PAGAMENTO (dados fictícios) ----------------
     public ObservableCollection<FormaPagamentoItem> FormasPagamento { get; } = new()
     {
         new FormaPagamentoItem { Nome = "PIX" },
@@ -141,66 +129,192 @@ public partial class ConfiguracoesViewModel : ObservableObject
 
     [ObservableProperty] private string novaFormaPagamento = string.Empty;
 
-    // ---------------- MINHA CONTA (perfis sem abas administrativas) ----------------
     [ObservableProperty] private string nomeConta = string.Empty;
     [ObservableProperty] private string emailConta = string.Empty;
     [ObservableProperty] private string rotuloPerfilConta = string.Empty;
+    [ObservableProperty] private bool carregando;
 
-    public ConfiguracoesViewModel()
+    public ConfiguracoesViewModel(DatabaseService db, Supabase.Client supabaseClient)
     {
-        AtualizarSessao();
+        _db = db;
+        _supabaseClient = supabaseClient;
     }
 
-    // Chamado no OnAppearing da página.
-    public void AtualizarSessao()
+    public async Task CarregarDadosAsync()
     {
         NomeConta = SessaoPerfil.NomeUsuario;
         EmailConta = SessaoPerfil.EmailUsuario;
         RotuloPerfilConta = SessaoPerfil.RotuloPerfil(SessaoPerfil.PerfilAtual);
 
-        Usuarios.Clear();
+        Carregando = true;
+        try
+        {
+            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            {
+                var respPerfis = await _supabaseClient.From<Perfil>().Get();
+                var respUsuarios = await _supabaseClient.From<Usuario>().Get();
+                var respMotoristas = await _supabaseClient.From<Motorista>().Get();
 
-        foreach (var usuario in CriarUsuarios())
-            Usuarios.Add(usuario);
+                await _db.ReplaceAllSyncedAsync(respPerfis.Models);
+                await _db.ReplaceAllSyncedAsync(respUsuarios.Models);
+                await _db.ReplaceAllSyncedAsync(respMotoristas.Models);
+            }
+
+            var perfis = (await _db.GetAllAsync<Perfil>()).ToDictionary(p => p.Id, p => p.Nome);
+            var motoristas = (await _db.GetAllAsync<Motorista>()).ToDictionary(m => m.UsuarioId, m => m);
+            var usuarios = await _db.GetAllAsync<Usuario>();
+
+            Usuarios.Clear();
+            foreach (var u in usuarios.OrderBy(x => x.Nome))
+            {
+                var nomePerfil = u.PerfilId.HasValue && perfis.TryGetValue(u.PerfilId.Value, out var np)
+                    ? np.ToUpperInvariant()
+                    : "USUÁRIO";
+
+                var docs = string.Empty;
+                if (motoristas.TryGetValue(u.Id, out var mot))
+                {
+                    docs = $"CNH: {mot.CnhNumero} (Cat {mot.CnhCategoria})";
+                    if (!string.IsNullOrWhiteSpace(u.CpfCnpj))
+                        docs += $" • CPF: {u.CpfCnpj}";
+                }
+                else if (!string.IsNullOrWhiteSpace(u.CpfCnpj))
+                {
+                    docs = $"CPF/CNPJ: {u.CpfCnpj}";
+                }
+
+                Usuarios.Add(new UsuarioItem
+                {
+                    Id = u.Id,
+                    NomeExibicao = u.Nome,
+                    Email = u.Email,
+                    RotuloPerfil = nomePerfil,
+                    Documentos = docs,
+                    Ativo = u.Ativo ?? true,
+                    ModelOriginal = u
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            await ExibirAlerta("Erro", $"Não foi possível carregar os usuários: {ex.Message}");
+        }
+        finally
+        {
+            Carregando = false;
+        }
     }
-
-    // ==============================================================
-    // USUÁRIOS
-    // ==============================================================
 
     [RelayCommand]
     private async Task NovoUsuarioAsync()
     {
-        // Reaproveita a página de cadastro que já existe.
         await Shell.Current.GoToAsync(nameof(CadastroUsuarioPage));
     }
 
     [RelayCommand]
-    private async Task UsarContaAsync(UsuarioItem? usuario)
+    private async Task EditarUsuarioAsync(UsuarioItem? item)
     {
-        if (usuario == null || usuario.EhContaAtual)
-            return;
+        if (item == null) return;
+        await Shell.Current.GoToAsync($"{nameof(CadastroUsuarioPage)}?UsuarioId={item.Id}&Modo=editar");
+    }
 
-        if (!usuario.Ativo)
+    [RelayCommand]
+    private async Task InspecionarUsuarioAsync(UsuarioItem? item)
+    {
+        if (item == null) return;
+        await Shell.Current.GoToAsync($"{nameof(CadastroUsuarioPage)}?UsuarioId={item.Id}&Modo=inspecionar");
+    }
+
+    [RelayCommand]
+    private async Task AlternarStatusUsuarioAsync(UsuarioItem? item)
+    {
+        if (item == null) return;
+
+        if (string.Equals(item.Email, SessaoPerfil.EmailUsuario, StringComparison.OrdinalIgnoreCase))
         {
-            await ExibirAlerta("Conta bloqueada", "Esta conta está bloqueada e não pode ser utilizada.");
+            await ExibirAlerta("Ação bloqueada", "Você não pode bloquear a sua própria conta de administrador.");
             return;
         }
 
-        SessaoPerfil.Definir(usuario.Perfil, usuario.NomeCurto, usuario.Email);
+        if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+        {
+            await ExibirAlerta("Sem conexão", "Conecte-se à internet para alterar o status de acesso.");
+            return;
+        }
 
-        await Shell.Current.GoToAsync("//HomePage");
+        try
+        {
+            var novoStatus = !item.Ativo;
+            item.ModelOriginal.Ativo = novoStatus;
+            item.ModelOriginal.AtualizadoEm = DateTime.UtcNow;
+
+            await _supabaseClient.From<Usuario>().Update(item.ModelOriginal);
+            await _db.SaveAsync(item.ModelOriginal);
+
+            item.Ativo = novoStatus;
+        }
+        catch (Exception ex)
+        {
+            await ExibirAlerta("Erro", $"Falha ao atualizar status: {ex.Message}");
+        }
     }
 
-    // ==============================================================
-    // CATEGORIAS
-    // ==============================================================
+    [RelayCommand]
+    private async Task ExcluirUsuarioAsync(UsuarioItem? item)
+    {
+        if (item == null) return;
+
+        if (string.Equals(item.Email, SessaoPerfil.EmailUsuario, StringComparison.OrdinalIgnoreCase))
+        {
+            await ExibirAlerta("Ação bloqueada", "Você não pode excluir a sua própria conta de administrador.");
+            return;
+        }
+
+        if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+        {
+            await ExibirAlerta("Sem conexão", "Conecte-se à internet para excluir usuários.");
+            return;
+        }
+
+        var pagina = Application.Current?.Windows[0].Page;
+        if (pagina == null) return;
+
+        bool confirmar = await pagina.DisplayAlertAsync(
+            "Confirmar Exclusão",
+            $"Deseja excluir permanentemente o usuário {item.NomeExibicao} ({item.Email})?",
+            "Excluir",
+            "Cancelar");
+
+        if (!confirmar) return;
+
+        try
+        {
+            // 1. Apaga no Supabase (o ON DELETE CASCADE já remove da tabela 'motoristas')
+            await _supabaseClient.From<Usuario>().Delete(item.ModelOriginal);
+
+            // 2. Apaga no SQLite local (usuário e eventual registro de motorista)
+            await _db.DeleteAsync(item.ModelOriginal);
+            var motoristas = await _db.GetAllAsync<Motorista>();
+            var motLocal = motoristas.FirstOrDefault(m => m.UsuarioId == item.Id);
+            if (motLocal != null)
+                await _db.DeleteAsync(motLocal);
+
+            // 3. Remove da lista na tela
+            Usuarios.Remove(item);
+        }
+        catch (Exception ex)
+        {
+            // Se o usuário já tiver viagens/movimentações vinculadas, o Postgres bloqueia por FK
+            await ExibirAlerta(
+                "Não foi possível excluir",
+                $"Erro ao excluir usuário (se ele já possui histórico vinculado, use a opção Bloquear): {ex.Message}");
+        }
+    }
 
     [RelayCommand]
     private async Task IncluirCategoriaAsync()
     {
         var nome = (NovaCategoria ?? string.Empty).Trim();
-
         if (nome.Length == 0)
         {
             await ExibirAlerta("Atenção", "Informe o nome da categoria.");
@@ -224,15 +338,10 @@ public partial class ConfiguracoesViewModel : ObservableObject
             categoria.Ativa = !categoria.Ativa;
     }
 
-    // ==============================================================
-    // FORMAS DE PAGAMENTO
-    // ==============================================================
-
     [RelayCommand]
     private async Task IncluirFormaPagamentoAsync()
     {
         var nome = (NovaFormaPagamento ?? string.Empty).Trim();
-
         if (nome.Length == 0)
         {
             await ExibirAlerta("Atenção", "Informe a forma de pagamento.");
@@ -256,68 +365,10 @@ public partial class ConfiguracoesViewModel : ObservableObject
             forma.Ativa = !forma.Ativa;
     }
 
-    // ==============================================================
-    // APOIO
-    // ==============================================================
-
     private static async Task ExibirAlerta(string titulo, string mensagem)
     {
         var pagina = Application.Current?.Windows[0].Page;
-
         if (pagina != null)
             await pagina.DisplayAlertAsync(titulo, mensagem, "OK");
-    }
-
-    // Dados fictícios. Troque pela lista vinda do back-end depois.
-    private static IEnumerable<UsuarioItem> CriarUsuarios()
-    {
-        var emailAtual = SessaoPerfil.EmailUsuario;
-
-        UsuarioItem Criar(
-            PerfilUsuario perfil,
-            string nomeCurto,
-            string nomeExibicao,
-            string email,
-            string rotulo,
-            string documentos = "",
-            bool ativo = true) => new()
-            {
-                Perfil = perfil,
-                NomeCurto = nomeCurto,
-                NomeExibicao = nomeExibicao,
-                Email = email,
-                RotuloPerfil = rotulo,
-                Documentos = documentos,
-                Ativo = ativo,
-                EhContaAtual = string.Equals(email, emailAtual, StringComparison.OrdinalIgnoreCase)
-            };
-
-        var admin = SessaoPerfil.ContaPadrao(PerfilUsuario.Admin);
-        var gestor = SessaoPerfil.ContaPadrao(PerfilUsuario.GestorRotas);
-        var financeiro = SessaoPerfil.ContaPadrao(PerfilUsuario.Financeiro);
-        var motorista = SessaoPerfil.ContaPadrao(PerfilUsuario.Motorista);
-
-        yield return Criar(PerfilUsuario.Admin, admin.Nome, admin.Nome, admin.Email, "ADMINISTRADOR");
-
-        yield return Criar(PerfilUsuario.GestorRotas, gestor.Nome, $"{gestor.Nome} (Gestor Frota)", gestor.Email, "GESTOR");
-
-        yield return Criar(PerfilUsuario.Financeiro, financeiro.Nome, $"{financeiro.Nome} (Financeiro)", financeiro.Email, "FINANCEIRO");
-
-        yield return Criar(
-            PerfilUsuario.Motorista,
-            motorista.Nome,
-            $"{motorista.Nome} (Motorista)",
-            motorista.Email,
-            "OPERADOR",
-            "CNH: 04928172611 (Cat E) • CPF: 123.456.789-00");
-
-        yield return Criar(
-            PerfilUsuario.Motorista,
-            "Roberto Alves",
-            "Roberto Alves (Inativo)",
-            "bloqueado@inova.com.br",
-            "OPERADOR",
-            "CNH: 1122334455 (Cat D) • CPF: 999.888.777-66",
-            ativo: false);
     }
 }

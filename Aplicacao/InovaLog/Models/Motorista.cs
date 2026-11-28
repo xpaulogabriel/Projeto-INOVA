@@ -1,62 +1,51 @@
 ﻿using System;
-using System.Text.Json.Serialization;
+using SQLite;
 using Postgrest.Attributes;
 
 namespace InovaLog.Models
 {
-    [Table("motoristas")]
     [SQLite.Table("motoristas")]
+    [Postgrest.Attributes.Table("motoristas")]
     public class Motorista : BaseModel
     {
-        [PrimaryKey("id", false)]
-        [SQLite.PrimaryKey]
-        [SQLite.Column("id")]
-        [JsonPropertyName("id")]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        [SQLite.PrimaryKey, SQLite.Column("id")]
+        [Postgrest.Attributes.PrimaryKey("id", false)]
+        public string Id { get; set; } = Guid.NewGuid().ToString();
 
-        [Column("usuario_id")]
-        [SQLite.Column("usuario_id")]
-        [JsonPropertyName("usuario_id")]
-        public Guid UsuarioId { get; set; }
+        [SQLite.Column("usuario_id"), SQLite.Unique]
+        [Postgrest.Attributes.Column("usuario_id")]
+        public string UsuarioId { get; set; } = string.Empty;
 
-        [Column("cnh_numero")]
-        [SQLite.Column("cnh_numero")]
-        [JsonPropertyName("cnh_numero")]
+        [SQLite.Column("cnh_numero"), SQLite.Unique]
+        [Postgrest.Attributes.Column("cnh_numero")]
         public string CnhNumero { get; set; } = string.Empty;
 
-        [Column("cnh_categoria")]
         [SQLite.Column("cnh_categoria")]
-        [JsonPropertyName("cnh_categoria")]
+        [Postgrest.Attributes.Column("cnh_categoria")]
         public string CnhCategoria { get; set; } = "D";
 
-        [Column("cnh_validade")]
         [SQLite.Column("cnh_validade")]
-        [JsonPropertyName("cnh_validade")]
-        public DateTime CnhValidade { get; set; }
+        [Postgrest.Attributes.Column("cnh_validade")]
+        public DateTime? CnhValidade { get; set; }
 
-        [Column("ear")]
         [SQLite.Column("ear")]
-        [JsonPropertyName("ear")]
-        public bool Ear { get; set; } = true;
+        [Postgrest.Attributes.Column("ear")]
+        public bool? Ear { get; set; } = true;
 
-        [Column("validade_toxicologico")]
         [SQLite.Column("validade_toxicologico")]
-        [JsonPropertyName("validade_toxicologico")]
+        [Postgrest.Attributes.Column("validade_toxicologico")]
         public DateTime? ValidadeToxicologico { get; set; }
 
-        [Column("status_operacional")]
         [SQLite.Column("status_operacional")]
-        [JsonPropertyName("status_operacional")]
+        [Postgrest.Attributes.Column("status_operacional")]
         public string StatusOperacional { get; set; } = "Disponível";
 
-        [Column("data_criacao")]
-        [SQLite.Column("data_criacao")]
-        [JsonPropertyName("data_criacao")]
-        public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
+        [SQLite.Column("criado_em")]
+        [Postgrest.Attributes.Column("criado_em")]
+        public DateTime? CriadoEm { get; set; }
 
-        [Column("data_modificacao")]
-        [SQLite.Column("data_modificacao")]
-        [JsonPropertyName("data_modificacao")]
-        public DateTime DataModificacao { get; set; } = DateTime.UtcNow;
+        [SQLite.Column("atualizado_em")]
+        [Postgrest.Attributes.Column("atualizado_em")]
+        public DateTime? AtualizadoEm { get; set; }
     }
 }

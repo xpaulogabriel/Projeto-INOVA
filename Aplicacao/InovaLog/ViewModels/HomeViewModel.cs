@@ -59,11 +59,10 @@ public partial class HomeViewModel : ObservableObject
 {
     private static readonly CultureInfo Pt = new("pt-BR");
 
-    // ---------------- DADOS FICTÍCIOS ----------------
-    // Troque pelos valores reais quando o back-end estiver pronto.
     private const decimal MetaMensalFretes = 65000m;
     private const decimal ValorFaturadoMes = 32500m;
 
+    private readonly SyncService _syncService;
     private readonly List<ResultadoBusca> _indiceBusca;
 
     // ---------------- CABEÇALHO ----------------
@@ -72,6 +71,11 @@ public partial class HomeViewModel : ObservableObject
     [ObservableProperty] private string iniciais = string.Empty;
     [ObservableProperty] private string textoStatus = "ONLINE";
     [ObservableProperty] private Color corStatus = Color.FromArgb("#10B981");
+
+    // ---------------- SINCRONIZAÇÃO ----------------
+    [ObservableProperty] private bool sincronizando;
+    public bool PodeSincronizar => !Sincronizando;
+    public string TextoBotaoSync => Sincronizando ? "Sincronizando..." : "Sincronizar";
 
     // ---------------- PERMISSÕES ----------------
     [ObservableProperty] private bool acessoViagens;
@@ -105,10 +109,11 @@ public partial class HomeViewModel : ObservableObject
     public string PercentualTexto { get; private set; } = string.Empty;
     public double ProgressoMeta { get; private set; }
 
-    public HomeViewModel()
+    public HomeViewModel(SyncService syncService)
     {
-        var agora = DateTime.Now;
+        _syncService = syncService;
 
+        var agora = DateTime.Now;
         DataHoje = $"Hoje, {agora.ToString("dd/MM", Pt)}";
 
         var mes = Pt.DateTimeFormat.GetMonthName(agora.Month);
@@ -122,8 +127,14 @@ public partial class HomeViewModel : ObservableObject
         AtualizarSessao();
     }
 
+    partial void OnSincronizandoChanged(bool value)
+    {
+        OnPropertyChanged(nameof(PodeSincronizar));
+        OnPropertyChanged(nameof(TextoBotaoSync));
+    }
+
     // ==============================================================
-    // SESSÃO / PERMISSÕES  (chamado no OnAppearing da página)
+    // SESSÃO / PERMISSÕES
     // ==============================================================
     public void AtualizarSessao()
     {
@@ -143,7 +154,7 @@ public partial class HomeViewModel : ObservableObject
     }
 
     // ==============================================================
-    // META MENSAL: o progresso é calculado a partir do valor faturado
+    // META MENSAL
     // ==============================================================
     private void CalcularMeta()
     {
@@ -210,12 +221,39 @@ public partial class HomeViewModel : ObservableObject
     // ==============================================================
 
     [RelayCommand]
-    private async Task TrocarContaAsync()
+    private async Task AbrirMinhaContaAsync()
     {
-        await Shell.Current.GoToAsync(nameof(TrocarContaPage));
+        await Shell.Current.GoToAsync(nameof(MinhaContaPage));
     }
 
-    // CommandParameter: Viagens, Frota, Financeiro ou Configuracoes
+    [RelayCommand]
+    private async Task SincronizarAsync()
+    {
+        if (Sincronizando) return;
+
+        if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+        {
+            await ExibirAlerta("Modo Offline", "Sem conexão com a internet. Os dados serão enviados assim que a rede voltar.");
+            return;
+        }
+
+        Sincronizando = true;
+        try
+        {
+            await _syncService.SincronizarTudoAsync();
+            AtualizarSessao();
+            await ExibirAlerta("Sincronizado", "Todos os dados foram atualizados com a nuvem.");
+        }
+        catch (Exception ex)
+        {
+            await ExibirAlerta("Erro na Sincronização", ex.Message);
+        }
+        finally
+        {
+            Sincronizando = false;
+        }
+    }
+
     [RelayCommand]
     private async Task AbrirModuloAsync(string? nome)
     {
@@ -250,7 +288,6 @@ public partial class HomeViewModel : ObservableObject
             var nomeArquivo = $"top3_rotas_lucrativas_{DateTime.Now:yyyyMMdd_HHmm}.csv";
             var caminho = Path.Combine(FileSystem.CacheDirectory, nomeArquivo);
 
-            // UTF-8 com BOM: o Excel abre com os acentos corretos.
             await File.WriteAllTextAsync(caminho, csv.ToString(), new UTF8Encoding(true));
 
             await Share.Default.RequestAsync(new ShareFileRequest
@@ -298,7 +335,6 @@ public partial class HomeViewModel : ObservableObject
 
     private static List<AtividadeViagem> CriarAtividades()
     {
-        // Mesmas cores de status usadas na página de Viagens.
         var fundoConcluida = Color.FromArgb("#DCFCE7");
         var textoConcluida = Color.FromArgb("#166534");
         var fundoAndamento = Color.FromArgb("#FEF3C7");

@@ -80,6 +80,7 @@ namespace InovaLog.Services
                 await ConfigurarHeadersAutenticacaoAsync();
 
                 // 1. PUSH (SQLite -> Supabase) respeitando a ordem de Chaves Estrangeiras
+                await PushTabelaAsync<Motorista>("motoristas");
                 await PushTabelaAsync<Veiculo>("veiculos");
                 await PushTabelaAsync<Rota>("rotas");
                 await PushTabelaAsync<PlanoManutencao>("planos_manutencao");
@@ -94,6 +95,7 @@ namespace InovaLog.Services
                 await PullTabelaAsync<Categoria>("categorias");
                 await PullTabelaAsync<FormaPagamento>("formas_pagamento");
                 await PullTabelaAsync<Usuario>("usuarios");
+                await PullTabelaAsync<Motorista>("motoristas");
                 await PullTabelaAsync<Veiculo>("veiculos");
                 await PullTabelaAsync<Rota>("rotas");
                 await PullTabelaAsync<PlanoManutencao>("planos_manutencao");

@@ -10,26 +10,24 @@ public partial class ConfiguracoesPage : ContentPage
     private const int IndiceCategorias = 1;
     private const int IndicePagamentos = 2;
 
-    private readonly ConfiguracoesViewModel _viewModel = new();
+    private readonly ConfiguracoesViewModel _viewModel;
     private int _abaSelecionada = IndiceNenhuma;
 
-    public ConfiguracoesPage()
+    public ConfiguracoesPage(ConfiguracoesViewModel viewModel)
     {
         InitializeComponent();
+        _viewModel = viewModel;
         BindingContext = _viewModel;
     }
 
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
 
-        _viewModel.AtualizarSessao();
         AplicarPermissoes();
+        await _viewModel.CarregarDadosAsync();
     }
 
-    // ==============================================================
-    // PERMISSÕES: cada perfil vê somente as abas que pode usar
-    // ==============================================================
     private void AplicarPermissoes()
     {
         bool usuarios = SessaoPerfil.PodeGerenciarUsuarios();
@@ -40,7 +38,6 @@ public partial class ConfiguracoesPage : ContentPage
         AbaPagamentos.IsVisible = cadastros;
         BarraAbas.IsVisible = usuarios || cadastros;
 
-        // Mantém a aba atual se ela ainda for permitida; senão vai para a primeira permitida.
         bool abaAtualPermitida =
             (_abaSelecionada == IndiceUsuarios && usuarios) ||
             ((_abaSelecionada == IndiceCategorias || _abaSelecionada == IndicePagamentos) && cadastros);
@@ -52,16 +49,11 @@ public partial class ConfiguracoesPage : ContentPage
         else if (cadastros)
             MostrarAba(IndiceCategorias);
         else
-            MostrarAba(IndiceNenhuma);   // mostra "Minha Conta"
+            MostrarAba(IndiceNenhuma);
     }
 
-    // ==============================================================
-    // ABAS
-    // ==============================================================
     private void OnAbaUsuariosTapped(object? sender, TappedEventArgs e) => MostrarAba(IndiceUsuarios);
-
     private void OnAbaCategoriasTapped(object? sender, TappedEventArgs e) => MostrarAba(IndiceCategorias);
-
     private void OnAbaPagamentosTapped(object? sender, TappedEventArgs e) => MostrarAba(IndicePagamentos);
 
     private void MostrarAba(int aba)
@@ -78,38 +70,35 @@ public partial class ConfiguracoesPage : ContentPage
         ConfigurarAba(AbaPagamentos, aba == IndicePagamentos);
     }
 
-    // Mesmo padrão visual das abas do Gestor de Frotas / Financeiro.
     private static void ConfigurarAba(Border aba, bool selecionada)
     {
-        aba.BackgroundColor = selecionada
-            ? Color.FromArgb("#1EA1E8")
-            : Colors.White;
-
-        aba.Stroke = selecionada
-            ? Colors.Transparent
-            : Color.FromArgb("#E2E8F0");
-
+        aba.BackgroundColor = selecionada ? Color.FromArgb("#1EA1E8") : Colors.White;
+        aba.Stroke = selecionada ? Colors.Transparent : Color.FromArgb("#E2E8F0");
         aba.StrokeThickness = selecionada ? 0 : 1;
 
         if (aba.Content is Label texto)
         {
-            texto.TextColor = selecionada
-                ? Colors.White
-                : Color.FromArgb("#64748B");
-
-            texto.FontFamily = selecionada
-                ? "PoppinsSemiBold"
-                : "PoppinsMedium";
+            texto.TextColor = selecionada ? Colors.White : Color.FromArgb("#64748B");
+            texto.FontFamily = selecionada ? "PoppinsSemiBold" : "PoppinsMedium";
         }
     }
 
-    // ==============================================================
-    // CLIQUES DAS LISTAS (o item vem do BindingContext do controle)
-    // ==============================================================
-    private void OnUsarContaClicked(object? sender, EventArgs e)
+    private void OnEditarUsuarioClicked(object? sender, EventArgs e)
     {
         if ((sender as BindableObject)?.BindingContext is UsuarioItem usuario)
-            _viewModel.UsarContaCommand.Execute(usuario);
+            _viewModel.EditarUsuarioCommand.Execute(usuario);
+    }
+
+    private void OnInspecionarUsuarioClicked(object? sender, EventArgs e)
+    {
+        if ((sender as BindableObject)?.BindingContext is UsuarioItem usuario)
+            _viewModel.InspecionarUsuarioCommand.Execute(usuario);
+    }
+
+    private void OnAlternarStatusUsuarioClicked(object? sender, EventArgs e)
+    {
+        if ((sender as BindableObject)?.BindingContext is UsuarioItem usuario)
+            _viewModel.AlternarStatusUsuarioCommand.Execute(usuario);
     }
 
     private void OnAlternarCategoriaClicked(object? sender, EventArgs e)
@@ -122,5 +111,11 @@ public partial class ConfiguracoesPage : ContentPage
     {
         if ((sender as BindableObject)?.BindingContext is FormaPagamentoItem forma)
             _viewModel.AlternarFormaPagamentoCommand.Execute(forma);
+    }
+
+    private void OnExcluirUsuarioClicked(object? sender, EventArgs e)
+    {
+        if ((sender as BindableObject)?.BindingContext is UsuarioItem usuario)
+            _viewModel.ExcluirUsuarioCommand.Execute(usuario);
     }
 }

@@ -7,10 +7,12 @@ namespace InovaLog.Models
     {
         [SQLite.Column("sincronizado")]
         [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public bool Sincronizado { get; set; } = true;
 
         [SQLite.Column("precisa_atualizar")]
         [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public bool PrecisaAtualizar { get; set; } = false;
     }
 }

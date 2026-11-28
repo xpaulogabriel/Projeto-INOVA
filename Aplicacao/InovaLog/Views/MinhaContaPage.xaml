@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="InovaLog.Views.MinhaContaPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:InovaLog.ViewModels"
+    Title="Minha Conta"
+    x:DataType="vm:MinhaContaViewModel"
+    BackgroundColor="#F8F8F8"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#2C63B1" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!--  CABEÇALHO AZUL  -->
+        <Grid
+            Grid.Row="0"
+            Padding="20,12,20,18"
+            ColumnDefinitions="Auto,*"
+            ColumnSpacing="12"
+            HeightRequest="85">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                    <GradientStop Offset="0" Color="#2C63B1" />
+                    <GradientStop Offset="1" Color="#1EA1E8" />
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <Button
+                Grid.Column="0"
+                Padding="10,0"
+                BackgroundColor="#33FFFFFF"
+                Command="{Binding VoltarCommand}"
+                CornerRadius="10"
+                FontFamily="PoppinsSemiBold"
+                FontSize="12"
+                HeightRequest="34"
+                Text="← Voltar"
+                TextColor="White"
+                VerticalOptions="Center" />
+
+            <Label
+                Grid.Column="1"
+                FontFamily="PoppinsSemiBold"
+                FontSize="18"
+                Text="Minha Conta"
+                TextColor="White"
+                VerticalOptions="Center" />
+        </Grid>
+
+        <!--  CARTÃO DE PERFIL  -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20,24,20,20" Spacing="18">
+
+                <Border
+                    Padding="22"
+                    BackgroundColor="White"
+                    Stroke="#E2E8F0"
+                    StrokeShape="RoundRectangle 18"
+                    StrokeThickness="1">
+
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="12">
+
+                        <!--  AVATAR  -->
+                        <Border
+                            BackgroundColor="#2C63B1"
+                            HeightRequest="82"
+                            HorizontalOptions="Center"
+                            Stroke="#E0F2FE"
+                            StrokeShape="RoundRectangle 41"
+                            StrokeThickness="4"
+                            WidthRequest="82">
+                            <Label
+                                FontFamily="PoppinsBold"
+                                FontSize="28"
+                                HorizontalOptions="Center"
+                                Text="{Binding Iniciais}"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                        </Border>
+
+                        <!--  NOME E E-MAIL  -->
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="2">
+                            <Label
+                                FontFamily="PoppinsSemiBold"
+                                FontSize="18"
+                                HorizontalTextAlignment="Center"
+                                Text="{Binding NomeUsuario}"
+                                TextColor="#0F172A" />
+
+                            <Label
+                                FontFamily="PoppinsRegular"
+                                FontSize="13"
+                                HorizontalTextAlignment="Center"
+                                Text="{Binding EmailUsuario}"
+                                TextColor="#64748B" />
+                        </VerticalStackLayout>
+
+                        <!--  BADGES: PERFIL + STATUS CONEXÃO  -->
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                            <Border
+                                Padding="12,5"
+                                BackgroundColor="#E0F2FE"
+                                StrokeShape="RoundRectangle 10"
+                                StrokeThickness="0">
+                                <Label
+                                    FontFamily="PoppinsBold"
+                                    FontSize="11"
+                                    Text="{Binding RotuloPerfil}"
+                                    TextColor="#2C63B1" />
+                            </Border>
+
+                            <Border
+                                Padding="12,5"
+                                BackgroundColor="{Binding CorFundoStatus}"
+                                StrokeShape="RoundRectangle 10"
+                                StrokeThickness="0">
+                                <HorizontalStackLayout Spacing="5" VerticalOptions="Center">
+                                    <Border
+                                        BackgroundColor="{Binding CorStatus}"
+                                        HeightRequest="8"
+                                        StrokeShape="RoundRectangle 4"
+                                        StrokeThickness="0"
+                                        VerticalOptions="Center"
+                                        WidthRequest="8" />
+                                    <Label
+                                        FontFamily="PoppinsBold"
+                                        FontSize="11"
+                                        Text="{Binding TextoStatus}"
+                                        TextColor="{Binding CorStatus}" />
+                                </HorizontalStackLayout>
+                            </Border>
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  RODAPÉ: LOGOUT  -->
+        <VerticalStackLayout Grid.Row="2" Padding="20,10,20,24" Spacing="8">
+            <ActivityIndicator Color="#EF4444" IsRunning="{Binding Saindo}" IsVisible="{Binding Saindo}" />
+
+            <Button
+                BackgroundColor="#FEE2E2"
+                BorderColor="#FCA5A5"
+                BorderWidth="1"
+                Command="{Binding SairCommand}"
+                CornerRadius="12"
+                FontFamily="PoppinsSemiBold"
+                FontSize="14"
+                HeightRequest="48"
+                Text="Sair da Conta"
+                TextColor="#DC2626" />
+        </VerticalStackLayout>
+
+    </Grid>
+</ContentPage>

@@ -74,7 +74,6 @@ public static class MauiProgram
         // 4. Registo de Views (Sistema Interno Pós-Login)
         builder.Services.AddTransient<HomePage>();
         builder.Services.AddTransient<FinanceiroPage>();
-        builder.Services.AddTransient<CadastroUsuarioPage>();
         builder.Services.AddTransient<NovaDespesaPag>();
         builder.Services.AddTransient<NovaRotaPage>();
         builder.Services.AddTransient<GestorFrotasPage>();
@@ -91,6 +90,15 @@ public static class MauiProgram
         // 6. Relação de cadastro usuário
         builder.Services.AddTransient<CadastroUsuarioViewModel>();
         builder.Services.AddTransient<CadastroUsuarioPage>();
+        builder.Services.AddTransient<ConfiguracoesViewModel>();
+        builder.Services.AddTransient<ConfiguracoesPage>();
+
+        builder.Services.AddTransient<HomeViewModel>();
+        builder.Services.AddTransient<HomePage>();
+        builder.Services.AddTransient<MinhaContaViewModel>();
+        builder.Services.AddTransient<MinhaContaPage>();
+
+
 
 #if DEBUG
         builder.Logging.AddDebug();
