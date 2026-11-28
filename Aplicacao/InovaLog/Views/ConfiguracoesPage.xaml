@@ -27,29 +27,38 @@
             <Image HeightRequest="80" HorizontalOptions="End" Opacity="0.25" Source="logo_azul.png" VerticalOptions="Center" WidthRequest="80" />
         </Grid>
 
-        <!--  BARRA DE ABAS  -->
-        <HorizontalStackLayout x:Name="BarraAbas" Grid.Row="1" Padding="18,14,18,6" Spacing="10">
-            <Border x:Name="AbaUsuarios" Padding="16,8" BackgroundColor="#1EA1E8" StrokeShape="RoundRectangle 20" StrokeThickness="0">
-                <Border.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnAbaUsuariosTapped" />
-                </Border.GestureRecognizers>
-                <Label FontFamily="PoppinsSemiBold" FontSize="13" Text="Usuários" TextColor="White" />
-            </Border>
+        <!--  BARRA DE ABAS (ROLÁVEL HORIZONTALMENTE)  -->
+        <ScrollView x:Name="BarraAbas" Grid.Row="1" HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
+            <HorizontalStackLayout Padding="18,14,18,6" Spacing="10">
+                <Border x:Name="AbaUsuarios" Padding="16,8" BackgroundColor="#1EA1E8" StrokeShape="RoundRectangle 20" StrokeThickness="0">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnAbaUsuariosTapped" />
+                    </Border.GestureRecognizers>
+                    <Label FontFamily="PoppinsSemiBold" FontSize="13" Text="Usuários" TextColor="White" />
+                </Border>
 
-            <Border x:Name="AbaCategorias" Padding="16,8" BackgroundColor="White" Stroke="#E2E8F0" StrokeShape="RoundRectangle 20" StrokeThickness="1">
-                <Border.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnAbaCategoriasTapped" />
-                </Border.GestureRecognizers>
-                <Label FontFamily="PoppinsMedium" FontSize="13" Text="Categorias" TextColor="#64748B" />
-            </Border>
+                <Border x:Name="AbaCategorias" Padding="16,8" BackgroundColor="White" Stroke="#E2E8F0" StrokeShape="RoundRectangle 20" StrokeThickness="1">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnAbaCategoriasTapped" />
+                    </Border.GestureRecognizers>
+                    <Label FontFamily="PoppinsMedium" FontSize="13" Text="Categorias" TextColor="#64748B" />
+                </Border>
 
-            <Border x:Name="AbaPagamentos" Padding="16,8" BackgroundColor="White" Stroke="#E2E8F0" StrokeShape="RoundRectangle 20" StrokeThickness="1">
-                <Border.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnAbaPagamentosTapped" />
-                </Border.GestureRecognizers>
-                <Label FontFamily="PoppinsMedium" FontSize="13" Text="Pagamentos" TextColor="#64748B" />
-            </Border>
-        </HorizontalStackLayout>
+                <Border x:Name="AbaPagamentos" Padding="16,8" BackgroundColor="White" Stroke="#E2E8F0" StrokeShape="RoundRectangle 20" StrokeThickness="1">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnAbaPagamentosTapped" />
+                    </Border.GestureRecognizers>
+                    <Label FontFamily="PoppinsMedium" FontSize="13" Text="Pagamentos" TextColor="#64748B" />
+                </Border>
+
+                <Border x:Name="AbaLogs" Padding="16,8" BackgroundColor="White" Stroke="#E2E8F0" StrokeShape="RoundRectangle 20" StrokeThickness="1">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnAbaLogsTapped" />
+                    </Border.GestureRecognizers>
+                    <Label FontFamily="PoppinsMedium" FontSize="13" Text="Logs" TextColor="#64748B" />
+                </Border>
+            </HorizontalStackLayout>
+        </ScrollView>
 
         <!--  CONTEÚDO DAS ABAS  -->
         <ScrollView Grid.Row="2">
@@ -114,39 +123,10 @@
 
                                         <Label Grid.Row="3" Grid.ColumnSpan="2" FontFamily="PoppinsRegular" FontSize="11" IsVisible="{Binding TemDocumentos}" Text="{Binding Documentos}" TextColor="#64748B" />
 
-                                        <!--  AÇÕES: INSPECIONAR E EDITAR  -->
                                         <HorizontalStackLayout Grid.Row="4" Grid.ColumnSpan="2" Margin="0,8,0,0" Spacing="8">
-                                            <Button
-                                                Padding="12,0"
-                                                BackgroundColor="#F1F5F9"
-                                                Clicked="OnInspecionarUsuarioClicked"
-                                                CornerRadius="6"
-                                                FontFamily="PoppinsSemiBold"
-                                                FontSize="11"
-                                                HeightRequest="30"
-                                                Text="Inspecionar"
-                                                TextColor="#334155" />
-
-                                            <Button
-                                                Padding="12,0"
-                                                BackgroundColor="#E0F2FE"
-                                                Clicked="OnEditarUsuarioClicked"
-                                                CornerRadius="6"
-                                                FontFamily="PoppinsSemiBold"
-                                                FontSize="11"
-                                                HeightRequest="30"
-                                                Text="Editar"
-                                                TextColor="#2C63B1" />
-                                            <Button
-    Padding="12,0"
-    BackgroundColor="#FEE2E2"
-    Clicked="OnExcluirUsuarioClicked"
-    CornerRadius="6"
-    FontFamily="PoppinsSemiBold"
-    FontSize="11"
-    HeightRequest="30"
-    Text="Excluir"
-    TextColor="#DC2626" />
+                                            <Button Padding="12,0" BackgroundColor="#F1F5F9" Clicked="OnInspecionarUsuarioClicked" CornerRadius="6" FontFamily="PoppinsSemiBold" FontSize="11" HeightRequest="30" Text="Inspecionar" TextColor="#334155" />
+                                            <Button Padding="12,0" BackgroundColor="#E0F2FE" Clicked="OnEditarUsuarioClicked" CornerRadius="6" FontFamily="PoppinsSemiBold" FontSize="11" HeightRequest="30" Text="Editar" TextColor="#2C63B1" />
+                                            <Button Padding="12,0" BackgroundColor="#FEE2E2" Clicked="OnExcluirUsuarioClicked" CornerRadius="6" FontFamily="PoppinsSemiBold" FontSize="11" HeightRequest="30" Text="Excluir" TextColor="#DC2626" />
                                         </HorizontalStackLayout>
                                     </Grid>
                                 </Border>
@@ -183,12 +163,18 @@
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="vm:CategoriaItem">
                                 <Border Padding="12,10" BackgroundColor="White" Opacity="{Binding OpacidadeLinha}" Stroke="#E2E8F0" StrokeShape="RoundRectangle 10" StrokeThickness="1">
-                                    <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
-                                        <Label Grid.Column="0" FontFamily="PoppinsMedium" FontSize="13" Text="{Binding Nome}" TextColor="#0F172A" VerticalOptions="Center" />
-                                        <Border Grid.Column="1" Padding="8,3" BackgroundColor="{Binding CorFundoTipo}" StrokeShape="RoundRectangle 6" StrokeThickness="0" VerticalOptions="Center">
+                                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" RowSpacing="8">
+                                        <Label Grid.Row="0" Grid.Column="0" FontFamily="PoppinsMedium" FontSize="13" Text="{Binding Nome}" TextColor="#0F172A" VerticalOptions="Center" />
+
+                                        <Border Grid.Row="0" Grid.Column="1" Padding="8,3" BackgroundColor="{Binding CorFundoTipo}" StrokeShape="RoundRectangle 6" StrokeThickness="0" VerticalOptions="Center">
                                             <Label FontSize="10" Text="{Binding TipoTexto}" TextColor="{Binding CorTextoTipo}" />
                                         </Border>
-                                        <Button Grid.Column="2" Padding="10,0" BackgroundColor="{Binding CorFundoBotao}" Clicked="OnAlternarCategoriaClicked" CornerRadius="6" FontSize="11" HeightRequest="28" Text="{Binding TextoBotao}" TextColor="{Binding CorTextoBotao}" />
+
+                                        <HorizontalStackLayout Grid.Row="1" Grid.ColumnSpan="2" Spacing="8">
+                                            <Button Padding="10,0" BackgroundColor="{Binding CorFundoBotao}" Clicked="OnAlternarCategoriaClicked" CornerRadius="6" FontSize="11" HeightRequest="28" Text="{Binding TextoBotao}" TextColor="{Binding CorTextoBotao}" />
+                                            <Button Padding="10,0" BackgroundColor="#E0F2FE" Clicked="OnEditarCategoriaClicked" CornerRadius="6" FontSize="11" HeightRequest="28" Text="Editar" TextColor="#2C63B1" />
+                                            <Button Padding="10,0" BackgroundColor="#FEE2E2" Clicked="OnExcluirCategoriaClicked" CornerRadius="6" FontSize="11" HeightRequest="28" Text="Excluir" TextColor="#DC2626" />
+                                        </HorizontalStackLayout>
                                     </Grid>
                                 </Border>
                             </DataTemplate>
@@ -214,14 +200,59 @@
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="vm:FormaPagamentoItem">
                                 <Border Padding="12,10" BackgroundColor="White" Opacity="{Binding OpacidadeLinha}" Stroke="#E2E8F0" StrokeShape="RoundRectangle 10" StrokeThickness="1">
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="OnAlternarPagamentoTapped" />
-                                    </Border.GestureRecognizers>
-                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                                        <Label Grid.Column="0" FontFamily="PoppinsMedium" FontSize="13" Text="{Binding Nome}" TextColor="#0F172A" VerticalOptions="Center" />
-                                        <Border Grid.Column="1" Padding="10,4" BackgroundColor="{Binding CorFundoStatus}" StrokeShape="RoundRectangle 6" StrokeThickness="0" VerticalOptions="Center">
+                                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" RowSpacing="8">
+                                        <Label Grid.Row="0" Grid.Column="0" FontFamily="PoppinsMedium" FontSize="13" Text="{Binding Nome}" TextColor="#0F172A" VerticalOptions="Center" />
+
+                                        <Border Grid.Row="0" Grid.Column="1" Padding="10,4" BackgroundColor="{Binding CorFundoStatus}" StrokeShape="RoundRectangle 6" StrokeThickness="0" VerticalOptions="Center">
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OnAlternarPagamentoTapped" />
+                                            </Border.GestureRecognizers>
                                             <Label FontSize="11" Text="{Binding TextoStatus}" TextColor="{Binding CorTextoStatus}" />
                                         </Border>
+
+                                        <HorizontalStackLayout Grid.Row="1" Grid.ColumnSpan="2" Spacing="8">
+                                            <Button Padding="10,0" BackgroundColor="#E0F2FE" Clicked="OnEditarPagamentoClicked" CornerRadius="6" FontSize="11" HeightRequest="28" Text="Editar" TextColor="#2C63B1" />
+                                            <Button Padding="10,0" BackgroundColor="#FEE2E2" Clicked="OnExcluirPagamentoClicked" CornerRadius="6" FontSize="11" HeightRequest="28" Text="Excluir" TextColor="#DC2626" />
+                                        </HorizontalStackLayout>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+
+                <!--  ABA 4: LOGS DE AUDITORIA (APENAS ADMIN)  -->
+                <VerticalStackLayout x:Name="ConteudoLogs" IsVisible="False" Spacing="12">
+                    <VerticalStackLayout Spacing="2">
+                        <Label FontFamily="PoppinsSemiBold" FontSize="16" Text="Logs de Auditoria" TextColor="#0F172A" />
+                        <Label FontFamily="PoppinsRegular" FontSize="12" Text="Últimos 50 registros de ações no sistema." TextColor="#64748B" />
+                    </VerticalStackLayout>
+
+                    <CollectionView ItemsSource="{Binding Logs}" SelectionMode="None">
+                        <CollectionView.EmptyView>
+                            <Label Margin="0,20,0,0" FontFamily="PoppinsRegular" FontSize="13" HorizontalTextAlignment="Center" Text="Nenhum log registrado ainda." TextColor="#64748B" />
+                        </CollectionView.EmptyView>
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout ItemSpacing="8" Orientation="Vertical" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="vm:LogItem">
+                                <Border Padding="12" BackgroundColor="White" Stroke="#E2E8F0" StrokeShape="RoundRectangle 10" StrokeThickness="1">
+                                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto" RowSpacing="4">
+                                        <Label Grid.Row="0" Grid.Column="0" FontFamily="PoppinsSemiBold" FontSize="13" Text="{Binding Acao}" TextColor="#0F172A" />
+                                        <Label Grid.Row="0" Grid.Column="1" FontFamily="PoppinsRegular" FontSize="11" Text="{Binding DataTexto}" TextColor="#64748B" />
+
+                                        <Label Grid.Row="1" Grid.ColumnSpan="2" FontFamily="PoppinsMedium" FontSize="11" TextColor="#2C63B1">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding UsuarioNome}" />
+                                                    <Span Text=" • " />
+                                                    <Span Text="{Binding Tabela}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+
+                                        <Label Grid.Row="2" Grid.ColumnSpan="2" FontFamily="PoppinsRegular" FontSize="11" IsVisible="{Binding TemDetalhes}" Text="{Binding Detalhes}" TextColor="#475569" />
                                     </Grid>
                                 </Border>
                             </DataTemplate>

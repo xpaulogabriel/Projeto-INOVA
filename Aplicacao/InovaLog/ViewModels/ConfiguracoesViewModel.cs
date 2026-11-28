@@ -40,27 +40,14 @@ public partial class UsuarioItem : ObservableObject
     }
 }
 
-public class CategoriaItem : ObservableObject
+public partial class CategoriaItem : ObservableObject
 {
-    private bool _ativa = true;
-
-    public string Nome { get; init; } = string.Empty;
+    public int Id { get; init; }
     public bool Entrada { get; init; }
+    public Categoria ModelOriginal { get; init; } = null!;
 
-    public bool Ativa
-    {
-        get => _ativa;
-        set
-        {
-            if (SetProperty(ref _ativa, value))
-            {
-                OnPropertyChanged(nameof(TextoBotao));
-                OnPropertyChanged(nameof(CorFundoBotao));
-                OnPropertyChanged(nameof(CorTextoBotao));
-                OnPropertyChanged(nameof(OpacidadeLinha));
-            }
-        }
-    }
+    [ObservableProperty] private string nome = string.Empty;
+    [ObservableProperty] private bool ativa = true;
 
     public string TipoTexto => Entrada ? "ENTRADA" : "SAÍDA";
     public Color CorFundoTipo => Entrada ? Color.FromArgb("#D1FAE5") : Color.FromArgb("#FEE2E2");
@@ -70,33 +57,46 @@ public class CategoriaItem : ObservableObject
     public Color CorFundoBotao => Ativa ? Color.FromArgb("#FEE2E2") : Color.FromArgb("#D1FAE5");
     public Color CorTextoBotao => Ativa ? Color.FromArgb("#EF4444") : Color.FromArgb("#10B981");
     public double OpacidadeLinha => Ativa ? 1 : 0.55;
+
+    partial void OnAtivaChanged(bool value)
+    {
+        OnPropertyChanged(nameof(TextoBotao));
+        OnPropertyChanged(nameof(CorFundoBotao));
+        OnPropertyChanged(nameof(CorTextoBotao));
+        OnPropertyChanged(nameof(OpacidadeLinha));
+    }
 }
 
-public class FormaPagamentoItem : ObservableObject
+public partial class FormaPagamentoItem : ObservableObject
 {
-    private bool _ativa = true;
+    public int Id { get; init; }
+    public FormaPagamento ModelOriginal { get; init; } = null!;
 
-    public string Nome { get; init; } = string.Empty;
-
-    public bool Ativa
-    {
-        get => _ativa;
-        set
-        {
-            if (SetProperty(ref _ativa, value))
-            {
-                OnPropertyChanged(nameof(TextoStatus));
-                OnPropertyChanged(nameof(CorFundoStatus));
-                OnPropertyChanged(nameof(CorTextoStatus));
-                OnPropertyChanged(nameof(OpacidadeLinha));
-            }
-        }
-    }
+    [ObservableProperty] private string nome = string.Empty;
+    [ObservableProperty] private bool ativa = true;
 
     public string TextoStatus => Ativa ? "Ativo" : "Inativo";
     public Color CorFundoStatus => Ativa ? Color.FromArgb("#D1FAE5") : Color.FromArgb("#F1F5F9");
     public Color CorTextoStatus => Ativa ? Color.FromArgb("#10B981") : Color.FromArgb("#64748B");
     public double OpacidadeLinha => Ativa ? 1 : 0.55;
+
+    partial void OnAtivaChanged(bool value)
+    {
+        OnPropertyChanged(nameof(TextoStatus));
+        OnPropertyChanged(nameof(CorFundoStatus));
+        OnPropertyChanged(nameof(CorTextoStatus));
+        OnPropertyChanged(nameof(OpacidadeLinha));
+    }
+}
+
+public class LogItem
+{
+    public string Acao { get; init; } = string.Empty;
+    public string Tabela { get; init; } = string.Empty;
+    public string UsuarioNome { get; init; } = string.Empty;
+    public string Detalhes { get; init; } = string.Empty;
+    public string DataTexto { get; init; } = string.Empty;
+    public bool TemDetalhes => !string.IsNullOrWhiteSpace(Detalhes);
 }
 
 public partial class ConfiguracoesViewModel : ObservableObject
@@ -105,28 +105,12 @@ public partial class ConfiguracoesViewModel : ObservableObject
     private readonly Supabase.Client _supabaseClient;
 
     public ObservableCollection<UsuarioItem> Usuarios { get; } = new();
-
-    public ObservableCollection<CategoriaItem> Categorias { get; } = new()
-    {
-        new CategoriaItem { Nome = "Fretes", Entrada = true },
-        new CategoriaItem { Nome = "Combustível" },
-        new CategoriaItem { Nome = "Pedágio" },
-        new CategoriaItem { Nome = "Salário Motorista" },
-        new CategoriaItem { Nome = "Financiamento" },
-        new CategoriaItem { Nome = "Manutenção" }
-    };
+    public ObservableCollection<CategoriaItem> Categorias { get; } = new();
+    public ObservableCollection<FormaPagamentoItem> FormasPagamento { get; } = new();
+    public ObservableCollection<LogItem> Logs { get; } = new();
 
     [ObservableProperty] private string novaCategoria = string.Empty;
-    [ObservableProperty] private int tipoCategoriaIndex = 1;
-
-    public ObservableCollection<FormaPagamentoItem> FormasPagamento { get; } = new()
-    {
-        new FormaPagamentoItem { Nome = "PIX" },
-        new FormaPagamentoItem { Nome = "Boleto" },
-        new FormaPagamentoItem { Nome = "Cartão Frota" },
-        new FormaPagamentoItem { Nome = "Dinheiro" }
-    };
-
+    [ObservableProperty] private int tipoCategoriaIndex = 1; // 0 = Entrada, 1 = Saída
     [ObservableProperty] private string novaFormaPagamento = string.Empty;
 
     [ObservableProperty] private string nomeConta = string.Empty;
@@ -154,15 +138,27 @@ public partial class ConfiguracoesViewModel : ObservableObject
                 var respPerfis = await _supabaseClient.From<Perfil>().Get();
                 var respUsuarios = await _supabaseClient.From<Usuario>().Get();
                 var respMotoristas = await _supabaseClient.From<Motorista>().Get();
+                var respCategorias = await _supabaseClient.From<Categoria>().Get();
+                var respPagamentos = await _supabaseClient.From<FormaPagamento>().Get();
 
                 await _db.ReplaceAllSyncedAsync(respPerfis.Models);
                 await _db.ReplaceAllSyncedAsync(respUsuarios.Models);
                 await _db.ReplaceAllSyncedAsync(respMotoristas.Models);
+                await _db.ReplaceAllSyncedAsync(respCategorias.Models);
+                await _db.ReplaceAllSyncedAsync(respPagamentos.Models);
+
+                if (SessaoPerfil.PodeGerenciarUsuarios())
+                {
+                    var respLogs = await _supabaseClient.From<AuditoriaLog>().Get();
+                    await _db.ReplaceAllSyncedAsync(respLogs.Models);
+                }
             }
 
+            // 1. USUÁRIOS
             var perfis = (await _db.GetAllAsync<Perfil>()).ToDictionary(p => p.Id, p => p.Nome);
             var motoristas = (await _db.GetAllAsync<Motorista>()).ToDictionary(m => m.UsuarioId, m => m);
             var usuarios = await _db.GetAllAsync<Usuario>();
+            var mapaUsuarios = usuarios.ToDictionary(u => u.Id, u => u.Nome);
 
             Usuarios.Clear();
             foreach (var u in usuarios.OrderBy(x => x.Nome))
@@ -194,10 +190,68 @@ public partial class ConfiguracoesViewModel : ObservableObject
                     ModelOriginal = u
                 });
             }
+
+            // 2. CATEGORIAS
+            var categorias = await _db.GetAllAsync<Categoria>();
+            Categorias.Clear();
+            foreach (var c in categorias.OrderBy(x => x.Nome))
+            {
+                var ehEntrada = string.Equals(c.Tipo, "ENTRADA", StringComparison.OrdinalIgnoreCase);
+                Categorias.Add(new CategoriaItem
+                {
+                    Id = c.Id,
+                    Nome = c.Nome,
+                    Entrada = ehEntrada,
+                    Ativa = c.Ativo ?? true,
+                    ModelOriginal = c
+                });
+            }
+
+            // 3. FORMAS DE PAGAMENTO
+            var pagamentos = await _db.GetAllAsync<FormaPagamento>();
+            FormasPagamento.Clear();
+            foreach (var f in pagamentos.OrderBy(x => x.Nome))
+            {
+                FormasPagamento.Add(new FormaPagamentoItem
+                {
+                    Id = f.Id,
+                    Nome = f.Nome,
+                    Ativa = f.Ativo ?? true,
+                    ModelOriginal = f
+                });
+            }
+
+            // 4. LOGS DE AUDITORIA (apenas Admin)
+            if (SessaoPerfil.PodeGerenciarUsuarios())
+            {
+                var logs = await _db.GetAllAsync<AuditoriaLog>();
+                Logs.Clear();
+
+                foreach (var l in logs.OrderByDescending(x => ObterDataLog(x)).Take(50))
+                {
+                    var uid = ObterPropString(l, "UsuarioId");
+                    var nomeUser = !string.IsNullOrWhiteSpace(uid) && mapaUsuarios.TryGetValue(uid, out var n)
+                        ? n
+                        : "Sistema";
+
+                    var detalhes = ObterPropString(l, "DadosNovos") ?? ObterPropString(l, "DadosAntigos") ?? string.Empty;
+                    if (detalhes.Length > 140)
+                        detalhes = detalhes[..140] + "...";
+
+                    Logs.Add(new LogItem
+                    {
+                        Acao = ObterPropString(l, "Acao") ?? "AÇÃO",
+                        Tabela = ObterPropString(l, "TabelaAfetada") ?? "-",
+                        UsuarioNome = nomeUser,
+                        Detalhes = detalhes,
+                        DataTexto = ObterDataLog(l).ToLocalTime().ToString("dd/MM/yyyy HH:mm")
+                    });
+                }
+            }
         }
         catch (Exception ex)
         {
-            await ExibirAlerta("Erro", $"Não foi possível carregar os usuários: {ex.Message}");
+            await ExibirAlerta("Erro", $"Não foi possível carregar as configurações: {ex.Message}");
         }
         finally
         {
@@ -205,11 +259,12 @@ public partial class ConfiguracoesViewModel : ObservableObject
         }
     }
 
+    // ==============================================================
+    // USUÁRIOS
+    // ==============================================================
+
     [RelayCommand]
-    private async Task NovoUsuarioAsync()
-    {
-        await Shell.Current.GoToAsync(nameof(CadastroUsuarioPage));
-    }
+    private async Task NovoUsuarioAsync() => await Shell.Current.GoToAsync(nameof(CadastroUsuarioPage));
 
     [RelayCommand]
     private async Task EditarUsuarioAsync(UsuarioItem? item)
@@ -289,27 +344,25 @@ public partial class ConfiguracoesViewModel : ObservableObject
 
         try
         {
-            // 1. Apaga no Supabase (o ON DELETE CASCADE já remove da tabela 'motoristas')
             await _supabaseClient.From<Usuario>().Delete(item.ModelOriginal);
-
-            // 2. Apaga no SQLite local (usuário e eventual registro de motorista)
             await _db.DeleteAsync(item.ModelOriginal);
+
             var motoristas = await _db.GetAllAsync<Motorista>();
             var motLocal = motoristas.FirstOrDefault(m => m.UsuarioId == item.Id);
             if (motLocal != null)
                 await _db.DeleteAsync(motLocal);
 
-            // 3. Remove da lista na tela
             Usuarios.Remove(item);
         }
         catch (Exception ex)
         {
-            // Se o usuário já tiver viagens/movimentações vinculadas, o Postgres bloqueia por FK
-            await ExibirAlerta(
-                "Não foi possível excluir",
-                $"Erro ao excluir usuário (se ele já possui histórico vinculado, use a opção Bloquear): {ex.Message}");
+            await ExibirAlerta("Não foi possível excluir", $"Se o usuário já possui histórico vinculado, use a opção Bloquear. Detalhe: {ex.Message}");
         }
     }
+
+    // ==============================================================
+    // CATEGORIAS (BANCO REAL)
+    // ==============================================================
 
     [RelayCommand]
     private async Task IncluirCategoriaAsync()
@@ -327,16 +380,154 @@ public partial class ConfiguracoesViewModel : ObservableObject
             return;
         }
 
-        Categorias.Add(new CategoriaItem { Nome = nome, Entrada = TipoCategoriaIndex == 0 });
-        NovaCategoria = string.Empty;
+        if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+        {
+            await ExibirAlerta("Sem conexão", "Conecte-se à internet para cadastrar categorias.");
+            return;
+        }
+
+        try
+        {
+            var ehEntrada = TipoCategoriaIndex == 0;
+            var nova = new Categoria
+            {
+                Nome = nome,
+                Tipo = ehEntrada ? "ENTRADA" : "SAIDA",
+                Ativo = true,
+                Sincronizado = true,
+                PrecisaAtualizar = false
+            };
+
+            var resp = await _supabaseClient.From<Categoria>().Insert(nova);
+            var salva = resp.Models.FirstOrDefault() ?? nova;
+            await _db.SaveAsync(salva);
+
+            Categorias.Add(new CategoriaItem
+            {
+                Id = salva.Id,
+                Nome = salva.Nome,
+                Entrada = ehEntrada,
+                Ativa = salva.Ativo ?? true,
+                ModelOriginal = salva
+            });
+
+            NovaCategoria = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            await ExibirAlerta("Erro", $"Não foi possível salvar a categoria: {ex.Message}");
+        }
     }
 
     [RelayCommand]
-    private void AlternarCategoria(CategoriaItem? categoria)
+    private async Task AlternarCategoriaAsync(CategoriaItem? categoria)
     {
-        if (categoria != null)
-            categoria.Ativa = !categoria.Ativa;
+        if (categoria == null) return;
+
+        if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+        {
+            await ExibirAlerta("Sem conexão", "Conecte-se à internet para alterar a categoria.");
+            return;
+        }
+
+        try
+        {
+            var novoStatus = !categoria.Ativa;
+            categoria.ModelOriginal.Ativo = novoStatus;
+
+            await _supabaseClient.From<Categoria>().Update(categoria.ModelOriginal);
+            await _db.SaveAsync(categoria.ModelOriginal);
+
+            categoria.Ativa = novoStatus;
+        }
+        catch (Exception ex)
+        {
+            await ExibirAlerta("Erro", $"Falha ao atualizar categoria: {ex.Message}");
+        }
     }
+
+    [RelayCommand]
+    private async Task EditarCategoriaAsync(CategoriaItem? categoria)
+    {
+        if (categoria == null) return;
+
+        if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+        {
+            await ExibirAlerta("Sem conexão", "Conecte-se à internet para editar categorias.");
+            return;
+        }
+
+        var pagina = Application.Current?.Windows[0].Page;
+        if (pagina == null) return;
+
+        string? novoNome = await pagina.DisplayPromptAsync(
+            "Editar Categoria",
+            "Informe o novo nome da categoria:",
+            "Salvar",
+            "Cancelar",
+            initialValue: categoria.Nome);
+
+        if (string.IsNullOrWhiteSpace(novoNome)) return;
+        novoNome = novoNome.Trim();
+
+        if (string.Equals(novoNome, categoria.Nome, StringComparison.OrdinalIgnoreCase)) return;
+
+        if (Categorias.Any(c => c.Id != categoria.Id && string.Equals(c.Nome, novoNome, StringComparison.OrdinalIgnoreCase)))
+        {
+            await ExibirAlerta("Atenção", "Já existe uma categoria com esse nome.");
+            return;
+        }
+
+        try
+        {
+            categoria.ModelOriginal.Nome = novoNome;
+            await _supabaseClient.From<Categoria>().Update(categoria.ModelOriginal);
+            await _db.SaveAsync(categoria.ModelOriginal);
+            categoria.Nome = novoNome;
+        }
+        catch (Exception ex)
+        {
+            await ExibirAlerta("Erro", $"Falha ao editar categoria: {ex.Message}");
+        }
+    }
+
+    [RelayCommand]
+    private async Task ExcluirCategoriaAsync(CategoriaItem? categoria)
+    {
+        if (categoria == null) return;
+
+        if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+        {
+            await ExibirAlerta("Sem conexão", "Conecte-se à internet para excluir categorias.");
+            return;
+        }
+
+        var pagina = Application.Current?.Windows[0].Page;
+        if (pagina == null) return;
+
+        bool confirmar = await pagina.DisplayAlertAsync(
+            "Confirmar Exclusão",
+            $"Deseja excluir a categoria \"{categoria.Nome}\"?",
+            "Excluir",
+            "Cancelar");
+
+        if (!confirmar) return;
+
+        try
+        {
+            await _supabaseClient.From<Categoria>().Delete(categoria.ModelOriginal);
+            await _db.DeleteAsync(categoria.ModelOriginal);
+            Categorias.Remove(categoria);
+        }
+        catch (Exception ex)
+        {
+            await ExibirAlerta("Não foi possível excluir", $"Se já existem lançamentos vinculados a esta categoria, use a opção Inativar. Detalhe: {ex.Message}");
+        }
+    }
+
+    // ==============================================================
+    // FORMAS DE PAGAMENTO (BANCO REAL)
+    // ==============================================================
 
     [RelayCommand]
     private async Task IncluirFormaPagamentoAsync()
@@ -354,15 +545,159 @@ public partial class ConfiguracoesViewModel : ObservableObject
             return;
         }
 
-        FormasPagamento.Add(new FormaPagamentoItem { Nome = nome });
-        NovaFormaPagamento = string.Empty;
+        if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+        {
+            await ExibirAlerta("Sem conexão", "Conecte-se à internet para cadastrar formas de pagamento.");
+            return;
+        }
+
+        try
+        {
+            var nova = new FormaPagamento
+            {
+                Nome = nome,
+                Ativo = true,
+                Sincronizado = true,
+                PrecisaAtualizar = false
+            };
+
+            var resp = await _supabaseClient.From<FormaPagamento>().Insert(nova);
+            var salva = resp.Models.FirstOrDefault() ?? nova;
+            await _db.SaveAsync(salva);
+
+            FormasPagamento.Add(new FormaPagamentoItem
+            {
+                Id = salva.Id,
+                Nome = salva.Nome,
+                Ativa = salva.Ativo ?? true,
+                ModelOriginal = salva
+            });
+
+            NovaFormaPagamento = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            await ExibirAlerta("Erro", $"Não foi possível salvar a forma de pagamento: {ex.Message}");
+        }
     }
 
     [RelayCommand]
-    private void AlternarFormaPagamento(FormaPagamentoItem? forma)
+    private async Task AlternarFormaPagamentoAsync(FormaPagamentoItem? forma)
     {
-        if (forma != null)
-            forma.Ativa = !forma.Ativa;
+        if (forma == null) return;
+
+        if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+        {
+            await ExibirAlerta("Sem conexão", "Conecte-se à internet para alterar a forma de pagamento.");
+            return;
+        }
+
+        try
+        {
+            var novoStatus = !forma.Ativa;
+            forma.ModelOriginal.Ativo = novoStatus;
+
+            await _supabaseClient.From<FormaPagamento>().Update(forma.ModelOriginal);
+            await _db.SaveAsync(forma.ModelOriginal);
+
+            forma.Ativa = novoStatus;
+        }
+        catch (Exception ex)
+        {
+            await ExibirAlerta("Erro", $"Falha ao atualizar forma de pagamento: {ex.Message}");
+        }
+    }
+
+    [RelayCommand]
+    private async Task EditarFormaPagamentoAsync(FormaPagamentoItem? forma)
+    {
+        if (forma == null) return;
+
+        if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+        {
+            await ExibirAlerta("Sem conexão", "Conecte-se à internet para editar formas de pagamento.");
+            return;
+        }
+
+        var pagina = Application.Current?.Windows[0].Page;
+        if (pagina == null) return;
+
+        string? novoNome = await pagina.DisplayPromptAsync(
+            "Editar Forma de Pagamento",
+            "Informe o novo nome:",
+            "Salvar",
+            "Cancelar",
+            initialValue: forma.Nome);
+
+        if (string.IsNullOrWhiteSpace(novoNome)) return;
+        novoNome = novoNome.Trim();
+
+        if (string.Equals(novoNome, forma.Nome, StringComparison.OrdinalIgnoreCase)) return;
+
+        if (FormasPagamento.Any(f => f.Id != forma.Id && string.Equals(f.Nome, novoNome, StringComparison.OrdinalIgnoreCase)))
+        {
+            await ExibirAlerta("Atenção", "Já existe uma forma de pagamento com esse nome.");
+            return;
+        }
+
+        try
+        {
+            forma.ModelOriginal.Nome = novoNome;
+            await _supabaseClient.From<FormaPagamento>().Update(forma.ModelOriginal);
+            await _db.SaveAsync(forma.ModelOriginal);
+            forma.Nome = novoNome;
+        }
+        catch (Exception ex)
+        {
+            await ExibirAlerta("Erro", $"Falha ao editar forma de pagamento: {ex.Message}");
+        }
+    }
+
+    [RelayCommand]
+    private async Task ExcluirFormaPagamentoAsync(FormaPagamentoItem? forma)
+    {
+        if (forma == null) return;
+
+        if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+        {
+            await ExibirAlerta("Sem conexão", "Conecte-se à internet para excluir formas de pagamento.");
+            return;
+        }
+
+        var pagina = Application.Current?.Windows[0].Page;
+        if (pagina == null) return;
+
+        bool confirmar = await pagina.DisplayAlertAsync(
+            "Confirmar Exclusão",
+            $"Deseja excluir a forma de pagamento \"{forma.Nome}\"?",
+            "Excluir",
+            "Cancelar");
+
+        if (!confirmar) return;
+
+        try
+        {
+            await _supabaseClient.From<FormaPagamento>().Delete(forma.ModelOriginal);
+            await _db.DeleteAsync(forma.ModelOriginal);
+            FormasPagamento.Remove(forma);
+        }
+        catch (Exception ex)
+        {
+            await ExibirAlerta("Não foi possível excluir", $"Se já existem lançamentos vinculados a esta forma de pagamento, inative-a em vez de excluir. Detalhe: {ex.Message}");
+        }
+    }
+
+    // ==============================================================
+    // APOIO
+    // ==============================================================
+
+    private static string? ObterPropString(object obj, string nomeProp) =>
+        obj.GetType().GetProperty(nomeProp)?.GetValue(obj)?.ToString();
+
+    private static DateTime ObterDataLog(object obj)
+    {
+        var prop = obj.GetType().GetProperty("CriadoEm") ?? obj.GetType().GetProperty("DataHora");
+        return prop?.GetValue(obj) is DateTime dt ? dt : DateTime.MinValue;
     }
 
     private static async Task ExibirAlerta(string titulo, string mensagem)

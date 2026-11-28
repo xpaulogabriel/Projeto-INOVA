@@ -9,6 +9,7 @@ public partial class ConfiguracoesPage : ContentPage
     private const int IndiceUsuarios = 0;
     private const int IndiceCategorias = 1;
     private const int IndicePagamentos = 2;
+    private const int IndiceLogs = 3;
 
     private readonly ConfiguracoesViewModel _viewModel;
     private int _abaSelecionada = IndiceNenhuma;
@@ -36,10 +37,11 @@ public partial class ConfiguracoesPage : ContentPage
         AbaUsuarios.IsVisible = usuarios;
         AbaCategorias.IsVisible = cadastros;
         AbaPagamentos.IsVisible = cadastros;
+        AbaLogs.IsVisible = usuarios; // Apenas Admin
         BarraAbas.IsVisible = usuarios || cadastros;
 
         bool abaAtualPermitida =
-            (_abaSelecionada == IndiceUsuarios && usuarios) ||
+            ((_abaSelecionada == IndiceUsuarios || _abaSelecionada == IndiceLogs) && usuarios) ||
             ((_abaSelecionada == IndiceCategorias || _abaSelecionada == IndicePagamentos) && cadastros);
 
         if (abaAtualPermitida)
@@ -55,6 +57,7 @@ public partial class ConfiguracoesPage : ContentPage
     private void OnAbaUsuariosTapped(object? sender, TappedEventArgs e) => MostrarAba(IndiceUsuarios);
     private void OnAbaCategoriasTapped(object? sender, TappedEventArgs e) => MostrarAba(IndiceCategorias);
     private void OnAbaPagamentosTapped(object? sender, TappedEventArgs e) => MostrarAba(IndicePagamentos);
+    private void OnAbaLogsTapped(object? sender, TappedEventArgs e) => MostrarAba(IndiceLogs);
 
     private void MostrarAba(int aba)
     {
@@ -63,11 +66,13 @@ public partial class ConfiguracoesPage : ContentPage
         ConteudoUsuarios.IsVisible = aba == IndiceUsuarios;
         ConteudoCategorias.IsVisible = aba == IndiceCategorias;
         ConteudoPagamentos.IsVisible = aba == IndicePagamentos;
+        ConteudoLogs.IsVisible = aba == IndiceLogs;
         ConteudoMinhaConta.IsVisible = aba == IndiceNenhuma;
 
         ConfigurarAba(AbaUsuarios, aba == IndiceUsuarios);
         ConfigurarAba(AbaCategorias, aba == IndiceCategorias);
         ConfigurarAba(AbaPagamentos, aba == IndicePagamentos);
+        ConfigurarAba(AbaLogs, aba == IndiceLogs);
     }
 
     private static void ConfigurarAba(Border aba, bool selecionada)
@@ -101,6 +106,12 @@ public partial class ConfiguracoesPage : ContentPage
             _viewModel.AlternarStatusUsuarioCommand.Execute(usuario);
     }
 
+    private void OnExcluirUsuarioClicked(object? sender, EventArgs e)
+    {
+        if ((sender as BindableObject)?.BindingContext is UsuarioItem usuario)
+            _viewModel.ExcluirUsuarioCommand.Execute(usuario);
+    }
+
     private void OnAlternarCategoriaClicked(object? sender, EventArgs e)
     {
         if ((sender as BindableObject)?.BindingContext is CategoriaItem categoria)
@@ -112,10 +123,27 @@ public partial class ConfiguracoesPage : ContentPage
         if ((sender as BindableObject)?.BindingContext is FormaPagamentoItem forma)
             _viewModel.AlternarFormaPagamentoCommand.Execute(forma);
     }
-
-    private void OnExcluirUsuarioClicked(object? sender, EventArgs e)
+    private void OnEditarCategoriaClicked(object? sender, EventArgs e)
     {
-        if ((sender as BindableObject)?.BindingContext is UsuarioItem usuario)
-            _viewModel.ExcluirUsuarioCommand.Execute(usuario);
+        if ((sender as BindableObject)?.BindingContext is CategoriaItem categoria)
+            _viewModel.EditarCategoriaCommand.Execute(categoria);
+    }
+
+    private void OnExcluirCategoriaClicked(object? sender, EventArgs e)
+    {
+        if ((sender as BindableObject)?.BindingContext is CategoriaItem categoria)
+            _viewModel.ExcluirCategoriaCommand.Execute(categoria);
+    }
+
+    private void OnEditarPagamentoClicked(object? sender, EventArgs e)
+    {
+        if ((sender as BindableObject)?.BindingContext is FormaPagamentoItem forma)
+            _viewModel.EditarFormaPagamentoCommand.Execute(forma);
+    }
+
+    private void OnExcluirPagamentoClicked(object? sender, EventArgs e)
+    {
+        if ((sender as BindableObject)?.BindingContext is FormaPagamentoItem forma)
+            _viewModel.ExcluirFormaPagamentoCommand.Execute(forma);
     }
 }
